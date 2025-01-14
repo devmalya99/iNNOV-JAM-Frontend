@@ -5,7 +5,10 @@ import io from "socket.io-client";
 import DeleteModal from "./DeleteModal";
 import CreateExamModal from "./CreateExamModal";
 import { Download, Upload, Settings } from 'lucide-react';
-const socket = io("http://localhost:1000", {
+
+const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+const socket = io(`${VITE_API_URL}`, {
   transports: ["websocket"], // Force WebSocket transport
 });
 
@@ -29,7 +32,7 @@ const UploadAssessmentPlan = () => {
   const fetchFiles = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:1000/api/db/all-files"
+      `${VITE_API_URL}/api/db/all-files`
       );
       console.log("Fetched Files:", response.data.files); // Log fetched files
       setFetchedFiles(response.data.files); // Update state with the list of files
@@ -108,7 +111,7 @@ const UploadAssessmentPlan = () => {
 
     try {
       const result = await axios.post(
-        "http://localhost:1000/api/upload-assesmentFiles",
+        `${VITE_API_URL}/api/upload-assesmentFiles`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

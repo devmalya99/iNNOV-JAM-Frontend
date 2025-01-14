@@ -2,11 +2,13 @@ import React, { createContext, useState, useEffect } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-
+import { handleSuccess } from '../src/utils/toast';
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 // API call for login
 const loginUser = async ({ email, password }) => {
-  const response = await axios.post('http://localhost:1000/api/auth/login', {
+  console.log("first",VITE_API_URL)
+  const response = await axios.post(`${VITE_API_URL}/api/auth/login`, {
     email,
     password,
   });
@@ -76,6 +78,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    handleSuccess({success:"Logged out successfully"});
     
     navigate('/login')
   };

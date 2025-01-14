@@ -2,9 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import { handleError, handleSuccess } from "../utils/toast";
 import processData from "./processData";
-
+const VITE_AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 const evaluate = async (data) => {
+  console.log("api url",VITE_AI_API_URL);
 
     try {
       console.log("Processing data before sending to AI...");
@@ -13,10 +14,8 @@ const evaluate = async (data) => {
       
       const response = await axios.post(
         //Priya Port
-        "http://192.168.1.24:7100/evaluate",
+        `${VITE_AI_API_URL}/evaluate`,
 
-       //Bartika Port
-         //"http://192.168.1.57:8000/evaluate",
         processedData   // Send the data as part of the body
 
       );

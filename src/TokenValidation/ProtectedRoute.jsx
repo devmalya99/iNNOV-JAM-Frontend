@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios"; // Assuming you have axios imported
-
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 
 // Validate token function
@@ -12,7 +12,8 @@ const validateToken = async (token) => {
         return false
     } 
     else{
-       const response = await axios.get('http://localhost:1000/api/auth/verify-token', {
+       const response = await axios.get(
+        `${VITE_API_URL}/api/auth/verify-token`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

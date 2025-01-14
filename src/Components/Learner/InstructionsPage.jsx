@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useFetchAssessmentData } from '../../hooks/useFetchAssessmentData';
 import axios from 'axios';
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const InstructionsPage = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const InstructionsPage = () => {
   const fetchAssessmentData = async (id) => {
     console.log("id is ",id);
     const { data } = await axios.get(
-      "http://localhost:1000/api/assessments"
+      `${VITE_API_URL}/api/assessments`
     );
     console.log("All assessments",data);
     setAssessmentData(data); // Set the fetched data to state

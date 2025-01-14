@@ -1,11 +1,12 @@
 import { TbCloudUpload } from "react-icons/tb";
 import { useState } from "react";
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { useQuery } from "react-query";
 
 const fetchFiles = async()=> {
-    const response = await axios.get('http://localhost:1000/files');
+    const response = await axios.get(`${VITE_API_URL}/files`);
     return response.data.files;
   }
 

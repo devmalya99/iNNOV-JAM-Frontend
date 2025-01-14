@@ -1,13 +1,13 @@
 
 import { useQuery } from 'react-query';
 import axios from 'axios';
-
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 // Fetch files from the backend
 const fetchAssessmentData = async (id) => {
   console.log("id is ",id);
   const { data } = await axios.get(
-    `http://localhost:1000/api/assessments/${id}`
+    `${VITE_API_URL}/api/assessments/${id}`
   );
   console.log("data is ",data);
   return data;

@@ -9,7 +9,7 @@ import { useFetchAssessmentData } from "../../../hooks/useFetchAssessmentData";
 
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
-
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 function AnswerWritingPage() {
   const [activeQuestion, setActiveQuestion] = useState(0);
@@ -40,7 +40,7 @@ function AnswerWritingPage() {
   const saveAnswer = async (assessmentId, questionId, studentAnswer) => {
     try {
       await axios.put(
-        `http://localhost:1000/api/assessments/${assessmentId}/questions/${questionId}`,
+        `${VITE_API_URL}/api/assessments/${assessmentId}/questions/${questionId}`,
         { student_answer: studentAnswer }
       );
       //handleSuccess({ success: "Answer saved successfully" });

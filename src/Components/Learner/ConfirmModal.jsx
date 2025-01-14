@@ -95,10 +95,13 @@ const ConfirmModal = () => {
 
 
       if (response) {
+
         localStorage.removeItem("assessment");
         handleSuccess({ success: "Assessment submitted successfully" });
         navigate("/home");
+
       } else {
+
         handleError({
           errors: "Error submitting assessment please contact supervisor",
         });
@@ -133,15 +136,15 @@ const ConfirmModal = () => {
           </div>
         ) : (
           <div className="flex flex-col justify-center items-center 
-           bg-gray-100 px-4 py-2 rounded-lg">
-            <h3 className="text-xl mb-4">
+           bg-gray-100 px-4 border  py-2 rounded-lg dark:bg-gray-900 ">
+            <p className="text-2xl mb-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text ">
               Are you sure you want to submit this assessment ?
-            </h3>
+            </p>
 
             <div className="mt-4">
               <button
                 onClick={() => handleConfirmSubmission(data)}
-                className="bg-green-500 text-white rounded-lg px-6 py-3 hover:bg-green-600"
+                className="bg-green-500 text-white rounded-lg px-4 py-3 hover:bg-green-600"
               >
                 Confirm Submission
               </button>

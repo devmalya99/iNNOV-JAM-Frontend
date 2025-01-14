@@ -1,10 +1,11 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const fetchAllAssessments = async () => {
     
     const { data } = await axios.get(
-      "http://localhost:1000/api/assessments"
+      `${VITE_API_URL}/api/assessments`
     );
     console.log("All assessments",data);
     

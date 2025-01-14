@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { TbLoader } from "react-icons/tb"; // Loading spinner icon
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 const CreateExamModal = ({ file, setShowCreateExamModal }) => {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
@@ -13,7 +14,7 @@ const CreateExamModal = ({ file, setShowCreateExamModal }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:1000/api/create-exam/${file._id}`
+        `${VITE_API_URL}/api/create-exam/${file._id}`
       );
 
       if (response.status === 200) {

@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from'axios'
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 const DeleteModal = ({fileToDelete,setShowDeleteModal,fetchFiles}) => {
 
     const {title,_id} = fileToDelete
@@ -7,7 +8,7 @@ const DeleteModal = ({fileToDelete,setShowDeleteModal,fetchFiles}) => {
      // Handle delete file
      const handleDelete = async () => {
         try {
-          await axios.delete(`http://localhost:1000/api/delete-file/${_id}`);
+          await axios.delete(`${VITE_API_URL}/api/delete-file/${_id}`);
           setShowDeleteModal(false); // Close the delete confirmation dialog
            // Fetch files again after successful deletion
     fetchFiles(); // Make sure to update the list after deletion
