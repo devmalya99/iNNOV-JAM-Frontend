@@ -64,14 +64,14 @@ const AuthenticationLoader = ({ stage }) => {
                 {stage === 'checking' && (
                   <div className="flex items-center space-x-3">
                     <Loader2 className="w-6 h-6 text-blue-500 animate-spin" />
-                    <span className="text-lg font-medium text-gray-700">Checking authentication...</span>
+                    <span className="text-lg font-medium text-gray-700"> Authenticating...</span>
                   </div>
                 )}
 
                 {stage === 'validating' && (
                   <div className="flex items-center space-x-3">
                     <Loader2 className="w-6 h-6 text-purple-500 animate-spin" />
-                    <span className="text-lg font-medium text-gray-700">Validating security token...</span>
+                    <span className="text-lg font-medium text-gray-700"> Validating credentials...</span>
                   </div>
                 )}
 
@@ -102,7 +102,7 @@ const AuthenticationLoader = ({ stage }) => {
                   className={`h-full ${currentConfig.color.replace('text', 'bg')}`}
                   initial={{ width: "0%" }}
                   animate={{ width: currentConfig.progress }}
-                  transition={{ duration: 1, ease: "easeInOut" }} // Slower progress bar
+                  transition={{ duration: 0.8, ease: "easeInOut" }} // Slower progress bar
                 />
               </motion.div>
               

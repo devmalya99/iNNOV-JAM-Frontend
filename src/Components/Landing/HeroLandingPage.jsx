@@ -23,7 +23,7 @@ const HeroLandingPage = () => {
     <div className=' '>
 
 <section className="container mx-auto py-20 text-center">
-      <h1 className="text-6xl sm:text-7xl lg:text-8xl font-extrabold gradient-title pb-6 flex flex-col">Streamline Your Examination and Evaluation System with GradeX</h1>
+      <h1 className="text-6xl sm:text-7xl lg:text-8xl font-extrabold gradient-title pb-6 flex flex-col">Streamline Your Assessment  Evaluation System with AI</h1>
       <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto mt-4">Revamp your evaluation system make it Faster and more Efficient!</p>
       
 

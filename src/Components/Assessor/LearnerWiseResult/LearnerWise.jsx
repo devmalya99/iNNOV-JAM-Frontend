@@ -160,17 +160,25 @@ const LearnerWise = () => {
           <div className="flex gap-2 justify-between mb-2 ">
 
            {/* gen ai remark */}
-           <div className="flex gap-2">
+           <div className="flex gap-2"
+           onClick={handleOpenDetails}
+           >
       <div className={`rounded-xl shadow-lg ${getBackgroundGradient(avgScore)}`}>
         <div className="flex p-2 m-1 cursor-pointer rounded-lg hover:font-bold transition duration-300">
           <strong className="mr-2">AI Grade: </strong>
           <p 
             className="font-semibold hover:scale-105 transition-transform duration-300" 
-            onClick={handleOpenDetails}
+            
           >
             {aiGrade}
           </p>
+
+          
         </div>
+
+        <p className="p-2 inline-block 
+        bg-gradient-to-br from-blue-500 to-purple-600 
+        cursor-pointer rounded-lg shadow-lg hover:shadow-xl hover:translate-y-[-2px] text-transparent bg-clip-text " >Click here to see details</p>
       </div>
 
       {data?.assessment_type === "case_study" && (
