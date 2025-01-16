@@ -5,7 +5,8 @@ import { useFetchAssessmentData } from "../../hooks/useFetchAssessmentData";
 import useGradeStore from "../../store";
 import ViewScore from "./ViewScore";
 import CaseStudyModal from "./CaseStudyModal";
-import OverviewResult from "./OverviewResult";
+import OverviewResult from "../Assessor/OverviewResult/OverviewResult";
+import OverviewResultSkeleton from "../Assessor/OverviewResult/OverviewResultSkeleton";
 import calculatePredeterminedGrade, {
   calculateAverageScore,
   getBackgroundGradient,
@@ -76,6 +77,7 @@ const LearnerWise = () => {
             setOpenScoreModal={setOpenScoreModal}
             avgScore={avgScore}
             aiGrade={aiGrade}
+            isLoading={isLoading}
           />
         )}
 
@@ -94,6 +96,7 @@ const LearnerWise = () => {
             examData={data?.data}
             avgScore={avgScore}
             onClose={() => setOpenOverview(false)}
+            isLoading={isLoading}
           />
         )}
 
