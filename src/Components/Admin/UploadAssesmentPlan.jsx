@@ -147,12 +147,12 @@ const UploadAssessmentPlan = () => {
         />
       )}
 
-      <div className="flex items-center justify-center gap-6">
+      <div className="flex flex-col items-center justify-center gap-6  ">
 
-      <div className="h-full ">
+      <div className="  w-full bg-white dark:bg-gray-800">
         {/* File Upload Section for Assessment Plan */}
         <div className="flex justify-center  ">
-          <div className="bg-white dark:bg-gray-800 py-4 shadow-lg rounded-xl p-6 border border-gray-200 dark:border-gray-700"> 
+          <div className=" py-4 shadow-lg rounded-xl p-6 border border-gray-200 dark:border-gray-700"> 
             <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-white mb-6">
               Upload Assessment Plan
             </h2>
@@ -303,6 +303,8 @@ const UploadAssessmentPlan = () => {
       </div>
 
       </div>
+
+
     </div>
   );
 };
