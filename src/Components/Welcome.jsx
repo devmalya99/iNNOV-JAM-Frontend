@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../Context/AuthContext';
 import { Hash, Mail, Shield, User } from 'lucide-react';
+import SkeletonPage from './SkeletonPage';
 
 const Welcome = () => {
    const { user,logout } = useAuth();
@@ -12,7 +13,7 @@ const Welcome = () => {
      },[user])
    
      if(loading){
-       return <div>Loading....</div>
+       return <SkeletonPage/>
      }
    
      console.log(user)

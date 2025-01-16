@@ -1,16 +1,19 @@
 import { useState } from "react";
 
 import { useParams } from "react-router";
-import { useFetchAssessmentData } from "../../hooks/useFetchAssessmentData";
-import useGradeStore from "../../store";
-import ViewScore from "./ViewScore";
-import CaseStudyModal from "./CaseStudyModal";
-import OverviewResult from "../Assessor/OverviewResult/OverviewResult";
-import OverviewResultSkeleton from "../Assessor/OverviewResult/OverviewResultSkeleton";
+import { useFetchAssessmentData } from "../../../hooks/useFetchAssessmentData";
+import useGradeStore from "../../../store";
+import ViewScore from "../ViewScore";
+import CaseStudyModal from "../CaseStudyModal";
+import OverviewResult from "../OverviewResult/OverviewResult";
+import OverviewResultSkeleton from "../OverviewResult/OverviewResultSkeleton";
+import LearnerWiseSkeleton from "../LearnerWiseResult/LearnerWiseSkeleton";
+
+
 import calculatePredeterminedGrade, {
   calculateAverageScore,
   getBackgroundGradient,
-} from "../../utils/helper";
+} from "../../../utils/helper";
 import { FaPenNib } from "react-icons/fa";
 const LearnerWise = () => {
   const [activeNumber, setActiveNumber] = useState(0);
@@ -56,7 +59,15 @@ const LearnerWise = () => {
   
 
   return (
-    <div className="w-full  p-4 h-[calc(100vh-80px)] bg-gray-100 dark:bg-gray-900 ">
+
+
+    <>
+    {
+      isLoading ? (<LearnerWiseSkeleton/>) 
+      : 
+      
+      (
+        <div className="w-full  p-4 h-[calc(100vh-80px)] bg-gray-100 dark:bg-gray-900 ">
       <h2 className="text-xl font-semibold mb-4 dark:text-gray-400">
         {`15 October 2025 – Digital Marketing – Jhon Tan – ${
           isLoading
@@ -237,6 +248,11 @@ const LearnerWise = () => {
 
       
     </div>
+      )
+    }
+    
+    </>
+    
   );
 };
 

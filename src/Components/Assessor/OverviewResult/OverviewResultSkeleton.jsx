@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from "react";
 
 const OverviewResultSkeleton = () => {
   return (
@@ -17,7 +16,7 @@ const OverviewResultSkeleton = () => {
             <div className="flex items-center space-x-4">
               {/* Question Number */}
               <div className="h-6 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
-              
+
               {/* Question Text */}
               <div className="flex-1">
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-3/4" />
