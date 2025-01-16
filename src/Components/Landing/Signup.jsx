@@ -46,7 +46,7 @@ export const Signup = () => {
   return (
     <div className="flex justify-center mt-24  ">
       <div className="w-full max-w-md p-8 space-y-6  bg-white/25  backdrop-blur rounded-xl shadow-lg">
-        <h2 className="text-center text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-pink-500 ">
+        <h2 className="text-center text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-white to-pink-500 ">
           Create Account
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
