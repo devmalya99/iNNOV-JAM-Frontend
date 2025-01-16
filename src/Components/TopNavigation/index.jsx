@@ -13,10 +13,11 @@ const TopNavigation = () => {
   return (
     <div
       className="flex flex-row items-center justify-between 
-        bg-white dark:bg-gray-700 
+        bg-white dark:bg-gray-900 
          h-16  rounded-md mx-1 my-1
+         shadow-gray-500
         
-        shadow-lg"
+        shadow-sm"
     >
       <div className="flex font-serif ">
         <p className="title-text text-3xl text-gray-800">

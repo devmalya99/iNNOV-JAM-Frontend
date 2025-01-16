@@ -28,7 +28,9 @@ const Sidebar = () => {
   
 
   return ( 
-    <div className='flex flex-col  top-0 left-0 h-screen w-52 mt-0 dark:bg-gray-800 dark:text-white shadow-lg bg-white '>
+    <div className='flex flex-col  top-0 left-0 h-screen w-52 mt-0
+     dark:bg-gray-900 dark:text-white  bg-white  shadow-gray-500
+      shadow-sm mr-1'>
 
       {/* Logo and Title */}
             <div className="flex items-center space-x-4 justify-center p-4">
