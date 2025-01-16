@@ -7,6 +7,7 @@ import Logo from '../assets/FirstComLogo.png';
 import { useAuth } from '../../Context/AuthContext';
 import { Link } from 'react-router';
 import { LucideSheet, PenLineIcon, PowerOffIcon } from 'lucide-react';
+import SkeletonPage from './SkeletonPage';
 
 const Sidebar = () => {
 
@@ -20,7 +21,7 @@ const Sidebar = () => {
   },[user])
 
   if(loading){
-    return <div>Loading....</div>
+    return <div><SkeletonPage/> </div>
   }
 
   console.log(user)
