@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios"; // Assuming you have axios imported
+import AuthenticationLoader from "./AuthenticationLoader";
+
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 
@@ -30,21 +32,44 @@ const validateToken = async (token) => {
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [stage, setStage] = useState('checking');
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
+
+      setStage('checking');
+      await new Promise(resolve => setTimeout(resolve, 700)); // Show checking stage for 2 seconds
+
       const token = localStorage.getItem('token');
+
       if (!token) {
         setIsAuthenticated(false);
-        setLoading(false);
+         setTimeout(() => {
+          setLoading(false);
+        }, 2000);
         return;
       }
 
+      setStage('validating');
+      await new Promise(resolve => setTimeout(resolve, 900)); // Increased to 3.5 seconds
+
       // Validate the token with the backend
       const isValid = await validateToken(token);
+
+      if (isValid) {
+        setStage('success');
+      } else {
+        setStage('failed');
+      }
+
       setIsAuthenticated(isValid);
-      setLoading(false);
+
+       setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+
     };
 
     checkAuth();
@@ -52,7 +77,7 @@ const ProtectedRoute = ({ children }) => {
 
    // Show loading state while checking authentication
    if (loading) {
-    return <div>Loading....</div>;
+    return  <AuthenticationLoader stage={stage} />;
   }
 
   // Redirect to login if not authenticated
