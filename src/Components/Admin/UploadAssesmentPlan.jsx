@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { TbCloudUpload, TbFlagPlus, TbTrash } from "react-icons/tb";
+import { TbCloudUpload, TbFidgetSpinner, TbFlagPlus, TbTrash } from "react-icons/tb";
 import axios from "axios";
 import io from "socket.io-client";
 import DeleteModal from "./DeleteModal";
 import CreateExamModal from "./CreateExamModal";
 import { Download, Upload, Settings } from 'lucide-react';
-
+import { FaSpinner } from 'react-icons/fa';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const socket = io(`${VITE_API_URL}`, {
@@ -27,7 +27,7 @@ const UploadAssessmentPlan = () => {
   const [fileToDelete, setFileToDelete] = useState(null); // Track the file to delete
   const [showDeleteModal, setShowDeleteModal] = useState(false); // State for controlling the delete confirmation modal
   const [showCreateExamModal, setShowCreateExamModal] = useState(false); // State for showing the Create Exam Modal
-
+  const [loading,setLoading] = useState(false)
   // Function to fetch files from the server
   const fetchFiles = async () => {
     try {
@@ -105,6 +105,7 @@ const UploadAssessmentPlan = () => {
   // Handle submit files
   const submitFiles = async (e) => {
     e.preventDefault();
+    setLoading(true)
     const formData = new FormData();
     formData.append("title", title);
     formData.append("file", file);
@@ -124,6 +125,7 @@ const UploadAssessmentPlan = () => {
     } catch (error) {
       console.error("Error uploading file:", error);
     }
+    setLoading(false)
   };
 
   return (
@@ -192,7 +194,11 @@ const UploadAssessmentPlan = () => {
               </div>
 
               <button className="px-4 py-2 bg-blue-400 mt-2 rounded-xl hover:bg-blue-600">
-                Upload Files
+                {loading ? 
+
+                (<FaSpinner className="animate-spin"/>)
+                
+                : "Upload"}
               </button>
             </form>
           </div>

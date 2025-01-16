@@ -55,7 +55,7 @@ const CourseResultsTable = () => {
   };
 
   return (
-    <div className=" m-4 bg-white  rounded-lg shadow-lg p-2 ">
+    <div className=" m-4 bg-white dark:bg-gray-900  rounded-lg shadow-lg p-2 ">
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>

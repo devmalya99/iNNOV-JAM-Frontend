@@ -120,10 +120,10 @@ const AssessmentCard = ({ assessment }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
-      <div className="flex justify-between items-start mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
+      <div className="flex justify-between items-start mb-4 dark:text-white">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800">{assessment.title}</h3>
+          <h3 className="text-lg font-semibold text-gray-500">{assessment.title}</h3>
           <p className="text-sm text-gray-600">Subject: {assessment.subject}</p>
         </div>
         <div className="w-20 h-20">
@@ -171,7 +171,7 @@ const AssessmentCard = ({ assessment }) => {
 
 const AssessmentDashboard = () => {
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">All Assessments</h1>

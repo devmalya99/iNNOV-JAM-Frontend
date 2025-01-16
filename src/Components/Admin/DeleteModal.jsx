@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import axios from'axios'
 const VITE_API_URL = import.meta.env.VITE_API_URL;
+import { FaSpinner } from 'react-icons/fa';
+
 const DeleteModal = ({fileToDelete,setShowDeleteModal,fetchFiles}) => {
 
     const {title,_id} = fileToDelete
+    const [loading,setLoading] = useState(false)
 
      // Handle delete file
      const handleDelete = async () => {
+      setLoading(true)
         try {
           await axios.delete(`${VITE_API_URL}/api/delete-file/${_id}`);
           setShowDeleteModal(false); // Close the delete confirmation dialog
@@ -16,6 +20,7 @@ const DeleteModal = ({fileToDelete,setShowDeleteModal,fetchFiles}) => {
           console.error('Error deleting file:', error);
           alert('Error deleting file. Check the console for more details.');
         }
+        setLoading(false)
       };
       
 
@@ -29,7 +34,10 @@ const DeleteModal = ({fileToDelete,setShowDeleteModal,fetchFiles}) => {
           onClick={handleDelete}
           className="bg-red-500 text-white rounded-lg px-6 py-3 hover:bg-red-600"
         >
-          Confirm Deletion
+          {
+            loading ? (<FaSpinner className="animate-spin"/>):"Confirm Deletion"
+          }
+          
         </button>
         <button
           onClick={() => setShowDeleteModal(false)}
