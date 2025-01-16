@@ -102,7 +102,7 @@ const AuthenticationLoader = ({ stage }) => {
                   className={`h-full ${currentConfig.color.replace('text', 'bg')}`}
                   initial={{ width: "0%" }}
                   animate={{ width: currentConfig.progress }}
-                  transition={{ duration: 1.2, ease: "easeInOut" }} // Slower progress bar
+                  transition={{ duration: 1, ease: "easeInOut" }} // Slower progress bar
                 />
               </motion.div>
               

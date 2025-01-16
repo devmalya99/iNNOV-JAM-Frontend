@@ -48,7 +48,7 @@ const ProtectedRoute = ({ children }) => {
         setIsAuthenticated(false);
          setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 1500);
         return;
       }
 
