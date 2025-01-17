@@ -1,188 +1,163 @@
 import React from 'react';
-import { Calendar, Clock, ChevronRight } from 'lucide-react';
+import { FileText, Download, Eye, ChevronRight, Book, HelpCircle, Loader } from 'lucide-react';
+import { PDFDownloadLink, pdf } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { useFetchAllAssessments } from '../../services/fetchAllAssessments';
 
-// Comprehensive assessment data structure
-const assessments = [
-  {
-    id: 1,
-    title: "Midterm Exam",
-    subject: "History",
-    dueDate: "2023-11-10",
-    dueTime: "23:59",
-    status: "pending",
-    type: "exam",
-    totalPoints: 100,
-    passingScore: 60,
-    duration: 180, // in minutes
-    instructions: "Answer all questions. Use blue or black ink only.",
-    allowedMaterials: ["Calculator", "Reference Sheet"],
-    submissionFormat: "pdf",
-    coverImage: "/api/placeholder/400/300",
-    progressData: {
-      completed: 75,
-      inProgress: 15,
-      notStarted: 10
-    }
-  },
-  {
-    id: 2,
-    title: "Algebra Test",
-    subject: "Mathematics",
-    dueDate: "2023-12-01",
-    dueTime: "14:30",
-    status: "active",
-    type: "quiz",
-    totalPoints: 50,
-    passingScore: 30,
-    duration: 90,
-    instructions: "Show all work",
-    allowedMaterials: ["Scientific Calculator"],
-    submissionFormat: "online",
-    coverImage: "/api/placeholder/400/300",
-    progressData: {
-      completed: 45,
-      inProgress: 35,
-      notStarted: 20
-    }
-  },
-  {
-    id: 3,
-    title: "Lab Report",
-    subject: "Science",
-    dueDate: "2023-11-14",
-    dueTime: "17:00",
-    status: "upcoming",
-    type: "assignment",
-    totalPoints: 75,
-    passingScore: 45,
-    duration: null,
-    instructions: "Follow lab report format",
-    allowedMaterials: ["Lab Data", "Research Papers"],
-    submissionFormat: "doc",
-    coverImage: "/api/placeholder/400/300",
-    progressData: {
-      completed: 30,
-      inProgress: 40,
-      notStarted: 30
-    }
-  },
-  {
-    id: 4,
-    title: "Essay",
-    subject: "English",
-    dueDate: "2023-11-20",
-    dueTime: "23:59",
-    status: "draft",
-    type: "assignment",
-    totalPoints: 100,
-    passingScore: 60,
-    duration: null,
-    instructions: "1500-2000 words",
-    allowedMaterials: ["None"],
-    submissionFormat: "doc",
-    coverImage: "/api/placeholder/400/300",
-    progressData: {
-      completed: 20,
-      inProgress: 50,
-      notStarted: 30
-    }
-  },
-  {
-    id: 5,
-    title: "Map Project",
-    subject: "Geography",
-    dueDate: "2023-12-05",
-    dueTime: "15:00",
-    status: "upcoming",
-    type: "project",
-    totalPoints: 150,
-    passingScore: 90,
-    duration: null,
-    instructions: "Include legend and scale",
-    allowedMaterials: ["Atlas", "Drawing Tools"],
-    submissionFormat: "pdf",
-    coverImage: "/api/placeholder/400/300",
-    progressData: {
-      completed: 10,
-      inProgress: 60,
-      notStarted: 30
-    }
-  }
-];
+// PDF Document Component
+const AssessmentPDF = ({ data }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Assessment Details Report</Text>
+        <Text style={styles.subtitle}>Generated on {new Date().toLocaleDateString()}</Text>
+      </View>
+      {data?.map((assessment, index) => (
+        <View key={index} style={styles.assessmentSection}>
+          <Text style={styles.sectionTitle}>
+            Assessment Type: {capitalizeWords(assessment.assessment_type)}
+          </Text>
+          <Text style={styles.context}>Context: {assessment.case_study_context}</Text>
+          <Text style={styles.questionsHeader}>Questions:</Text>
+          {assessment.data.map((question, idx) => (
+            <View key={idx} style={styles.question}>
+              <Text style={styles.questionText}>
+                Q{question.question_number}: {question.question}
+              </Text>
+              <Text style={styles.instruction}>
+                Instruction: {question.question_instruction}
+              </Text>
+              <Text style={styles.feedback}>
+                Feedback: {question.feedback || 'No feedback provided'}
+              </Text>
+              <Text style={styles.suggestion}>
+                Suggested Answer: {question.suggested_answer || 'No suggested answer provided'}
+              </Text>
+            </View>
+          ))}
+        </View>
+      ))}
+    </Page>
+  </Document>
+);
 
-const AssessmentCard = ({ assessment }) => {
-  const getDueDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
-  };
+const styles = StyleSheet.create({
+  page: { padding: 30, fontFamily: 'Helvetica' },
+  header: { marginBottom: 30 },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
+  subtitle: { fontSize: 12, color: '#666' },
+  assessmentSection: { marginBottom: 25, borderBottom: 1, borderColor: '#eee', paddingBottom: 20 },
+  sectionTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 10 },
+  context: { fontSize: 12, marginBottom: 15 },
+  questionsHeader: { fontSize: 14, fontWeight: 'bold', marginBottom: 10 },
+  question: { marginBottom: 15, marginLeft: 15 },
+  questionText: { fontSize: 12, marginBottom: 5 },
+  instruction: { fontSize: 10, color: '#666', marginBottom: 3 },
+  feedback: { fontSize: 10, color: '#444' },
+  suggestion: { fontSize: 10, color: '#2c3e50' },
+});
 
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
-      <div className="flex justify-between items-start mb-4 dark:text-white">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-500">{assessment.title}</h3>
-          <p className="text-sm text-gray-600">Subject: {assessment.subject}</p>
-        </div>
-        <div className="w-20 h-20">
-          <img 
-            src={assessment.coverImage} 
-            alt={assessment.title}
-            className="w-full h-full object-cover rounded-md"
-          />
-        </div>
-      </div>
-
-      <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-        <Calendar className="w-4 h-4" />
-        <span>Due: {getDueDate(assessment.dueDate)}</span>
-        <Clock className="w-4 h-4 ml-2" />
-        <span>{assessment.dueTime}</span>
-      </div>
-
-      {assessment.progressData && (
-        <div className="mb-4">
-          <div className="flex h-2 rounded-full bg-gray-200 overflow-hidden">
-            <div 
-              style={{ width: `${assessment.progressData.completed}%` }}
-              className="bg-green-500"
-            />
-            <div 
-              style={{ width: `${assessment.progressData.inProgress}%` }}
-              className="bg-yellow-500"
-            />
-            <div 
-              style={{ width: `${assessment.progressData.notStarted}%` }}
-              className="bg-gray-300"
-            />
-          </div>
-        </div>
-      )}
-
-      <button className="w-full mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center gap-2">
-        View Details
-        <ChevronRight className="w-4 h-4" />
-      </button>
-    </div>
-  );
-};
+// Helper function to capitalize headings
+const capitalizeWords = (str) =>
+  str
+    .toLowerCase()
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 
 const AssessmentDashboard = () => {
+  const { data, isLoading, error } = useFetchAllAssessments();
+
+  const generatePDF = async (assessmentData) => {
+    try {
+      const blob = await pdf(<AssessmentPDF data={[assessmentData]} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Assessment_${assessmentData.assessment_type}_${new Date()
+        .toISOString()
+        .split('T')[0]}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Error generating PDF. Please try again.');
+    }
+  };
+
+  // Loading, error, and no data states remain unchanged...
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">All Assessments</h1>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200">
-            Create new Assessment
-          </button>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <FileText className="w-8 h-8 text-blue-600" />
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+              Assessment Dashboard
+            </h1>
+          </div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">
+            Total Assessments: {data?.length}
+          </div>
         </div>
-        
+
+        {/* Assessment Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {assessments.map((assessment) => (
-            <AssessmentCard key={assessment.id} assessment={assessment} />
+          {data?.map((assessment, index) => (
+            <div
+              key={index}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700 overflow-hidden w-[300px] h-[400px] mx-auto"
+            >
+              {/* Card Header */}
+              <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+                <div className="flex items-center gap-3 mb-4">
+                  <Book className="w-5 h-5 text-blue-600" />
+                  <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 truncate">
+                    {capitalizeWords(assessment?.assessment_type)}
+                  </h2>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 h-8">
+                  {assessment?.case_study_context}
+                </p>
+              </div>
+
+              {/* Questions Section */}
+              <div className="p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <HelpCircle className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                  <h3 className="font-semibold text-gray-700 dark:text-gray-300">Questions</h3>
+                </div>
+                <div className="space-y-3">
+                  {assessment.data.slice(0, 3).map((q, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-1" />
+                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1">
+                        Q{q.question_number}: {q.question}
+                      </p>
+                    </div>
+                  ))}
+                  {assessment.data.length > 3 && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400 italic pl-6">
+                      +{assessment?.data.length - 3} more questions
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Card Footer */}
+              <div className="p-6 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+                <button
+                  onClick={() => generatePDF(assessment)}
+                  className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download PDF</span>
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       </div>

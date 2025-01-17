@@ -6,7 +6,7 @@ import { MdOutlineSettingsSuggest } from "react-icons/md";
 import Logo from '../assets/FirstComLogo.png';
 import { useAuth } from '../../Context/AuthContext';
 import { Link } from 'react-router';
-import { LucideSheet, PenLineIcon, PowerOffIcon } from 'lucide-react';
+import { LucideSheet, PenLineIcon, PowerOffIcon, UploadCloud } from 'lucide-react';
 import SkeletonPage from './SkeletonPage';
 
 const Sidebar = () => {
@@ -46,7 +46,10 @@ const Sidebar = () => {
       {
         user.role==='admin' && <>  <div className='sidebar-style'>
         <SidebarIcon icon={<FaBook className='text-2xl text-green-600'/>} />
-        <Link to='/home/upload-courseware'>Courseware</Link>
+        <Link to='/home/upload-courseware' className='flex '>
+        <p className='mr-1'>Courseware +</p>
+        <UploadCloud/>
+        </Link>
         </div>
 
         
@@ -54,12 +57,12 @@ const Sidebar = () => {
   
         <div className='sidebar-style'>
         <SidebarIcon icon={<BsCalendar2Check className='text-2xl text-green-600'/>} />
-        <Link to='/home/upload-assesment-plan'>Assesment Plan</Link>
+        <Link to='/home/upload-assesment-plan'>Upload Assesment </Link>
         </div>
 
         <div className='sidebar-style'>
         <SidebarIcon icon={<FaAccusoft className='text-2xl text-green-600'/>} />
-        <Link to='/home/all-assessments'>Assessments </Link>
+        <Link to='/home/all-assessments'>All Assessments </Link>
         </div>
 
   
@@ -89,7 +92,7 @@ const Sidebar = () => {
         (user.role==='assessor' || user.role==='admin') && <>
       <div className='sidebar-style'>
       <SidebarIcon icon={<FaRegPenToSquare className='text-2xl text-green-600'/>} />
-      <Link to='/home/assessment'>Assesment</Link>
+      <Link to='/home/assessment'>Evaluation Result</Link>
       </div>
       </>
       }
