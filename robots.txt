@@ -1,0 +1,40 @@
+# robots.txt for AI Evaluation Assistant
+# Purpose: Improve SEO by allowing indexing of key pages and excluding unnecessary ones.
+
+User-agent: *
+# Allow all search engines
+Disallow: /admin/            # Restrict admin panel
+Disallow: /dashboard/        # Prevent indexing of user-specific dashboards
+Disallow: /settings/         # Avoid indexing sensitive user settings
+Disallow: /api/              # Exclude API endpoints
+Disallow: /login/            # Exclude login page
+Disallow: /signup/           # Exclude signup page
+Disallow: /logout/           # Avoid logout page being indexed
+Disallow: /static/           # Prevent indexing of static assets (CSS, JS, images)
+
+# Allow key content pages
+Allow: /                     # Allow the homepage
+Allow: /features/            # Allow features overview
+Allow: /solutions/           # Allow solutions page
+Allow: /about/               # Allow about page
+Allow: /contact/             # Allow contact page
+Allow: /blog/                # Allow blog content
+
+# Sitemap location to help search engines crawl effectively
+Sitemap: http://175.41.151.78:5173/
+
+# Crawl delay for better server performance
+Crawl-delay: 10
+
+# Special instructions for specific bots
+User-agent: Googlebot
+Allow: /
+Disallow: /private/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /private/
+
+# Block specific bad bots
+User-agent: BadBot
+Disallow: /

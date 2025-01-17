@@ -3,6 +3,7 @@ import { FileText, Download, Eye, ChevronRight, Book, HelpCircle, Loader } from 
 import { PDFDownloadLink, pdf } from '@react-pdf/renderer';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { useFetchAllAssessments } from '../../services/fetchAllAssessments';
+import AssessmentSkeleton from '../AssessmentsSkeleton';
 
 // PDF Document Component
 const AssessmentPDF = ({ data }) => (
@@ -90,77 +91,90 @@ const AssessmentDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <FileText className="w-8 h-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-              Assessment Dashboard
-            </h1>
-          </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            Total Assessments: {data?.length}
-          </div>
-        </div>
+      
 
-        {/* Assessment Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data?.map((assessment, index) => (
-            <div
-              key={index}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700 overflow-hidden w-[300px] h-[400px] mx-auto"
-            >
-              {/* Card Header */}
-              <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-                <div className="flex items-center gap-3 mb-4">
-                  <Book className="w-5 h-5 text-blue-600" />
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 truncate">
-                    {capitalizeWords(assessment?.assessment_type)}
-                  </h2>
-                </div>
-                <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 h-8">
-                  {assessment?.case_study_context}
-                </p>
-              </div>
-
-              {/* Questions Section */}
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <HelpCircle className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  <h3 className="font-semibold text-gray-700 dark:text-gray-300">Questions</h3>
-                </div>
-                <div className="space-y-3">
-                  {assessment.data.slice(0, 3).map((q, idx) => (
-                    <div key={idx} className="flex items-start gap-2">
-                      <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-1" />
-                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1">
-                        Q{q.question_number}: {q.question}
-                      </p>
-                    </div>
-                  ))}
-                  {assessment.data.length > 3 && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400 italic pl-6">
-                      +{assessment?.data.length - 3} more questions
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Card Footer */}
-              <div className="p-6 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
-                <button
-                  onClick={() => generatePDF(assessment)}
-                  className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Download PDF</span>
-                </button>
-              </div>
+      { isLoading ?
+        (<AssessmentSkeleton/>)
+        :
+        (
+          <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <FileText className="w-8 h-8 text-blue-600" />
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+                Assessment Dashboard
+              </h1>
             </div>
-          ))}
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              Total Assessments: {data?.length}
+            </div>
+          </div>
+  
+          {/* Assessment Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data?.map((assessment, index) => (
+              <div
+                key={index}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700 overflow-hidden w-[300px] h-[400px] mx-auto"
+              >
+                {/* Card Header */}
+                <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Book className="w-5 h-5 text-blue-600" />
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 truncate">
+                      {capitalizeWords(assessment?.assessment_type)}
+                    </h2>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 h-8">
+                    {assessment?.case_study_context}
+                  </p>
+                </div>
+  
+                {/* Questions Section */}
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <HelpCircle className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                    <h3 className="font-semibold text-gray-700 dark:text-gray-300">Questions</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {assessment.data.slice(0, 3).map((q, idx) => (
+                      <div key={idx} className="flex items-start gap-2">
+                        <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-1" />
+                        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1">
+                          Q{q.question_number}: {q.question}
+                        </p>
+                      </div>
+                    ))}
+                    {assessment.data.length > 3 && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400 italic pl-6">
+                        +{assessment?.data.length - 3} more questions
+                      </p>
+                    )}
+                  </div>
+                </div>
+  
+                {/* Card Footer */}
+                <div className="p-6 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+                  <button
+                    onClick={() => generatePDF(assessment)}
+                    className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download PDF</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+
+        )
+      }
+      
+      
+      
+     
     </div>
   );
 };

@@ -147,12 +147,15 @@ const UploadAssessmentPlan = () => {
         />
       )}
 
-      <div className="flex flex-col items-center justify-center gap-6  ">
+      <div className="flex flex-col items-center justify-center gap-6 h-full">
+      
+      {/* Upload component */}
 
-      <div className="  w-full bg-white dark:bg-gray-800">
+      <div className=" w-full h-3/4 ">
         {/* File Upload Section for Assessment Plan */}
-        <div className="flex justify-center  ">
-          <div className=" py-4 shadow-lg rounded-xl p-6 border border-gray-200 dark:border-gray-700"> 
+        <div className="flex justify-center w-full ">
+        
+          <div className=" py-4 shadow-lg rounded-xl p-6 border w-full  border-gray-200 dark:border-gray-700"> 
             <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-white mb-6">
               Upload Assessment Plan
             </h2>
@@ -214,12 +217,14 @@ const UploadAssessmentPlan = () => {
             No files uploaded yet.
           </p>
         ) : (
-          <div className="max-w-5xl mx-auto p-6 dark:bg-gray-800 bg-white border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
+          <div className="max-w-4xl mx-auto p-6 dark:bg-gray-800  border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg
+          
+          ">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
             <h2 className="text-3xl font-semibold text-center bg-gradient-to-r from-blue-600 to-pink-600 text-transparent bg-clip-text dark:text-white mt-8">
-          Uploaded Assessment Plans
+          Uploaded Assessment Files
         </h2>
               
             </div>
@@ -230,8 +235,11 @@ const UploadAssessmentPlan = () => {
           </div>
     
           {/* File Table */}
+
+          <div className="">
            
-      <div className="overflow-x-auto">
+      <div className="bg-white dark:bg-gray-800 h-48  overflow-y-auto">
+
         <table className="w-full">
           <thead>
             <tr className="border-b">
@@ -282,22 +290,10 @@ const UploadAssessmentPlan = () => {
         </table>
       </div>
     
-          {/* Action Buttons */}
-          <div className="flex gap-4 mt-6">
-            <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-              <Download className="w-4 h-4" />
-              Download
-            </button>
-            <button className="flex items-center gap-2 bg-white text-gray-600 border px-4 py-2 rounded hover:bg-gray-50">
-              Delete
-            </button>
-            <button className="flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
-              <Upload className="w-4 h-4" />
-              Update
-            </button>
-          </div>
+          
     
           
+        </div>
         </div>
         )}
       </div>
