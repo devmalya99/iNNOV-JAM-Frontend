@@ -77,6 +77,11 @@ function AnswerWritingPage() {
     saveAndUpdateData();
   };
 
+  const handleSubmit=()=>{
+    saveAndUpdateData();
+    navigate(`/home/learner/assessment-submission/confirm/${id}`);
+  }
+
   // useEffect(() => {
   //   // Trigger fullscreen when this component is mounted
   //   const handleFullScreen = () => {
@@ -140,7 +145,7 @@ function AnswerWritingPage() {
         }  h-[calc(100vh-80px)] m-1`}
       >
         <div className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-6 h-full">
-          <Heading />
+          <Heading subject={data?.assessment_type}/>
 
           {/* Question Box */}
           <div className="border-2 p-2 bg-gradient-to-r from-cyan-500 to-blue-500 dark:from-cyan-700 dark:to-blue-700 backdrop-blur-lg my-4 rounded-xl font-semibold flex justify-between">
@@ -190,37 +195,11 @@ function AnswerWritingPage() {
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className=" flex  justify-between items-center rounded-lg p-2">
-              <motion.button
-                className="button-style"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handleNext()}
-              >
-                Mark for Review & Next
-              </motion.button>
-              <motion.button
-                //className="button-style"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Clear Response
-              </motion.button>
-              <motion.button
-                className="button-style"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Save & Next
-              </motion.button>
-            </div>
+            
 
             <div
               className="button-style flex justify-center"
-              onClick={() =>
-                navigate(`/home/learner/assessment-submission/confirm/${id}`)
-              }
+              onClick={handleSubmit}
             >
               Assessment Submit Button
             </div>

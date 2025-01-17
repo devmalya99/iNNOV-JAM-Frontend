@@ -53,8 +53,8 @@ const Examwise = () => {
               <tr key={index} className="bg-blue-50">
 
 
-                <td className="  p-3 border border-gray-300 underline hover:text-blue-700">
-                    <Link to='./learner'>{student.name}</Link>
+                <td className="  p-3 border border-gray-300 ">
+                    <div>{student.name}</div>
                 </td>
 
 

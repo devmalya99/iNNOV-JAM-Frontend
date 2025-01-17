@@ -130,7 +130,9 @@ const Sidebar = () => {
 
           </div>
           <button onClick={logout}>
-            <PowerOffIcon className='m-2 cursor-pointer hover:text-red-700'/></button>
+            <PowerOffIcon className='m-1 cursor-pointer hover:text-red-700'/>
+            <p className='text-sm hover:text-red-500'>Logout</p>
+          </button>
         </div>  
       </div>
     </div>

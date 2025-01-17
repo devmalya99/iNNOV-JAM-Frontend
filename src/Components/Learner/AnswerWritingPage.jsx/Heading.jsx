@@ -1,7 +1,13 @@
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { LuClock3 } from "react-icons/lu";
 import Logo from "../../../assets/Logo.png";
-function Heading() {
+function Heading({subject}) {
+  const capitalizeWords = (str) =>
+    str
+      .toLowerCase()
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
   return (
     <>
       <div
@@ -9,7 +15,7 @@ function Heading() {
       >
         <div className="flex justify-between items-center">
           <span className=" py-2  mx-2 text-sm md:text-lg lg:text-xl bg-white/15 backdrop-blur-lg font-semibold border-2 px-6 rounded-xl text-gray-800">
-            Economy
+            {subject? capitalizeWords(subject):"Subject"}
           </span>
           <span className=" py-2  mx-2 text-lg  bg-white/15 backdrop-blur-lg font-semibold border-2 px-4 rounded-xl text-gray-800">
             1st Sem
