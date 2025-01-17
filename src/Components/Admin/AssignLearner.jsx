@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa'; // Importing icons
+import UnderDevelopment from '../UnderDevelopmentComponent';
 
 // Dummy data for learners
 const learnersData = [
@@ -11,7 +12,12 @@ const learnersData = [
 
 const AssignLearner = () => {
   return (
-    <div className="p-6 m-4  bg-white dark:bg-gray-800 shadow-lg rounded-xl">
+    <div className="p-6 m-4  bg-white
+     dark:bg-gray-800 shadow-lg rounded-xl">
+      
+      {/* Under Development feature */}
+      <UnderDevelopment content={"This feature will allow Admins to assign learners to courses."}/> 
+      
       {/* Add Learner Button */}
       <div className="flex justify-end mb-4">
         <button className="bg-blue-500 text-white rounded-lg px-6 py-2 hover:bg-blue-600 transition duration-300">
@@ -33,7 +39,7 @@ const AssignLearner = () => {
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                <button className="text-yellow-500 hover:text-yellow-600">
+                <button className="text-green-600 hover:text-yellow-600">
                   <FaEdit size={20} />
                 </button>
                 <button className="text-red-500 hover:text-red-600">

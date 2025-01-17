@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa'; // Importing icons
+import UnderDevelopment from '../UnderDevelopmentComponent';
 
 const trainersData = [
   { id: 1, name: 'John Doe', specialty: 'Digital Marketing' },
@@ -11,6 +12,10 @@ const trainersData = [
 const AssignTrainers = () => {
   return (
     <div className="p-6 bg-white dark:bg-gray-800 shadow-lg rounded-xl m-4">
+      
+      {/* Under Development feature */}
+      <UnderDevelopment content={"This feature will allow Admins to assign trainers to courses."}/> 
+      
       {/* Add Trainer Button */}
       <div className="flex justify-end mb-4">
         <button className="bg-blue-500 text-white rounded-lg px-6 py-2 hover:bg-blue-600 transition duration-300">
