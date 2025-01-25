@@ -1,20 +1,29 @@
-import React from 'react'
-import Sidebar from '../Components/Common/Sidebar'
-import TopNavigation from '../Components/TopNavigation'
-import { Outlet } from 'react-router'
+import React from 'react';
+import Sidebar from '../Components/Common/Sidebar';
+import TopNavigation from '../Components/TopNavigation';
+import { Outlet } from 'react-router';
+import MainHeadbar from '../Components/Common/MainHeadbar';
+import UseSidebarStore from '../Zustand/SidebarStore';
 
 const HomeLayout = () => {
-  return (
-    <div className='flex bg-white dark:bg-gray-900 transition-all duration-3500 ease-in-out'>
-        <Sidebar />
-      <div className='right-container flex-grow bg-white dark:bg-gray-900'>
-       
-       <div>
-        <Outlet/>
-       </div>
-    </div>
-    </div>
-  )
-}
+  const { viewSidebar, setViewSidebar } = UseSidebarStore();
 
-export default HomeLayout
+  return (
+    <div>
+      <div className='first-hoome-row flex-flex-col'>
+        <MainHeadbar/>
+      </div>
+
+      <div className='second-home-row flex'>
+        <Sidebar/>
+
+        <div>
+          <Outlet/>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default HomeLayout;

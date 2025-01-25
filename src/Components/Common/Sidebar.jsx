@@ -24,13 +24,16 @@ import { useAuth } from "../../../Context/AuthContext";
 import SkeletonPage from "../SkeletonPage";
 import MainHeadbar from "./MainHeadbar";
 import ThemeSlider from "./ThemeSlider";
-
+import UseSidebarStore from "../../Zustand/SidebarStore";
 // Sidebar component
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
   //State to manage sidebar visibility
-  const [viewSidebar, setViewSidebar] = useState(false);
+  
   const { user, logout } = useAuth();
+
+  // Access Zustand store
+  const { viewSidebar, setViewSidebar } = UseSidebarStore();
 
    // Location to detect active route
    const location = useLocation();
@@ -136,17 +139,11 @@ const Sidebar = () => {
   return (
 
     <>
-      {/* Main Headbar */}
-      <nav className="fixed top-0 z-50 w-full bg-gray-50 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-        <MainHeadbar
-          viewSidebar={viewSidebar}
-          setViewSidebar={setViewSidebar}
-        />
-      </nav>
+      
 
       {/* Sidebar visibility controller */}
       {viewSidebar && (
-        <aside className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col">
+        <aside className=" mt-1 w-64 h-[calc(100vh-4.5rem)]  bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col">
           
           
           {/* Display only on smaller  screens */}

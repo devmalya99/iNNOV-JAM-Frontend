@@ -17,8 +17,12 @@ import { BookDashed, Menu } from "lucide-react";
 import CompanyName from "./CompanyName";
 import { useTheme } from "../../../Context/ThemeContext";
 import ThemeSlider from "./ThemeSlider";
+import UseSidebarStore from "../../Zustand/SidebarStore";
 
-const MainHeadbar = ({viewSidebar, setViewSidebar }) => {
+const MainHeadbar = () => {
+
+  const {viewSidebar, setViewSidebar} = UseSidebarStore();
+
   return (
     <div
       className="flex flex-row items-center justify-between 
