@@ -143,7 +143,7 @@ const Sidebar = () => {
 
       {/* Sidebar visibility controller */}
       {viewSidebar && (
-        <aside className=" mt-1 w-64 h-[calc(100vh-4.5rem)]  bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col">
+        <aside className=" w-64 h-[calc(100vh-4.5rem)]  bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col">
           
           
           {/* Display only on smaller  screens */}

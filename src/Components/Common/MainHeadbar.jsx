@@ -27,7 +27,7 @@ const MainHeadbar = () => {
     <div
       className="flex flex-row items-center justify-between 
           bg-white dark:bg-gray-900 
-           h-16  rounded-md 
+           h-16 mb-1 rounded-md 
            shadow-gray-500
           
           shadow-sm"
