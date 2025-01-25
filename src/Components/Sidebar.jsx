@@ -89,7 +89,7 @@ const Sidebar = () => {
       }
 
       {
-        (user.role==='assessor' || user.role==='admin') && <>
+      (user.role==='assessor' || user.role==='admin') && <>
       <div className='sidebar-style'>
       <SidebarIcon icon={<FaRegPenToSquare className='text-2xl text-green-600'/>} />
       <Link to='/home/assessment'>Evaluation Result</Link>

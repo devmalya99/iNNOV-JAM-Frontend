@@ -3,6 +3,7 @@ import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { handleSuccess } from '../src/utils/toast';
+import { useAuth0 } from '@auth0/auth0-react';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 // API call for login
@@ -24,6 +25,8 @@ const AuthContext = createContext();
 
 // AuthProvider Component
 export const AuthProvider = ({ children }) => {
+
+  const {loginWithRedirect} = useAuth0();
 
   // State for the user and token
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);

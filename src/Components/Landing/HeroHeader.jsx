@@ -4,8 +4,8 @@ import Logo from '../../assets/FirstComLogo.png'
 import { ArrowRight } from 'lucide-react';
 const HeroHeader = () => {
   return (
-    <header className="bg-white  px-4 py-3 flex justify-between items-center w-full">
-      <div className="flex items-center justify-evenly w-[70%] ">
+    <header className="bg-white  px-4 py-3 flex justify-center items-center w-full">
+      <div className="flex items-center justify-center ">
 
 
         <div className='flex '>
@@ -15,7 +15,9 @@ const HeroHeader = () => {
         </div>
 
 
-        <nav>
+
+        {/* Top Navigataion menu options not required now */}
+        {/* <nav>
           <ul className="flex space-x-6 text-xl font-serif">
             <li>
               <Link to="/signup" className="text-black hover:text-[#7289da] transition-colors duration-300">
@@ -39,17 +41,11 @@ const HeroHeader = () => {
             </li>
             
           </ul>
-        </nav>
+        </nav> */}
 
       </div>
 
-      <div className='w-[30%] px-8  text-xl flex justify-end '>
-        <Link to="/login" className= "flex justify-center items-center gap-2 text-black bg-[#4decb7] hover:bg-[#677bc4] px-4 py-2 rounded-lg transition-colors duration-300">
-          
-          Login
-          <ArrowRight/>
-        </Link>
-      </div>
+      
 
 
 

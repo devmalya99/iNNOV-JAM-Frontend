@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { LockIcon, MailIcon } from 'lucide-react';
+import { Eye, EyeOff, LockIcon, MailIcon } from 'lucide-react';
 import axios from 'axios'; // Import axios for HTTP requests
 import { useMutation } from 'react-query'; // Import useMutation from React Query
 import {useAuth} from '../../../Context/AuthContext';
@@ -8,6 +8,8 @@ import { FaSpinner } from 'react-icons/fa';
 
 
 export const Login = () => {
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -53,16 +55,35 @@ export const Login = () => {
           />
         </div>
         <div className="relative">
-          <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
+      {/* Lock Icon */}
+      <LockIcon
+        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+        size={20}
+      />
+
+      {/* Password Input */}
+      <input
+        type={showPassword ? "text" : "password"}
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full px-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required
+      />
+
+      {/* Toggle Password Visibility */}
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 focus:outline-none"
+      >
+        {showPassword ? (
+          <EyeOff size={20} className="text-gray-500" />
+        ) : (
+          <Eye size={20} className="text-gray-500" />
+        )}
+      </button>
+    </div>
         <button 
           type="submit" 
           className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-center"

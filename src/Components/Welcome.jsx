@@ -25,7 +25,7 @@ const Welcome = () => {
         Welcome, {user.name}!
       </h1>
       <p className="text-gray-600 dark:text-gray-300 text-lg">
-        LearnerWise Assessment Portal
+        First Com Academy
       </p>
     </div>
 
@@ -50,7 +50,9 @@ const Welcome = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+      <div className="flex items-center gap-4 p-4 bg-gray-50 
+      dark:bg-gray-700 rounded-lg hover:bg-gray-100 
+      dark:hover:bg-gray-600 transition-colors">
         <div className="bg-green-100 p-3 rounded-full">
           <Shield className="w-6 h-6 text-green-600" />
         </div>
@@ -59,12 +61,14 @@ const Welcome = () => {
           <p className="text-lg font-semibold text-gray-800 dark:text-gray-100 capitalize">{user.role}</p>
         </div>
       </div>
+
     </div>
 
     <div className="text-center text-gray-600 dark:text-gray-400">
       <p>You have full access to the assessment portal.</p>
       <p>Start managing learner assessments and providing feedback.</p>
     </div>
+
   </div>
 </div>
 

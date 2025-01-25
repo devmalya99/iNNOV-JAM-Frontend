@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Define default font globally */
+body {
+  
+  font-optical-sizing: auto;
+  font-weight: 400; /* Default weight */
+  font-style: normal;
+}
+
+
 .lexical h1 {
   @apply block font-sans text-4xl font-semibold leading-[1.3] tracking-normal text-inherit antialiased;
 }
