@@ -57,10 +57,10 @@ function App() {
         <Route path='/home' element={<ProtectedRoute> <HomeLayout/></ProtectedRoute>  }>
         <Route index element={<Welcome/>}/>
         <Route path='upload-courseware' element={<UploadCourseware/>}/>
-        <Route path='upload-assesment-plan' element={<UploadAssesmentPlan/>}/>
+        <Route path='upload-assessment-plan' element={<UploadAssesmentPlan/>}/>
         <Route path='all-assessments' element={<AssessmentDashboard/>}/>
         <Route path='assign-trainers' element={<AssignTrainers/>}/>
-        <Route path='assign-learner' element={<AssignLearner/>}/>
+        <Route path='assign-learners' element={<AssignLearner/>}/>
         <Route path='assign-tsc' element={<AssignTSC/>}/>
         </Route>
 

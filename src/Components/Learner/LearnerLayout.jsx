@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router'; // Using Link for navigation
-import Sidebar from '../Sidebar';
+import Sidebar from '../Common/Sidebar';
 import TopNavigation from '../TopNavigation';
 import NoResult from './NoResult';
 

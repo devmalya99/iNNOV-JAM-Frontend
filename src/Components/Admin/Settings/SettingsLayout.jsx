@@ -4,7 +4,7 @@ import { Link, Outlet } from 'react-router'; // Using Link for navigation
 
 import TopNavigation from '../../TopNavigation/index';
 import SettingsSidebar from './SettingsSidebar';
-import Sidebar from '../../Sidebar';
+import Sidebar from '../../Common/Sidebar';
 
 const SettingsLayout = () => {
   return (
