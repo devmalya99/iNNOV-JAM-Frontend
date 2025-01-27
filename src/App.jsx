@@ -33,6 +33,7 @@ import InstructionsPage from './Components/Learner/InstructionsPage'
 import ConfirmModal from './Components/Learner/ConfirmModal'
 import { ToastContainer, toast } from 'react-toastify';
 import AssessmentDashboard from './Components/Admin/AssessmentDashboard'
+import CreateCourse from './Components/Admin/CreateCourse'
 function App() {
 
  
@@ -56,6 +57,7 @@ function App() {
         {/* after login */}
         <Route path='/home' element={<ProtectedRoute> <HomeLayout/></ProtectedRoute>  }>
         <Route index element={<Welcome/>}/>
+        <Route path='create-course' element={<CreateCourse/>}/>
         <Route path='upload-courseware' element={<UploadCourseware/>}/>
         <Route path='upload-assessment-plan' element={<UploadAssesmentPlan/>}/>
         <Route path='all-assessments' element={<AssessmentDashboard/>}/>

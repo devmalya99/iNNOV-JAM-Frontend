@@ -25,6 +25,7 @@ import SkeletonPage from "../SkeletonPage";
 import MainHeadbar from "./MainHeadbar";
 import ThemeSlider from "./ThemeSlider";
 import UseSidebarStore from "../../Zustand/SidebarStore";
+import { CgOrganisation } from "react-icons/cg";
 // Sidebar component
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
@@ -75,6 +76,12 @@ const Sidebar = () => {
       roles: ["admin", "super_admin", "assessor", "trainer", "learner"],
     },
     {
+      name: "Create course",
+      icon: <CgOrganisation className="text-2xl text-green-600" />,
+      link: "/home/create-course",
+      roles: ["admin", "super_admin"],
+    },
+    {
       name: "Upload Courseware",
       icon: <FaBook className="text-2xl text-green-600" />,
       link: "/home/upload-courseware",
@@ -114,7 +121,7 @@ const Sidebar = () => {
       name: "Settings",
       icon: <MdOutlineSettingsSuggest className="text-2xl text-green-600" />,
       link: "/settings",
-      roles: ["super_admin"],
+      roles: ["admin"],
     },
     {
       name: "Evaluation Result",
