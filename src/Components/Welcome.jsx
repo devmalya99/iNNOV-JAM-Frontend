@@ -18,7 +18,7 @@ const Welcome = () => {
    
      console.log(user)
   return (
-    <div className="w-full h-[calc(100vh-100px)] flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-900">
+    <div className="h-full w-full flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-900">
   <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 max-w-2xl w-full mx-4">
     <div className="text-center mb-8">
       <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-2">

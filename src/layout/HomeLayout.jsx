@@ -14,10 +14,10 @@ const HomeLayout = () => {
         <MainHeadbar/>
       </div>
 
-      <div className='second-home-row flex'>
+      <div className='second-home-row flex w-full h-full'>
         <Sidebar/>
 
-        <div>
+        <div className='w-full'>
           <Outlet/>
         </div>
 

@@ -137,63 +137,62 @@ const Sidebar = () => {
   );
 
   return (
-
     <>
-      
-
       {/* Sidebar visibility controller */}
       {viewSidebar && (
-        <aside className=" w-64 h-[calc(100vh-4.5rem)]  bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 flex flex-col">
-          
-          
-          {/* Display only on smaller  screens */}
-          <div className="md:hidden flex items-center justify-between w-auto px-2 py-2  mx-1  hover:text-black 
-        hover:bg-green-500  cursor-pointer  text-lg text-green-500
-        rounded-3xl hover:rounded-xl transition-all duration-300 ease-linear gap-2">
-
-          <div className="flex items-center gap-2">
-          <StarsIcon/>
-            <p className=" px-2"> Theme</p>
-          </div>
-          
-            <div className="flex  items-center justify-evenly gap-2 mx-1">
-            <ThemeSlider />
-          </div>
-          </div>
-          
-
-          {/* Sidebar Items */}
-          <div className="mx-1 mt-4 flex-grow">
-            {filteredItems.map((item, index) => (
-              <div className="sidebar-style" key={index}>
-                <SidebarIcon icon={item.icon} />
-                <Link to={item.link}>{item.name}</Link>
-              </div>
-            ))}
-          </div>
-
-          {/* Footer Section */}
-          <div className="mt-auto bg-gray-300 dark:bg-gray-700 dark:text-white rounded-xl p-4 m-1">
-            <div className="flex justify-start items-center gap-4">
-              <div>
-                <BsPersonFillGear className="text-4xl bg-gradient-to-r from-green-600 to-green-300 p-1 rounded-full" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-green-500 font-bold">
-                  {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                </span>
-                <span>{user.name}</span>
-              </div>
-              <button onClick={logout}>
-                <PowerOffIcon className="m-1 cursor-pointer hover:text-red-700" />
-                <p className="text-sm hover:text-red-500">Logout</p>
-              </button>
+        <>
+          {/* Background overlay for smaller screens */}
+          {!viewSidebar && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+              onClick={() => setViewSidebar(false)} // Close sidebar on overlay click
+            ></div>
+          )}
+  
+          <aside
+            className={`
+              ${
+                viewSidebar ? "sidebar-style-large" : "sidebar-style-small"
+              } 
+              fixed md:static top-0 left-0 h-full md:h-[calc(100vh-4.5rem)] z-50 transition-transform transform
+              ${!viewSidebar ? "-translate-x-full" : "translate-x-0"}
+            `}
+          >
+            {/* Sidebar Items */}
+            <div className="mx-1 mt-4 flex-grow">
+              {filteredItems.map((item, index) => (
+                <div className="sidebar-style" key={index}>
+                  <SidebarIcon icon={item.icon} />
+                  <Link to={item.link}>{item.name}</Link>
+                </div>
+              ))}
             </div>
-          </div>
-        </aside>
+  
+            {/* Footer Section */}
+            <div className="mt-auto bg-gray-300 dark:bg-gray-700 dark:text-white rounded-xl p-4 m-1">
+              <div className="flex justify-start items-center gap-4">
+                <div>
+                  <BsPersonFillGear className="text-4xl bg-gradient-to-r from-green-600 to-green-300 p-1 rounded-full" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-green-500 font-bold">
+                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                  </span>
+                  <span>{user.name}</span>
+                </div>
+                <button onClick={logout}>
+                  <PowerOffIcon className="m-1 cursor-pointer hover:text-red-700" />
+                  <p className="text-sm hover:text-red-500">Logout</p>
+                </button>
+              </div>
+            </div>
+          </aside>
+        </>
       )}
     </>
   );
+  
+  
 };
 
 // SidebarIcon Component

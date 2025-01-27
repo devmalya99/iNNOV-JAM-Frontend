@@ -26,9 +26,7 @@ function UploadCourseware() {
 
     <div className="max-h-[calc(100vh-80px)] ">
       {/* Under Development Feature */}
-  <UnderDevelopment content={"This feature will allow Admins to upload approved courseware for students to access and study."}/>
-  
-
+ 
     <div className="max-w-6xl mx-auto py-4 px-4">
     {/* File Upload Section */}
     <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-2">

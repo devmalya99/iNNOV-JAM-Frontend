@@ -81,7 +81,7 @@ const ProtectedRoute = ({ children }) => {
           setIsAuthenticated(false);
           setTimeout(() => {
             setLoading(false);
-          }, 1500);
+          }, 500);
           return;
         }
 
@@ -104,7 +104,7 @@ const ProtectedRoute = ({ children }) => {
         // Show final stage
         setTimeout(() => {
           setLoading(false);
-        }, 1500);
+        }, 700);
 
       } catch (error) {
         console.error("Authentication check failed:", error);
@@ -113,7 +113,7 @@ const ProtectedRoute = ({ children }) => {
         setIsAuthenticated(false);
         setTimeout(() => {
           setLoading(false);
-        }, 1500);
+        }, 200);
       }
     };
 
