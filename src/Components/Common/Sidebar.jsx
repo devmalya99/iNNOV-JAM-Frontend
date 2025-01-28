@@ -26,6 +26,7 @@ import MainHeadbar from "./MainHeadbar";
 import ThemeSlider from "./ThemeSlider";
 import UseSidebarStore from "../../Zustand/SidebarStore";
 import { CgOrganisation } from "react-icons/cg";
+import UseScreensizeStore from "../../Zustand/ScreensizeStore";
 // Sidebar component
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
@@ -39,25 +40,20 @@ const Sidebar = () => {
    // Location to detect active route
    const location = useLocation();
 
-
-
-  // Effect to determine initial sidebar visibility based on screen size
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 768px)"); // `md` breakpoint
-    setViewSidebar(mediaQuery.matches);
-
-    const handleResize = (e) => setViewSidebar(e.matches);
-    mediaQuery.addEventListener("change", handleResize);
-
-    return () => mediaQuery.removeEventListener("change", handleResize);
-  }, []);
-
+   const {isSmallScreen} = UseScreensizeStore();
+   
+   console.log("isSmallScreen",isSmallScreen)
 
 
   // Wait for user object to be available
   useEffect(() => {
     if (user) setLoading(false);
   }, [user]);
+
+    // Toggle sidebar visibility for small screens
+    const handleItemClick = () => {
+      if (isSmallScreen) setViewSidebar(false);
+    };
 
   if (loading) {
     return (
@@ -121,7 +117,7 @@ const Sidebar = () => {
       name: "Settings",
       icon: <MdOutlineSettingsSuggest className="text-2xl text-green-600" />,
       link: "/settings",
-      roles: ["admin"],
+      roles: ["super_admin"],
     },
     {
       name: "Evaluation Result",
@@ -138,6 +134,10 @@ const Sidebar = () => {
 
   ];
 
+  if (loading) {
+    return <SkeletonPage/>;
+  }
+
   // Filter sidebar items based on the user's role
   const filteredItems = sidebarItems.filter((item) =>
     item.roles.includes(user.role)
@@ -145,58 +145,79 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Sidebar visibility controller */}
-      {viewSidebar && (
-        <>
-          {/* Background overlay for smaller screens */}
-          {!viewSidebar && (
-            <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-              onClick={() => setViewSidebar(false)} // Close sidebar on overlay click
-            ></div>
-          )}
-  
-          <aside
-            className={`
-              ${
-                viewSidebar ? "sidebar-style-large" : "sidebar-style-small"
-              } 
-              fixed md:static top-0 left-0 h-full md:h-[calc(100vh-4.5rem)] z-50 transition-transform transform
-              ${!viewSidebar ? "-translate-x-full" : "translate-x-0"}
-            `}
+    {/* Overlay for small screens */}
+    {isSmallScreen && viewSidebar && (
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        onClick={() => setViewSidebar(false)}
+      ></div>
+    )}
+
+    {/* Sidebar */}
+    <aside
+      className={`fixed md:static top-0 left-0 h-[calc(100vh-4.5rem)] 
+        md:h-[calc(100vh-9.5rem)] z-50 
+      transition-transform transform bg-white dark:bg-gray-800 
+      ${isSmallScreen ? "w-64" : "w-72"} 
+      ${viewSidebar ? "translate-x-0" : "-translate-x-full"} 
+      md:translate-x-0`}
+    >
+      {/* Logo Section */}
+      <div className="p-4 flex items-center justify-between bg-green-100 text-white">
+        <img src={Logo} alt="FirstCom Logo" className="h-12 w-auto" />
+        {isSmallScreen && (
+          <button
+            className="text-2xl"
+            onClick={() => setViewSidebar(false)}
           >
-            {/* Sidebar Items */}
-            <div className="mx-1 mt-4 flex-grow">
-              {filteredItems.map((item, index) => (
-                <div className="sidebar-style" key={index}>
-                  <SidebarIcon icon={item.icon} />
-                  <Link to={item.link}>{item.name}</Link>
-                </div>
-              ))}
-            </div>
-  
-            {/* Footer Section */}
-            <div className="mt-auto bg-gray-300 dark:bg-gray-700 dark:text-white rounded-xl p-4 m-1">
-              <div className="flex justify-start items-center gap-4">
-                <div>
-                  <BsPersonFillGear className="text-4xl bg-gradient-to-r from-green-600 to-green-300 p-1 rounded-full" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-green-500 font-bold">
-                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                  </span>
-                  <span>{user.name}</span>
-                </div>
-                <button onClick={logout}>
-                  <PowerOffIcon className="m-1 cursor-pointer hover:text-red-700" />
-                  <p className="text-sm hover:text-red-500">Logout</p>
-                </button>
-              </div>
-            </div>
-          </aside>
-        </>
-      )}
-    </>
+            ✕
+          </button>
+        )}
+      </div>
+
+      {/* Sidebar Content */}
+      <div className="flex flex-col h-full">
+        {/* Sidebar Items */}
+        <div className="flex-grow overflow-y-auto">
+          {filteredItems.map((item, index) => (
+            <Link
+              to={item.link}
+              key={index}
+              className={`flex items-center gap-4 p-4 hover:bg-gray-200 dark:hover:bg-gray-700 ${
+                location.pathname === item.link ? "bg-green-300 border-gray-600 rounded-xl m-1 " : ""
+              }`}
+              onClick={handleItemClick}
+            >
+              <div>{item.icon}</div>
+              <span className="text-gray-900 dark:text-gray-100">{item.name}</span>
+            </Link>
+          ))}
+        </div>
+
+        {/* Footer Section */}
+        <div className="p-4 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-lg shadow-lg">
+  <div className="flex items-center gap-4">
+    <div className="p-2 bg-gradient-to-r from-green-600 to-green-300 rounded-full shadow-md">
+      <BsPersonFillGear className="text-4xl text-white" />
+    </div>
+    <div>
+      <p className="font-bold text-green-600 dark:text-green-400 text-lg">
+        {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+      </p>
+      <p className="text-gray-800 dark:text-gray-200 text-sm">{user.name}</p>
+    </div>
+  </div>
+  <div
+    className="flex items-center justify-center gap-2 mt-6 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg shadow-md hover:from-red-600 hover:to-red-700 transition-all duration-300"
+    onClick={logout}
+  >
+    <span className="font-semibold">Logout</span>
+    <PowerOffIcon className="w-5 h-5" />
+  </div>
+</div>
+      </div>
+    </aside>
+  </>
   );
   
   
