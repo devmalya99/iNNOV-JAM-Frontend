@@ -34,6 +34,10 @@ import ConfirmModal from './Components/Learner/ConfirmModal'
 import { ToastContainer, toast } from 'react-toastify';
 import AssessmentDashboard from './Components/Admin/AssessmentDashboard'
 import CreateCourse from './Components/Admin/CreateCourse'
+import AddUser from './Components/Admin/CreateTrainers/CreateTrainers'
+import CreateTrainers from './Components/Admin/CreateTrainers/CreateTrainers'
+import CreateLearners from './Components/Admin/CreateLearners/CreateLearners'
+import CreateAssessors from './Components/Admin/CreateAssessors/CreateAssessors'
 function App() {
 
  
@@ -61,9 +65,9 @@ function App() {
         <Route path='upload-courseware' element={<UploadCourseware/>}/>
         <Route path='upload-assessment-plan' element={<UploadAssesmentPlan/>}/>
         <Route path='all-assessments' element={<AssessmentDashboard/>}/>
-        <Route path='assign-trainers' element={<AssignTrainers/>}/>
-        <Route path='assign-learners' element={<AssignLearner/>}/>
-        <Route path='assign-tsc' element={<AssignTSC/>}/>
+        <Route path='add-trainers' element={<CreateTrainers/>}/>
+        <Route path='add-learners' element={<CreateLearners/>}/>
+        <Route path='add-assessors' element={<CreateAssessors/>}/>
         </Route>
 
         {/* Routes for settings */}

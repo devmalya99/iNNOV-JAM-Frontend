@@ -10,6 +10,7 @@ import {
   FaBook,
   FaChalkboardTeacher,
   FaCheck,
+  FaGraduationCap,
   FaHome,
   FaThemeco,
   FaThemeisle,
@@ -18,7 +19,7 @@ import {
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { Link, useLocation } from "react-router"; // Ensure correct version of react-router
-import { PowerOffIcon, StarsIcon } from "lucide-react";
+import { LucideGraduationCap, PowerOffIcon, StarsIcon } from "lucide-react";
 import Logo from "/FirstComLogo.png";
 import { useAuth } from "../../../Context/AuthContext";
 import SkeletonPage from "../SkeletonPage";
@@ -72,6 +73,24 @@ const Sidebar = () => {
       roles: ["admin", "super_admin", "assessor", "trainer", "learner"],
     },
     {
+      name: "Create Trainers",
+      icon: <FaChalkboardTeacher className="text-2xl text-green-600" />,
+      link: "/home/add-trainers",
+      roles: ["admin", "super_admin"],
+    },
+    {
+      name: "Create Learners",
+      icon: <FaGraduationCap className="text-2xl text-green-600" />,
+      link: "/home/add-learners",
+      roles: ["admin", "super_admin"],
+    },
+    {
+      name: "Create Assessors",
+      icon: <FaCheck className="text-2xl text-green-600" />,
+      link: "/home/add-assessors",
+      roles: ["admin", "super_admin"],
+    },
+    {
       name: "Create course",
       icon: <CgOrganisation className="text-2xl text-green-600" />,
       link: "/home/create-course",
@@ -95,24 +114,9 @@ const Sidebar = () => {
       link: "/home/all-assessments",
       roles: ["admin", "super_admin"],
     },
-    {
-      name: "Assign Trainers",
-      icon: <FaChalkboardTeacher className="text-2xl text-green-600" />,
-      link: "/home/assign-trainers",
-      roles: ["admin", "super_admin"],
-    },
-    {
-      name: "Assign Learners",
-      icon: <FaUserGraduate className="text-2xl text-green-600" />,
-      link: "/home/assign-learners",
-      roles: ["admin", "super_admin"],
-    },
-    {
-      name: "Assign TSC",
-      icon: <FaCheck className="text-2xl text-green-600" />,
-      link: "/home/assign-tsc",
-      roles: ["admin", "super_admin"],
-    },
+    
+    
+    
     {
       name: "Settings",
       icon: <MdOutlineSettingsSuggest className="text-2xl text-green-600" />,

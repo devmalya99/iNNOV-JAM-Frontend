@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiPlus, FiTrash2 } from "react-icons/fi";
 import { MdOutlineAddCircle } from "react-icons/md";
 
 import axios from "axios";
+import fetchUsersByRole from "../../services/fetchUsersByRole";
+import AssignSection from "./AssignSection";
+import UserListModal from "./UserListModal";
 
 const VITE_LOCAL_URL = import.meta.env.VITE_LOCAL_URL; // Replace with your backend URL if needed
-
-
-
 
 function CreateCourse() {
   const [courseName, setCourseName] = useState("");
@@ -17,11 +17,26 @@ function CreateCourse() {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isOpenAssignModal, setOpenAssignModal] = useState(false);
+
+  const [trainers, setTrainers] = useState([]); // List of trainers fetched from the backend
+  const [learners, setLearners] = useState([]); // List of learners fetched from the backend
+  const [assessors, setAssessors] = useState([]); // List of assessors fetched from the backend
+  
 
   const handleCourseNameChange = (e) => {
     setCourseName(e.target.value);
     setError(null);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setTrainers(await fetchUsersByRole("trainer"));
+      setLearners(await fetchUsersByRole("learner"));
+      setAssessors(await fetchUsersByRole("assessor"));
+    };
+    fetchData();
+  }, []);
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
@@ -68,16 +83,22 @@ function CreateCourse() {
       description: "This is a test course description", // Example static description
       organisationName: "Test Organisation", // Example static organisation
       assessments,
+      trainer: selectedTrainer, // Store the selected trainer ID
+      learners: selectedLearners, // Store the selected learners IDs
+      assessors: selectedAssessors, // Store the selected assessors IDs
     };
 
     try {
-        console.log(courseData)
+      console.log(courseData);
       setLoading(true);
       setError(null);
       setSuccessMessage(null);
 
       // POST request to save the course
-      const response = await axios.post(`${VITE_LOCAL_URL}/api/create-new-course`, courseData);
+      const response = await axios.post(
+        `${VITE_LOCAL_URL}/api/create-new-course`,
+        courseData
+      );
 
       // Success feedback
       setSuccessMessage("Course created successfully!");
@@ -98,6 +119,13 @@ function CreateCourse() {
 
   return (
     <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
+      
+      {/* Assign Modal */}
+      {isOpenAssignModal && (
+        <UserListModal isOpenAssignModal={isOpenAssignModal} setOpenAssignModal={setOpenAssignModal} users={learners} title="Assign Learners" onSelect={(selectedLearners) => setSelectedLearners(selectedLearners)} />
+      )}
+      
+      
       <div className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 sm:p-8">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-gray-100">
           Create a New Course
@@ -177,12 +205,20 @@ function CreateCourse() {
           </button>
         </div>
 
+        {/* Assign user section */}
+
+        <AssignSection setOpenAssignModal={setOpenAssignModal}/>
+
         {/* Error Message */}
-        {error && <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>}
+        {error && (
+          <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>
+        )}
 
         {/* Success Message */}
         {successMessage && (
-          <p className="text-green-500 dark:text-green-400 mb-4">{successMessage}</p>
+          <p className="text-green-500 dark:text-green-400 mb-4">
+            {successMessage}
+          </p>
         )}
 
         {/* Submit Button */}
