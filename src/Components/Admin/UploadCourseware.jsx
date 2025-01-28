@@ -20,7 +20,7 @@ function UploadCourseware() {
   const [loading, setLoading] = useState(false);
   const [isFetchingCourses, setIsFetchingCourses] = useState(true);
   const [isFetchingAssessments, setIsFetchingAssessments] = useState(false);
-
+  const [selectedCourseIndex , setSelectedCourseIndex] = useState(null);
   const fileInputRef = useRef(null);
 
   useState(() => {
@@ -39,17 +39,6 @@ function UploadCourseware() {
     fetchCourses();
   }, []);
 
-  const fetchAssessments = async (courseId) => {
-    try {
-      setIsFetchingAssessments(true);
-      const response = await axios.get(`${VITE_LOCAL_URL}/courses/${courseId}/assessments`);
-      setAssessments(response.data?.assessments || []);
-    } catch (error) {
-      console.error("Error fetching assessments:", error);
-    } finally {
-      setIsFetchingAssessments(false);
-    }
-  };
 
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files?.[0];
@@ -62,11 +51,10 @@ function UploadCourseware() {
   };
 
   const handleCourseChange = (e) => {
-    const courseId = e.target.value;
-    console.log("Selected course:", courseId);
-    setSelectedCourse(courseId);
+    setSelectedCourseIndex(e.target.value);
+    console.log("Selected course:", e.target.value);
+    setSelectedCourse(e.target.value);
     setSelectedAssessment("");
-    if (courseId) fetchAssessments(courseId);
   };
 
   const handleSubmit = async () => {
@@ -139,7 +127,7 @@ function UploadCourseware() {
             >
               <option value="">Select a course</option>
               {courses?.map((course) => (
-                <option key={course?.id} value={course?.id}>
+                <option key={course?._id} value={course?._id}>
                   {course?.courseName || "Unnamed Course"}
                 </option>
               ))}
@@ -163,8 +151,8 @@ function UploadCourseware() {
               className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">Select an assessment</option>
-              {assessments?.map((assessment) => (
-                <option key={assessment?.id} value={assessment?.id}>
+              {courses?.find((item)=>item._id===selectedCourse)?.assessments?. map((assessment) => (
+                <option key={assessment?.id} value={assessment?._id}>
                   {assessment?.name || "Unnamed Assessment"}
                 </option>
               ))}
