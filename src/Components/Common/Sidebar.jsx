@@ -156,24 +156,28 @@ const Sidebar = () => {
     {/* Sidebar */}
     <aside
       className={`fixed md:static top-0 left-0 h-[calc(100vh-4.5rem)] 
-        md:h-[calc(100vh-9.5rem)] z-50 
+        md:h-[calc(100vh-4.5rem)] z-50 
       transition-transform transform bg-white dark:bg-gray-800 
       ${isSmallScreen ? "w-64" : "w-72"} 
       ${viewSidebar ? "translate-x-0" : "-translate-x-full"} 
       md:translate-x-0`}
     >
       {/* Logo Section */}
-      <div className="p-4 flex items-center justify-between bg-green-100 text-white">
-        <img src={Logo} alt="FirstCom Logo" className="h-12 w-auto" />
-        {isSmallScreen && (
-          <button
-            className="text-2xl"
-            onClick={() => setViewSidebar(false)}
-          >
-            ✕
-          </button>
-        )}
-      </div>
+      {/* only visible if isSmallScreen */}
+      {
+        isSmallScreen && (
+          <div className="p-4 flex items-center justify-between bg-green-100 text-white">
+            <img src={Logo} alt="FirstCom Logo" className="h-12 w-auto" />
+            <button
+              className="text-2xl"
+              onClick={() => setViewSidebar(false)}
+            >
+              ✕
+            </button>
+          </div>
+        )
+      }
+      
 
       {/* Sidebar Content */}
       <div className="flex flex-col h-full">
