@@ -5,7 +5,7 @@ import { MdOutlineAddCircle } from "react-icons/md";
 import axios from "axios";
 import fetchUsersByRole from "../../services/fetchUsersByRole";
 import AssignSection from "./AssignSection";
-import UserListModal from "./UserListModal";
+
 
 const VITE_LOCAL_URL = import.meta.env.VITE_LOCAL_URL; // Replace with your backend URL if needed
 
@@ -29,14 +29,7 @@ function CreateCourse() {
     setError(null);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setTrainers(await fetchUsersByRole("trainer"));
-      setLearners(await fetchUsersByRole("learner"));
-      setAssessors(await fetchUsersByRole("assessor"));
-    };
-    fetchData();
-  }, []);
+  
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
@@ -119,12 +112,6 @@ function CreateCourse() {
 
   return (
     <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
-      
-      {/* Assign Modal */}
-      {isOpenAssignModal && (
-        <UserListModal isOpenAssignModal={isOpenAssignModal} setOpenAssignModal={setOpenAssignModal} users={learners} title="Assign Learners" onSelect={(selectedLearners) => setSelectedLearners(selectedLearners)} />
-      )}
-      
       
       <div className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 sm:p-8">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-gray-100">

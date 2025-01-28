@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { FiCheckCircle, FiXCircle } from "react-icons/fi";
 import {handleError, handleSuccess} from "../../utils/toast";
-const UserListModal = ({ 
+import fetchUsersByRole from "../../services/fetchUsersByRole";
+const AssignTrainersModal = ({ 
     isOpenAssignModal, 
     setOpenAssignModal, 
-    users, 
-    title, 
-    onSelect, 
-    loading, 
-    error }) => {
-        
+    role, 
+    }) => {
+
   const [selectedUsers, setSelectedUsers] = useState([]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setTrainers(await fetchUsersByRole(role))
+    };
+    fetchData();
+  }, []);
+
+
 
   useEffect(() => {
     // Reset selected users when the modal is opened
@@ -108,4 +116,4 @@ const UserListModal = ({
   );
 };
 
-export default UserListModal;
+export default AssignTrainersModal;
