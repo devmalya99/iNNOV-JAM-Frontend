@@ -22,9 +22,10 @@ const useCourseStore = create((set) => ({
     assessments: state.assessments.filter((_, i) => i !== index)
   })),
   setOpenAssignModal: (isOpen) => set({ isOpenAssignModal: isOpen }),
-  setSelectedLearners: (learners) => set({ selectedLearners: learners }),
-  setSelectedTrainers: (trainers) => set({ selectedTrainers: trainers }),
-  setSelectedAssessors: (assessors) => set({ selectedAssessors: assessors }),
+
+  setSelectedLearners: (learners) => set(() => ({ selectedLearners: learners })),
+  setSelectedTrainers: (trainers) => set(() => ({ selectedTrainers: trainers })),
+  setSelectedAssessors: (assessors) => set(() => ({ selectedAssessors: assessors })),
 }));
 
 export default useCourseStore;

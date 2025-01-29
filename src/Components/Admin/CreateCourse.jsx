@@ -6,44 +6,33 @@ import axios from "axios";
 
 import AssignSection from "./AssignSection";
 import { Outlet } from "react-router";
+import useCourseStore from "../../Zustand/useCourseStore";
 
 
 const VITE_LOCAL_URL = import.meta.env.VITE_LOCAL_URL; // Replace with your backend URL if needed
 
 function CreateCourse() {
-  const [courseName, setCourseName] = useState("");
-  const [category, setCategory] = useState("General");
-  const [customCategory, setCustomCategory] = useState("");
-  const [assessments, setAssessments] = useState([{ name: "" }]);
+  const {
+    courseName,
+    category,
+    customCategory,
+    assessments,
+    setCourseName,
+    setCategory,
+    setCustomCategory,
+    addAssessment,
+    removeAssessment,
+    setAssessments,
+    selectedLearners,
+    selectedTrainers,
+    selectedAssessors,
+
+  } = useCourseStore();
+
+
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isOpenAssignModal, setOpenAssignModal] = useState(false);
-
-  const [trainers, setTrainers] = useState([]); // List of trainers fetched from the backend
-  const [learners, setLearners] = useState([]); // List of learners fetched from the backend
-  const [assessors, setAssessors] = useState([]); // List of assessors fetched from the backend
-  
-
-  const handleCourseNameChange = (e) => {
-    setCourseName(e.target.value);
-    setError(null);
-  };
-
-  
-
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-    if (e.target.value !== "Custom") {
-      setCustomCategory(""); // Reset custom category if another option is selected
-    }
-    setError(null);
-  };
-
-  const handleCustomCategoryChange = (e) => {
-    setCustomCategory(e.target.value);
-    setError(null);
-  };
 
   const handleAssessmentChange = (index, value) => {
     const updatedAssessments = [...assessments];
@@ -52,16 +41,10 @@ function CreateCourse() {
     setError(null);
   };
 
-  const addAssessment = () => {
-    setAssessments([...assessments, { name: "" }]);
-  };
-
-  const removeAssessment = (index) => {
-    const updatedAssessments = assessments.filter((_, i) => i !== index);
-    setAssessments(updatedAssessments);
-  };
+ 
 
   const handleSubmit = async () => {
+    
     if (
       !courseName.trim() ||
       (!category.trim() && !customCategory.trim()) ||
@@ -77,13 +60,13 @@ function CreateCourse() {
       description: "This is a test course description", // Example static description
       organisationName: "Test Organisation", // Example static organisation
       assessments,
-      trainer: selectedTrainer, // Store the selected trainer ID
-      learners: selectedLearners, // Store the selected learners IDs
-      assessors: selectedAssessors, // Store the selected assessors IDs
+      assigned_trainers: selectedTrainers, // Store the selected trainer ID
+      assigned_learners: selectedLearners, // Store the selected learners IDs
+      assigned_evaluators: selectedAssessors, // Store the selected assessors IDs
     };
 
     try {
-      console.log(courseData);
+      console.log("courseData",courseData);
       setLoading(true);
       setError(null);
       setSuccessMessage(null);
@@ -111,6 +94,8 @@ function CreateCourse() {
     }
   };
 
+  console.log("selectedLearners", selectedLearners)
+
   return (
     <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
       
@@ -130,7 +115,8 @@ function CreateCourse() {
           <input
             type="text"
             value={courseName}
-            onChange={handleCourseNameChange}
+            onChange={(e) => setCourseName(e.target.value)}
+
             className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
             placeholder="Enter course name"
           />
@@ -143,7 +129,8 @@ function CreateCourse() {
           </label>
           <select
             value={category}
-            onChange={handleCategoryChange}
+            onChange={(e) => setCategory(e.target.value)}
+
             className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
           >
             <option value="General">General</option>
@@ -155,7 +142,7 @@ function CreateCourse() {
             <input
               type="text"
               value={customCategory}
-              onChange={handleCustomCategoryChange}
+              onChange={(e)=>setCustomCategory(e.target.value)}
               className="w-full px-4 py-2 mt-4 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
               placeholder="Enter custom category"
             />
@@ -188,7 +175,7 @@ function CreateCourse() {
             </div>
           ))}
           <button
-            onClick={addAssessment}
+           onClick={addAssessment}
             className="flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500"
           >
             <MdOutlineAddCircle className="text-2xl" />

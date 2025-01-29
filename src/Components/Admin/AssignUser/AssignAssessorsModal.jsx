@@ -4,11 +4,11 @@ import { Check, RefreshCcwIcon, Users, X } from "lucide-react";
 import { useUsersByRole } from "../../../services/fetchUsersByRole";
 import useCourseStore from "../../../Zustand/useCourseStore";
 
-const AssignAssessorsModal = ({ open, setOpen }) => {
-  const [selectedAssessors, setSelectedAssessors] = useState([]);
+const AssignAssessorsModal = () => {
+  
   const [isAllSelected, setIsAllSelected] = useState(false);
   const { data: AssessorsData = [], isLoading,refetch } = useUsersByRole("assessor");
-  const {isOpenAssignModal,setOpenAssignModal,}=useCourseStore();
+  const {selectedAssessors, setSelectedAssessors,isOpenAssignModal,setOpenAssignModal,}=useCourseStore();
   const handleSelectAll = () => {
     if (isAllSelected) {
       setSelectedAssessors([]);
@@ -34,7 +34,7 @@ const AssignAssessorsModal = ({ open, setOpen }) => {
     refetch();
   },[])
 
-  console.log("AssessorsData", AssessorsData);
+  //console.log("AssessorsData", AssessorsData);
 
   return (
     <>

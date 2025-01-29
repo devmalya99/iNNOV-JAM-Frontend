@@ -5,10 +5,10 @@ import { useUsersByRole } from "../../../services/fetchUsersByRole";
 import useCourseStore from "../../../Zustand/useCourseStore";
 
 const AssignTrainersModal = ({ open, setOpen }) => {
-  const [selectedTrainers, setSelectedTrainers] = useState([]);
+  
   const [isAllSelected, setIsAllSelected] = useState(false);
   const { data: TrainersData = [], isLoading, refetch } = useUsersByRole("trainer");
-  const {isOpenAssignModal,setOpenAssignModal,}=useCourseStore();
+  const {selectedTrainers,setSelectedTrainers,isOpenAssignModal,setOpenAssignModal,}=useCourseStore();
 
 
   const handleSelectAll = () => {
@@ -129,7 +129,7 @@ const AssignTrainersModal = ({ open, setOpen }) => {
               Cancel
             </button>
             <button
-              
+               onClick={() => setOpenAssignModal(false)}
               className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg flex items-center gap-2 transition-colors"
             >
               <Check size={20} />
