@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
+    "@heroicons/react": "^1.0.6",
     "@lexical/code": "^0.22.0",
     "@lexical/link": "^0.22.0",
     "@lexical/list": "^0.22.0",

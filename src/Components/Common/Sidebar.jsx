@@ -19,7 +19,7 @@ import {
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { Link, useLocation } from "react-router"; // Ensure correct version of react-router
-import { LucideGraduationCap, PowerOffIcon, StarsIcon } from "lucide-react";
+import { LucideGraduationCap, PowerOffIcon, StarsIcon, Users2Icon } from "lucide-react";
 import Logo from "/FirstComLogo.png";
 import { useAuth } from "../../../Context/AuthContext";
 import SkeletonPage from "../SkeletonPage";
@@ -88,6 +88,12 @@ const Sidebar = () => {
       name: "Create Assessors",
       icon: <FaCheck className="text-2xl text-green-600" />,
       link: "/home/add-assessors",
+      roles: ["admin", "super_admin"],
+    },
+    {
+      name: "User Management",
+      icon: <Users2Icon className="text-2xl text-green-600" />,
+      link: "/home/user-management",
       roles: ["admin", "super_admin"],
     },
     {

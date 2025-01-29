@@ -41,6 +41,7 @@ import CreateAssessors from './Components/Admin/CreateAssessors/CreateAssessors'
 import AssignTrainersModal from './Components/Admin/AssignUser/AssignTrainersModal'
 import AssignAssessorsModal from './Components/Admin/AssignUser/AssignAssessorsModal'
 import AssignLearnersModal from './Components/Admin/AssignUser/AssignLearnersModal'
+import UserManagement from './Components/Admin/User Management'
 
 function App() {
 
@@ -77,6 +78,7 @@ function App() {
         <Route path='add-trainers' element={<CreateTrainers/>}/>
         <Route path='add-learners' element={<CreateLearners/>}/>
         <Route path='add-assessors' element={<CreateAssessors/>}/>
+        <Route path='user-management' element={<UserManagement/>}/>
         </Route>
 
         {/* Routes for settings */}
