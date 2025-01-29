@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { handleSuccess } from "../../../utils/toast";
+import handleCreateUsers from "../../../services/handleCreateUsers";
 
 const CreateTrainers = () => {
   // Rename "learners" to "trainers"
@@ -118,6 +119,7 @@ const CreateTrainers = () => {
    const newTrainers = trainers.map((trainer) => ({ ...trainer, role: "trainer" }));
    setTrainers(newTrainers);
     console.log("Saving newTrainers:", newTrainers);
+    handleCreateUsers(newTrainers)
     handleSuccess({success:"All trainers have been saved successfully!"});
     alert("All trainers have been saved successfully!");
   };

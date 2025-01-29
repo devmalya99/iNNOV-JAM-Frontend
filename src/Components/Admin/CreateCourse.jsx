@@ -3,8 +3,9 @@ import { FiPlus, FiTrash2 } from "react-icons/fi";
 import { MdOutlineAddCircle } from "react-icons/md";
 
 import axios from "axios";
-import fetchUsersByRole from "../../services/fetchUsersByRole";
+
 import AssignSection from "./AssignSection";
+import { Outlet } from "react-router";
 
 
 const VITE_LOCAL_URL = import.meta.env.VITE_LOCAL_URL; // Replace with your backend URL if needed
@@ -118,6 +119,9 @@ function CreateCourse() {
           Create a New Course
         </h2>
 
+        {/* Assignement Section */}
+        <Outlet />
+
         {/* Course Name */}
         <div className="mb-6">
           <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
@@ -193,8 +197,7 @@ function CreateCourse() {
         </div>
 
         {/* Assign user section */}
-
-        <AssignSection setOpenAssignModal={setOpenAssignModal}/>
+        <AssignSection/>
 
         {/* Error Message */}
         {error && (

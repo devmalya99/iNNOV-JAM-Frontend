@@ -161,7 +161,7 @@ const Sidebar = () => {
     <aside
       className={`fixed md:static top-0 left-0 h-[calc(100vh-4.5rem)] 
         md:h-[calc(100vh-4.5rem)] z-50 
-      transition-transform transform bg-white dark:bg-gray-800 
+      transition-transform transform bg-white dark:bg-[#09122C] 
       ${isSmallScreen ? "w-64" : "w-72"} 
       ${viewSidebar ? "translate-x-0" : "-translate-x-full"} 
       md:translate-x-0`}
@@ -203,8 +203,8 @@ const Sidebar = () => {
         </div>
 
         {/* Footer Section */}
-        <div className="p-4 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-lg shadow-lg">
-  <div className="flex items-center gap-4">
+        <div className="px-4 py-3 m-1 bg-gray-100 dark:bg-gray-800  rounded-lg shadow-lg">
+  <div className="flex items-center gap-4 ">
     <div className="p-2 bg-gradient-to-r from-green-600 to-green-300 rounded-full shadow-md">
       <BsPersonFillGear className="text-4xl text-white" />
     </div>

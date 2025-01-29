@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { handleSuccess } from "../../../utils/toast";
+import handleCreateUsers from "../../../services/handleCreateUsers";
 
 const CreateAssessors = () => {
   // State to store assessors
@@ -117,9 +118,10 @@ const CreateAssessors = () => {
   // Handle Save All button click (for entire list)
   const handleSaveAll = () => {
     // Add role field to all learners
-const newAssessors = assessors.map((assessor) => ({ ...assessor, role: "learner" }));
+const newAssessors = assessors.map((assessor) => ({ ...assessor, role: "assessor" }));
 setAssessors(newAssessors);
 console.log("Saving newLearners:", newAssessors);
+handleCreateUsers(newAssessors)
 handleSuccess({ success: "All Assessors have been saved successfully!" });
 alert("All assessors have been saved successfully!");
   };

@@ -31,16 +31,18 @@ import AnswerWritingPage from './Components/Learner/AnswerWritingPage.jsx/Answer
 import Help from './Components/Help'
 import InstructionsPage from './Components/Learner/InstructionsPage'
 import ConfirmModal from './Components/Learner/ConfirmModal'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+
 import AssessmentDashboard from './Components/Admin/AssessmentDashboard'
 import CreateCourse from './Components/Admin/CreateCourse'
-import AddUser from './Components/Admin/CreateTrainers/CreateTrainers'
 import CreateTrainers from './Components/Admin/CreateTrainers/CreateTrainers'
 import CreateLearners from './Components/Admin/CreateLearners/CreateLearners'
 import CreateAssessors from './Components/Admin/CreateAssessors/CreateAssessors'
-function App() {
+import AssignTrainersModal from './Components/Admin/AssignUser/AssignTrainersModal'
+import AssignAssessorsModal from './Components/Admin/AssignUser/AssignAssessorsModal'
+import AssignLearnersModal from './Components/Admin/AssignUser/AssignLearnersModal'
 
- 
+function App() {
 
   return (
     
@@ -54,14 +56,21 @@ function App() {
            <Route path='signup' element={<Signup/>}/>
            <Route path='book-consultation' element={<BookConsultationPage/>}/>
            <Route path='help' element={<Help/>}/>
-
            <Route path='forgot-password' element={<ForgotPassword/>}/>
         </Route>
 
         {/* after login */}
         <Route path='/home' element={<ProtectedRoute> <HomeLayout/></ProtectedRoute>  }>
         <Route index element={<Welcome/>}/>
-        <Route path='create-course' element={<CreateCourse/>}/>
+
+
+        <Route path='create-course' element={<CreateCourse/>}>
+        <Route path='assign-trainers' element={<AssignTrainersModal/>}/>
+        <Route path='assign-assessors' element={<AssignAssessorsModal/>}/>
+        <Route path='assign-learners' element={<AssignLearnersModal/>}/>
+        </Route>
+
+
         <Route path='upload-courseware' element={<UploadCourseware/>}/>
         <Route path='upload-assessment-plan' element={<UploadAssesmentPlan/>}/>
         <Route path='all-assessments' element={<AssessmentDashboard/>}/>
