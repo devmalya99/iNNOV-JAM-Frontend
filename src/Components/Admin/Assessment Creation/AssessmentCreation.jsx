@@ -6,30 +6,50 @@ import {
   Eye, Plus, FileText, Loader2 
 } from "lucide-react";
 import { FetchCourseAssessments } from "../../../services/FetchCourseAssessments";
+const VITE_API_URL = import.meta.env.VITE_API_URL;
+
 
 const AssessmentCreation = () => {
   const { courseid } = useParams();
   const { data, isLoading, refetch } = FetchCourseAssessments(courseid);
-  const [files, setFiles] = useState({});
+  const [file, setFile] = useState({});
   const [selectedFileName, setSelectedFileName] = useState({});
+  const [loading, setLoading] = useState(false);
+  
 
-  const handleFileChange = (id, event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFiles((prev) => ({ ...prev, [id]: file }));
-      setSelectedFileName((prev) => ({ ...prev, [id]: file.name }));
-    }
+  // Handle file upload
+  const handleFileUpload = (event) => {
+    const uploadedFile = event.target.files[0];
+    setFile(uploadedFile);
   };
 
-  const handleUpload = (id) => {
-    if (!files[id]) {
-      console.log(`No file selected for assessment ID: ${id}`);
-      return;
+
+  // Handle submit files
+  const submitFiles = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("title", data?.name);
+    formData.append("file", file);
+
+    try {
+      const result = await axios.post(
+        `${VITE_API_URL}/api/upload-assesmentFiles`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      console.log(result);
+      setFile(""); // Clear file after upload
+      fetchFiles(); // Refetch files after upload
+    } catch (error) {
+      console.error("Error uploading file:", error);
     }
-    console.log(`Uploading file for Assessment ID: ${id}`, files[id]);
+    setLoading(false);
   };
 
-  const handleView = (id) => console.log(`View Assessment ID: ${id}`);
+  const handleView = (id) => console.log(`View file: ${files}`);
   const handleCreate = (id) => console.log(`Create new assessment for ID: ${id}`);
 
   if (!courseid) return null;
@@ -96,7 +116,7 @@ const AssessmentCreation = () => {
                       <input
                         type="file"
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        onChange={(e) => handleFileChange(assessment._id, e)}
+                        onChange={handleFileUpload}
                         accept=".pdf,.doc,.docx,.txt"
                       />
                     </label>
@@ -134,7 +154,7 @@ const AssessmentCreation = () => {
           </button>
           <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
             <Check size={18} />
-            <span>Assign Selected</span>
+            <span>Save Assessments</span>
           </button>
         </div>
       </motion.div>

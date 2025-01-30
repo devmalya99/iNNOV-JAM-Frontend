@@ -9,7 +9,6 @@ const useCourseStore = create((set) => ({
   selectedLearners: [],
   selectedTrainers: [],
   selectedAssessors: [],
-
   scheduleExamDate: "", // New field
 
   // Actions to update state
