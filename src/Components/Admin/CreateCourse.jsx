@@ -5,7 +5,7 @@ import { MdOutlineAddCircle } from "react-icons/md";
 import axios from "axios";
 
 import AssignSection from "./AssignSection";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import useCourseStore from "../../Zustand/useCourseStore";
 
 
@@ -30,6 +30,7 @@ function CreateCourse() {
     setScheduleExamDate,
 
   } = useCourseStore();
+  const navigate = useNavigate();
 
 
   const [error, setError] = useState(null);
@@ -42,6 +43,8 @@ function CreateCourse() {
     setAssessments(updatedAssessments);
     setError(null);
   };
+
+
 
  
 
@@ -84,13 +87,15 @@ function CreateCourse() {
 
       // Success feedback
       setSuccessMessage("Course created successfully!");
-      console.log("Course Created:", response.data);
+      console.log("Course Created:", response?.data);
 
       // Clear the form after submission
       setCourseName("");
       setCategory("General");
       setCustomCategory("");
       setAssessments([{ name: "" }]);
+      navigate(`courses/${response?.data?._id}`);
+;
     } catch (error) {
       console.error("Failed to create course:", error);
       setError("Failed to create course. Please try again.");
@@ -99,12 +104,15 @@ function CreateCourse() {
     }
   };
 
-  console.log("scheduleExamDate", typeof(scheduleExamDate))
+ 
 
   return (
-    <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
+    <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8 
+    dark:bg-gray-900 h-[calc(100vh-80px)] overflow-y-auto">
       
-      <div className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 sm:p-8">
+      <div className="bg-white dark:bg-gray-800 shadow-xl 
+
+      rounded-2xl p-6 sm:p-8">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-gray-100">
           Create a New Course
         </h2>
@@ -193,7 +201,7 @@ function CreateCourse() {
 
         {/* Schedule Section */}
          {/* Schedule Exam Date */}
-<div className="mb-6 mt-4">
+         <div className="mb-6 mt-4">
   <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
     Schedule Exam Date
   </label>
@@ -202,8 +210,7 @@ function CreateCourse() {
     value={scheduleExamDate || ""} // Ensure it's not null
     onChange={(e) => setScheduleExamDate(e.target.value)}
     className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
-  />
-</div>
+  /></div>
 
 
 
