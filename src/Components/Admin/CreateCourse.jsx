@@ -193,7 +193,8 @@ function CreateCourse() {
 
         {/* Success Message */}
         {successMessage && (
-          <p className="text-green-500 dark:text-green-400 mb-4">
+          <p 
+          className="text-green-500 dark:text-green-400 mb-4">
             {successMessage}
           </p>
         )}
