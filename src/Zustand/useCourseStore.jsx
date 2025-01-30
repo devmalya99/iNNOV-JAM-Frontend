@@ -10,6 +10,8 @@ const useCourseStore = create((set) => ({
   selectedTrainers: [],
   selectedAssessors: [],
 
+  scheduleExamDate: "", // New field
+
   // Actions to update state
   setCourseName: (courseName) => set({ courseName }),
   setCategory: (category) => set({ category, customCategory: category === "Custom" ? "" : "" }),
@@ -26,6 +28,8 @@ const useCourseStore = create((set) => ({
   setSelectedLearners: (learners) => set(() => ({ selectedLearners: learners })),
   setSelectedTrainers: (trainers) => set(() => ({ selectedTrainers: trainers })),
   setSelectedAssessors: (assessors) => set(() => ({ selectedAssessors: assessors })),
+  setScheduleExamDate: (date) => set({ scheduleExamDate: date }), // Setter for exam date
+
 }));
 
 export default useCourseStore;

@@ -26,6 +26,8 @@ function CreateCourse() {
     selectedLearners,
     selectedTrainers,
     selectedAssessors,
+    scheduleExamDate,
+    setScheduleExamDate,
 
   } = useCourseStore();
 
@@ -63,7 +65,10 @@ function CreateCourse() {
       assigned_trainers: selectedTrainers, // Store the selected trainer ID
       assigned_learners: selectedLearners, // Store the selected learners IDs
       assigned_evaluators: selectedAssessors, // Store the selected assessors IDs
+      examScheduleDate: scheduleExamDate ? new Date(scheduleExamDate) : null,
     };
+
+    console.log("courseData", courseData);
 
     try {
       console.log("courseData",courseData);
@@ -94,7 +99,7 @@ function CreateCourse() {
     }
   };
 
-  console.log("selectedLearners", selectedLearners)
+  console.log("scheduleExamDate", typeof(scheduleExamDate))
 
   return (
     <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
@@ -185,6 +190,22 @@ function CreateCourse() {
 
         {/* Assign user section */}
         <AssignSection/>
+
+        {/* Schedule Section */}
+         {/* Schedule Exam Date */}
+<div className="mb-6 mt-4">
+  <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+    Schedule Exam Date
+  </label>
+  <input
+    type="date"
+    value={scheduleExamDate || ""} // Ensure it's not null
+    onChange={(e) => setScheduleExamDate(e.target.value)}
+    className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
+  />
+</div>
+
+
 
         {/* Error Message */}
         {error && (
