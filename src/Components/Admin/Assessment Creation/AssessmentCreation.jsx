@@ -3,9 +3,16 @@ import { motion } from "framer-motion";
 import { useParams } from "react-router";
 import { 
   Check, RefreshCcw, Users, X, Upload, 
-  Eye, Plus, FileText, Loader2 
+  Eye, Plus, FileText, Loader2, 
+  CloudDownload,
+  Cloud,
+  File
 } from "lucide-react";
 import { FetchCourseAssessments } from "../../../services/FetchCourseAssessments";
+import axios from "axios";
+import { FaSpinner } from "react-icons/fa";
+import { SiTicktick } from "react-icons/si";
+
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 
@@ -14,23 +21,27 @@ const AssessmentCreation = () => {
   const { data, isLoading, refetch } = FetchCourseAssessments(courseid);
   const [file, setFile] = useState({});
   const [selectedFileName, setSelectedFileName] = useState({});
-  const [loading, setLoading] = useState(false);
-  
+  const [creationState, setCreationState] = useState({});
+
 
   // Handle file upload
-  const handleFileUpload = (event) => {
+  const handleFileUpload = (event,assessmentId) => {
     const uploadedFile = event.target.files[0];
-    setFile(uploadedFile);
+    setFile((prev) => ({...prev, [assessmentId]: uploadedFile}));
+    setCreationState((prev) => ({...prev, [assessmentId]: "file-selected"}));
   };
 
 
   // Handle submit files
-  const submitFiles = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const submitFiles = async (assessmentId,name) => {
+
+    if (!file[assessmentId]) return;
+    
+    setCreationState((prev)=>({...prev, [assessmentId]:"uploading"}));
+
     const formData = new FormData();
-    formData.append("title", data?.name);
-    formData.append("file", file);
+    formData.append("title", name);
+    formData.append("file", file[assessmentId]);
 
     try {
       const result = await axios.post(
@@ -40,16 +51,23 @@ const AssessmentCreation = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+
       console.log(result);
-      setFile(""); // Clear file after upload
-      fetchFiles(); // Refetch files after upload
+      setFile((prev) => ({ ...prev, [assessmentId]: null })); // Clear file after upload
+      setCreationState((prev) => ({
+        ...prev,
+        [assessmentId]: "file-upload-success",
+      }));
+      // fetchFiles(); // Refetch files after upload
+
     } catch (error) {
       console.error("Error uploading file:", error);
     }
-    setLoading(false);
+    setCreationState((prev)=>({...prev,[assessmentId]:"file-upload-success"}));
   };
 
   const handleView = (id) => console.log(`View file: ${files}`);
+
   const handleCreate = (id) => console.log(`Create new assessment for ID: ${id}`);
 
   if (!courseid) return null;
@@ -107,36 +125,91 @@ const AssessmentCreation = () => {
 
                 {/* Actions */}
                 <div className="flex flex-wrap items-center gap-3">
-                  <div className="relative flex-grow sm:flex-grow-0 min-w-[200px] sm:min-w-0">
-                    <label className="flex items-center px-3 py-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg cursor-pointer transition-colors group">
-                      <Upload className="w-4 h-4 mr-2 text-gray-600 dark:text-gray-300 group-hover:scale-105 transition-transform" />
-                      <span className="text-sm text-gray-600 dark:text-gray-300 truncate">
-                        {selectedFileName[assessment._id] || "Choose file"}
-                      </span>
-                      <input
-                        type="file"
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        onChange={handleFileUpload}
-                        accept=".pdf,.doc,.docx,.txt"
-                      />
-                    </label>
+
+
+                  {/* Choose File */}
+                  <div className="relative flex-grow sm:flex-grow-0 min-w-[50px] sm:min-w-0">
+  <label className="block w-full">
+    <span className="sr-only">Choose file</span>
+    <input
+      type="file"
+      className="block w-full text-sm text-gray-500
+                 file:mr-4 file:py-2 file:px-4
+                 file:rounded-lg file:border-0
+                 file:text-sm file:font-semibold
+                 file:bg-blue-500 file:text-white
+                 hover:file:bg-blue-600
+                 transition-colors duration-200
+                 cursor-pointer "
+    onChange={(e)=>handleFileUpload(e,assessment._id)}
+      accept=".pdf,.doc,.docx,.txt"
+    />
+  </label>
+</div>
+
+                  {/* Upload button */}
+                  <div
+                    onClick={()=>submitFiles(assessment._id,assessment.name)}
+                    className="flex items-center px-3 py-1.5  text-white rounded-lg transition-colors"
+                  >
+                    
+                   
+
+
+                      { creationState[assessment._id]==="file-selected" && (<div className="flex button-style">
+                        <Upload className="w-4 h-4 mr-2" />
+                        <p>Upload</p>
+                      </div>)
+                      }
+
+                      {creationState[assessment._id]==="uploading" && (
+                        <div className="flex button-style">                          <FaSpinner className="animate-spin" />
+                        </div>
+                      )}
+
+                      {creationState[assessment._id]==="file-upload-success" && (
+                        <div className="flex button-style">
+                          <SiTicktick size={20}/>
+                        </div>
+                        )
+                      }
+                      
+                      
                   </div>
-                  
-                  <button
+
+
+
+                  {/* View Assessment button */}
+
+                  {
+                    creationState==="assessment-creation-completed" && 
+                    <button
                     onClick={() => handleView(assessment._id)}
                     className="flex items-center px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
                   >
                     <Eye className="w-4 h-4 mr-2" />
                     <span className="text-sm">View</span>
                   </button>
+                  }
                   
-                  <button
+                  
+
+                  {/* Create button */}
+
+                  {
+                    creationState[assessment._id]==="file-upload-success" 
+                    &&
+                    <button
                     onClick={() => handleCreate(assessment._id)}
                     className="flex items-center px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     <span className="text-sm">Create</span>
                   </button>
+                    
+                  }
+                  
+                  
                 </div>
               </motion.div>
             ))
