@@ -6,7 +6,7 @@ import { FiUploadCloud, FiTrash2 } from "react-icons/fi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdCheckCircle, MdErrorOutline } from "react-icons/md";
 
-const VITE_LOCAL_URL = import.meta.env.VITE_LOCAL_URL;
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 function UploadCourseware() {
   const [file, setFile] = useState(null);
@@ -27,7 +27,7 @@ function UploadCourseware() {
     const fetchCourses = async () => {
       try {
         setIsFetchingCourses(true);
-        const response = await axios.get(`${VITE_LOCAL_URL}/api/courses`);
+        const response = await axios.get(`${VITE_API_URL}/api/courses`);
         console.log("response", response);
         setCourses(response?.data || []); 
       } catch (error) {
@@ -72,7 +72,7 @@ function UploadCourseware() {
     formData.append("assessmentId", selectedAssessment);
 
     try {
-      const response = await axios.post(`${VITE_LOCAL_URL}/upload`, formData, {
+      const response = await axios.post(`${VITE_API_URL}/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       console.log("File uploaded successfully:", response.data);

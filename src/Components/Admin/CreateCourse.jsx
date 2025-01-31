@@ -9,7 +9,7 @@ import { Outlet, useNavigate } from "react-router";
 import useCourseStore from "../../Zustand/useCourseStore";
 
 
-const VITE_LOCAL_URL = import.meta.env.VITE_LOCAL_URL; // Replace with your backend URL if needed
+const VITE_API_URL = import.meta.env.VITE_API_URL; // Replace with your backend URL if needed
 
 function CreateCourse() {
   const {
@@ -81,7 +81,7 @@ function CreateCourse() {
 
       // POST request to save the course
       const response = await axios.post(
-        `${VITE_LOCAL_URL}/api/create-new-course`,
+        `${VITE_API_URL}/api/create-new-course`,
         courseData
       );
 
@@ -90,11 +90,12 @@ function CreateCourse() {
       console.log("Course Created:", response?.data);
 
       // Clear the form after submission
-      setCourseName("");
+      
       setCategory("General");
       setCustomCategory("");
       setAssessments([{ name: "" }]);
       navigate(`courses/${response?.data?._id}`);
+
 ;
     } catch (error) {
       console.error("Failed to create course:", error);

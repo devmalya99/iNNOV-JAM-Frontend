@@ -1,10 +1,10 @@
 import { useQuery } from "react-query";
 import axios from "axios";
 
-const VITE_LOCAL_URL = import.meta.env.VITE_LOCAL_URL;
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const fetchAssessments = async (courseid) => {
-  const response = await axios.get(`${VITE_LOCAL_URL}/api/courses/${courseid}`);
+  const response = await axios.get(`${VITE_API_URL}/api/courses/${courseid}`);
   return response.data || [];
 };
 

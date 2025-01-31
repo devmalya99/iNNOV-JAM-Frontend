@@ -1,9 +1,9 @@
 
-const VITE_LOCAL_URL = import.meta.env.VITE_LOCAL_URL;
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const handleCreateUsers = async (users ) => {
     try {
-      const response = await fetch(`${VITE_LOCAL_URL}/api/users/create`, {
+      const response = await fetch(`${VITE_API_URL}/api/users/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
