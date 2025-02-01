@@ -24,7 +24,7 @@ const Examwise = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4  h-[calc(100vh-80px)] overflow-y-auto ">
-      <h2 className="text-xl font-semibold mb-4">15 October 2025 – Digital Marketing</h2>
+      {/* <h2 className="text-xl font-semibold mb-4">15 October 2025 – Digital Marketing</h2> */}
       <div className="overflow-x-auto ">
         <table className="w-full  ">
           <thead>
@@ -33,13 +33,14 @@ const Examwise = () => {
                 Learners Name
               </th>
               <th className="bg-blue-600 text-white p-3 text-center border border-blue-700 w-1/3">
-                5x Written Assessment<br />(Aligned)
+                Written Assessment<br />(Aligned)
               </th>
               <th className="bg-blue-600 text-white p-3 text-center border border-blue-700 w-1/3">
-                5x Case Study Written<br />Assessment (Aligned)
+               Case Study Written<br />Assessment (Aligned)
               </th>
             </tr>
           </thead>
+          
           <tbody>
             {studentData.map((student, index) => (
               <tr key={index} className="bg-blue-50">

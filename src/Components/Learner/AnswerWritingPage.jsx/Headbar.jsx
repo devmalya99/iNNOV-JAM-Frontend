@@ -14,24 +14,15 @@ const Headbar = () => {
           <p className="font-medium">Answered</p>
           <p className="font-bold">1</p>
         </div>
-        <div className="flex justify-between items-center px-4 py-2 bg-yellow-500 text-black rounded-md shadow">
-          <p className="font-medium">Marked</p>
-          <p className="font-bold">0</p>
-        </div>
-        <div className="flex justify-between items-center px-4 py-2 bg-gray-300 text-gray-800 rounded-md shadow">
-          <p className="font-medium">Not Visited</p>
-          <p className="font-bold">100</p>
+        
         </div>
         <div className="flex justify-between items-center px-4 py-2 bg-red-500 text-white rounded-md shadow">
           <p className="font-medium">Not Answered</p>
           <p className="font-bold">0</p>
         </div>
-        <div className="flex justify-between items-center px-4 py-2 bg-gray-500 text-white rounded-md shadow">
-          <p className="font-medium">Marked & Answered</p>
-          <p className="font-bold">0</p>
-        </div>
+        
       </div>
-    </div>
+    
   );
 };
 
