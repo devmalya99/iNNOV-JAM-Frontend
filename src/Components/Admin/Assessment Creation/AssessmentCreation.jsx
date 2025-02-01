@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { 
   Check, RefreshCcw, Users, X, Upload, 
   Eye, Plus, FileText, Loader2, 
   CloudDownload,
   Cloud,
-  File
+  File,
+  EyeIcon
 } from "lucide-react";
 import { TbLoader } from "react-icons/tb"; 
 import { FetchCourseAssessments } from "../../../services/FetchCourseAssessments";
@@ -29,13 +30,13 @@ const AssessmentCreation = () => {
   const [creationState, setCreationState] = useState({});
   const [currentCreatedAssessmentId, setCurrentCreatedAssessmentId] = useState(null);
   
-
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [openAssessmentViewModal, setOpenAssessmentViewModal] = useState(false);
-  
   const {courseName} = useCourseStore();
+
+  const navigate = useNavigate()
 
   // Handle file upload
   const handleFileUpload = (event,assessmentId) => {
@@ -84,8 +85,8 @@ const AssessmentCreation = () => {
   };
 
 
-  // Create exam 
-  const createExam = async (assessmentId) => {
+  // Create Assessment 
+  const createExam = async (assessmentId,name) => {
     setProcessing(true);
     setError(null);
     setSuccess(false);
@@ -97,7 +98,8 @@ const AssessmentCreation = () => {
         //add a req body 
         {
           course_id: courseid,  // Add course_id here
-          course_name: courseName // Add course_name here
+          course_name: courseName ,// Add course_name here
+          assessmentName: name //add assessment name here
 
         }
       );
@@ -125,10 +127,9 @@ const AssessmentCreation = () => {
   // Opens the assessment view modal when the user clicks the "View" button
   // This is important because it allows the user to view the assessment
 
-  const handleView = () => {
-    // Set the openAssessmentViewModal state to true
-    // This will cause the modal to appear on the screen
-    setOpenAssessmentViewModal(true);
+  const handleViewAllAssessments = (id) => {
+
+    navigate(`/home/view/all-assessments/${courseid}`)
     
   };
 
@@ -140,14 +141,7 @@ const AssessmentCreation = () => {
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-50 p-4">
 
       
-      {/* View Assessment Modal */}
-      {openAssessmentViewModal && (
-        <ViewAssessmentModal
-          openAssessmentViewModal={openAssessmentViewModal}
-          setOpenAssessmentViewModal={setOpenAssessmentViewModal}
-          
-        />
-      )}
+      
 
 
       <motion.div
@@ -262,11 +256,11 @@ const AssessmentCreation = () => {
                   {
                     creationState[assessment._id]==="assessment-creation-completed" && 
                     <button
-                    onClick={() => handleView(assessment._id)}
+                    
                     className="flex items-center px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
                   >
-                    <Eye className="w-4 h-4 mr-2" />
-                    <span className="text-sm">View Assessment</span>
+                    <SiTicktick style={{ color: 'green' }} className="w-4 h-4 mr-2" />
+                    <span className="text-sm">Assessment Created</span>
                   </button>
                   }
                   
@@ -278,7 +272,7 @@ const AssessmentCreation = () => {
                     creationState[assessment._id]==="file-upload-success" 
                     &&
                     <button
-                    onClick={()=>createExam(assessment._id)}
+                    onClick={()=>createExam(assessment._id,assessment.name)}
                     className="flex items-center px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
                   >
                     <Plus className="w-4 h-4 mr-2" />
@@ -300,9 +294,17 @@ const AssessmentCreation = () => {
 
         {/* Footer */}
         <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-6 pt-4 border-t dark:border-gray-700">
-          {/* <button className="w-full sm:w-auto px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
-            Cancel
-          </button> */}
+
+          
+          <button 
+          onClick={()=>handleViewAllAssessments(courseid)}
+          className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2 text-gray-600 
+          dark:text-gray-300 bg-green-400 
+          hover:bg-green-800 rounded-lg transition-colors">
+           <EyeIcon />
+            View Assessments
+          </button>
+
           <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
             <Check size={18} />
             <span>Save Assessments</span>
@@ -323,16 +325,7 @@ const AssessmentCreation = () => {
 
         {error && <p className="text-red-500">{error}</p>}
 
-        {/* {success && !processing && (
-          <div className="mt-4 flex  justify-center items-center text-black dark:text-white">
-            <h4 className="text-lg font-semibold">
-              Assessment Created Successfully! 🎉
-            </h4>
-            <p className="mt-2 text-gray-700">
-              Assessment is now available to candidates.
-            </p>
-          </div>
-        )} */}
+        
 
 
       </motion.div>

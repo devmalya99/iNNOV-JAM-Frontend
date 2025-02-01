@@ -78,7 +78,10 @@ function App() {
         <Route path='upload-courseware' element={<UploadCourseware/>}/>
         <Route path='upload-assessment-plan' element={<UploadAssesmentPlan/>}/>
         <Route path='all-assessments' element={<AssessmentDashboard/>}/>
-        <Route path='view/all-assessments/:id' element={<ViewAssessmentModal/>}/>
+
+        {/* View all assessments created under a course */}
+        <Route path='view/all-assessments/:courseid' element={<ViewAssessmentModal/>}/>
+       
         <Route path='add-trainers' element={<CreateTrainers/>}/>
         <Route path='add-learners' element={<CreateLearners/>}/>
         <Route path='add-assessors' element={<CreateAssessors/>}/>
