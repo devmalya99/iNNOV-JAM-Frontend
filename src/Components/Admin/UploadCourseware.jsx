@@ -5,7 +5,8 @@ import { BsFilePdf } from "react-icons/bs";
 import { FiUploadCloud, FiTrash2 } from "react-icons/fi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdCheckCircle, MdErrorOutline } from "react-icons/md";
-
+import {handleSuccess} from "../../utils/toast";
+import CoursewareList from "./DisplayCoursewares";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 function UploadCourseware() {
@@ -22,6 +23,7 @@ function UploadCourseware() {
   const [isFetchingAssessments, setIsFetchingAssessments] = useState(false);
   const [selectedCourseIndex , setSelectedCourseIndex] = useState(null);
   const fileInputRef = useRef(null);
+  
 
   useState(() => {
     const fetchCourses = async () => {
@@ -62,17 +64,33 @@ function UploadCourseware() {
       setError("Please fill out all fields and upload a valid file.");
       return;
     }
-
+  
     setLoading(true);
-
+  
+    // Find the selected course object
+    const selectedCourseObj = courses.find((course) => course._id === selectedCourse);
+    const selectedCourseName = selectedCourseObj ? selectedCourseObj.courseName : "";
+  
+    // Find the selected assessment object inside the selected course
+    const selectedAssessmentObj = selectedCourseObj?.assessments?.find(
+      (assessment) => assessment._id === selectedAssessment
+    );
+    const selectedAssessmentName = selectedAssessmentObj ? selectedAssessmentObj.name : "";
+  
+    // Create FormData
     const formData = new FormData();
     formData.append("file", file);
     formData.append("fileName", fileName);
     formData.append("courseId", selectedCourse);
     formData.append("assessmentId", selectedAssessment);
+    formData.append("courseName", selectedCourseName); // Adding course name
+    formData.append("assessmentName", selectedAssessmentName); // Adding assessment name
+  
+    console.log(Object.fromEntries(formData.entries()));
 
+  
     try {
-      const response = await axios.post(`${VITE_API_URL}/upload`, formData, {
+      const response = await axios.post(`${VITE_API_URL}/api/courseware/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       console.log("File uploaded successfully:", response.data);
@@ -81,6 +99,7 @@ function UploadCourseware() {
       setSelectedCourse("");
       setSelectedAssessment("");
       setError(null);
+      handleSuccess({success:"File uploaded successfully!"});
     } catch (error) {
       console.error("File upload failed:", error);
       setError("File upload failed.");
@@ -90,7 +109,8 @@ function UploadCourseware() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
+    <div className="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 dark:bg-gray-900 h-[calc(100vh-80px)] overflow-y-auto bg-white">
+      
       <div className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 sm:p-8">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-gray-100">
           Upload Approved Courseware
@@ -179,12 +199,35 @@ function UploadCourseware() {
           <TbCloudUpload className="text-4xl text-gray-500 dark:text-gray-300 mb-2" />
           <p className="text-gray-700 dark:text-gray-300">
             Click here to upload a courseware file
+            Please upload PDF file only
           </p>
         </div>
 
         {/* Error Message */}
         {error && <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>}
+         
 
+         {/* preview file */}
+           {/* File Preview Section */}
+        {file && (
+          <div className="mb-4 p-4 border rounded-lg dark:border-gray-700 dark:bg-gray-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <BsFilePdf className="text-red-600 text-xl" />
+                <p className="text-gray-700 dark:text-gray-300">{file.name}</p>
+              </div>
+              <button
+                onClick={() => setFile(null)}
+                className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-600"
+              >
+                <FiTrash2 className="text-lg" />
+              </button>
+            </div>
+          </div>
+        )}
+
+
+        
         {/* Submit Button */}
         <button
           onClick={handleSubmit}
@@ -197,6 +240,10 @@ function UploadCourseware() {
         >
           {loading ? "Uploading..." : "Submit"}
         </button>
+      </div>
+
+      <div>
+        <CoursewareList/>
       </div>
     </div>
   );

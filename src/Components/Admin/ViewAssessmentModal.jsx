@@ -45,7 +45,11 @@ export default function ViewAssessmentModal() {
                 <button className="button-style mt-4"
                 onClick={()=>navigate(`/home/create-course/courses/${courseid}`)}
                 >Reupload files</button>
-              <button className="button-style mt-4">Save and back to dashboard</button>
+
+              <button 
+              onClick={()=>navigate(`/home`)}
+                
+              className="button-style mt-4">Save and back to dashboard</button>
               
               </div>
           </div>
