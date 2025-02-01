@@ -9,41 +9,7 @@ const CourseResultsTable = () => {
           results: '10/20',
           path: './exam' // New path field for redirection
         },
-        { 
-          date: '15/10/2024', 
-          courseName: 'Digital Marketing 2', 
-          submissions: '20/20', 
-          results: '9/20', 
-          path: './exam' 
-        },
-        { 
-          date: '30/10/2024', 
-          courseName: 'Digital Marketing 3', 
-          submissions: '20/20', 
-          results: '15/20', 
-          path: './exam' 
-        },
-        { 
-          date: '15/10/2024', 
-          courseName: 'Digital Marketing 4', 
-          submissions: '20/20', 
-          results: '19/20', 
-          path: './exam' 
-        },
-        { 
-          date: '21/11/2024', 
-          courseName: 'Digital Marketing 5', 
-          submissions: '18/20', 
-          results: '17/20', 
-          path: './exam' 
-        },
-        { 
-          date: '30/11/2024', 
-          courseName: 'Digital Marketing 6', 
-          submissions: '00/20', 
-          results: '--/20', 
-          path: './exam' 
-        }
+        
       ];
 
   // Helper function to determine if a result is highlighted (in red)

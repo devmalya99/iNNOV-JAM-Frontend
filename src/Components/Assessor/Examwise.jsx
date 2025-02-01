@@ -5,15 +5,7 @@ import { useFetchAllAssessments } from '../../services/fetchAllAssessments';
 const Examwise = () => {
   const studentData = [
     { name: 'John Tan', written_assessment: '5/5', case_study: '5/5' },
-    { name: 'Steven Lee', written_assessment: '5/5', case_study: '5/5' },
-    { name: 'Rendy Wong', written_assessment: '5/5', case_study: '5/5' },
-    { name: 'Adrian Phang', written_assessment: '4/5', case_study: '5/5' },
-    { name: 'Mabel Wong', written_assessment: '5/5', case_study: '5/5' },
-    { name: 'Eugene Koh', written_assessment: '5/5', case_study: '5/5' },
-    { name: 'Avil Noor', written_assessment: '5/5', case_study: '5/5' },
-    { name: 'PJ Singh', written_assessment: '5/5', case_study: '5/5' },
-    { name: 'Raymond Teo', written_assessment: '5/5', case_study: '5/5' },
-    { name: 'Suhaimi Moh', written_assessment: '5/5', case_study: '5/5' }
+    
   ];
 
   const {data} = useFetchAllAssessments();

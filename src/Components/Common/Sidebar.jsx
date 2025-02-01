@@ -108,12 +108,7 @@ const Sidebar = () => {
       link: "/home/upload-courseware",
       roles: ["admin", "super_admin"],
     },
-    {
-      name: "Upload Assessment",
-      icon: <BsCalendar2Check className="text-2xl text-green-600" />,
-      link: "/home/upload-assessment-plan",
-      roles: ["admin", "super_admin"],
-    },
+    
     {
       name: "All Assessments",
       icon: <FaAccusoft className="text-2xl text-green-600" />,
