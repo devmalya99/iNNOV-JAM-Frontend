@@ -44,7 +44,7 @@ const CourseResultsTable = () => {
                 <td className="p-3 border border-gray-300">{formatDate(course.examScheduleDate)}</td>
                 <td className="p-3 border border-gray-300">{course.assigned_learners.length}</td>
                 <td className="p-3 border border-gray-300">
-                  {course.submission_completed.length}/{course.assigned_learners.length}
+                  1/{course.assigned_learners.length}
                 </td>
               </tr>
             ))}
