@@ -50,7 +50,9 @@ const InstructionsPage = () => {
  
 
   return (
-    <div className="flex flex-col items-center justify-center   px-6 py-8 h-[calc(100vh - 50px)] fixed inset-0 bg-black bg-opacity-90">
+    <div className="flex flex-col items-center justify-center 
+      px-6 py-8 h-[calc(100vh - 50px)] 
+      fixed inset-0 bg-black bg-opacity-90">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">
           Instructions to Candidates

@@ -35,7 +35,7 @@ function AnswerWritingPage() {
   const { data, refetch, error, isLoading, isError } =
     useFetchAssessmentData(id);
 
-  //console.log("query fetched data", data);
+  console.log("fetched assessment data", data);
 
   const saveAnswer = async (assessmentId, questionId, studentAnswer) => {
     try {
@@ -154,7 +154,8 @@ function AnswerWritingPage() {
                 ? "Loading..."
                 : data?.data?.[activeQuestion].question_number}
               {". "}
-              {isLoading ? "Loading..." : data?.data?.[activeQuestion].question}
+              {isLoading ? "Loading..." : 
+              data?.data?.[activeQuestion].question}
             </p>
           </div>
 
@@ -194,17 +195,9 @@ function AnswerWritingPage() {
                 Next
               </div>
             </div>
-
-            
-
-            <div
-              className="button-style flex justify-center"
-              onClick={handleSubmit}
-            >
-              Assessment Submit Button
-            </div>
           </div>
 
+          
         </div>
       </div>
 
@@ -220,6 +213,7 @@ function AnswerWritingPage() {
               className="border-2 flex justify-center items-center px-2 py-1 bg-white/65 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 ease-in-out dark:shadow-gray-400  cursor-pointer"
               onClick={() => {
                 setActiveQuestion(Number(index));
+                saveAndUpdateData();
                 //console.log(activeQuestion)
               }}
             >

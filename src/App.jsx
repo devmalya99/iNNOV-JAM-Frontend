@@ -31,11 +31,21 @@ import AnswerWritingPage from './Components/Learner/AnswerWritingPage.jsx/Answer
 import Help from './Components/Help'
 import InstructionsPage from './Components/Learner/InstructionsPage'
 import ConfirmModal from './Components/Learner/ConfirmModal'
-import { ToastContainer, toast } from 'react-toastify';
-import AssessmentDashboard from './Components/Admin/AssessmentDashboard'
-function App() {
+import { ToastContainer } from 'react-toastify';
 
- 
+import AssessmentDashboard from './Components/Admin/AssessmentDashboard'
+import CreateCourse from './Components/Admin/CreateCourse'
+import CreateTrainers from './Components/Admin/CreateTrainers/CreateTrainers'
+import CreateLearners from './Components/Admin/CreateLearners/CreateLearners'
+import CreateAssessors from './Components/Admin/CreateAssessors/CreateAssessors'
+import AssignTrainersModal from './Components/Admin/AssignUser/AssignTrainersModal'
+import AssignAssessorsModal from './Components/Admin/AssignUser/AssignAssessorsModal'
+import AssignLearnersModal from './Components/Admin/AssignUser/AssignLearnersModal'
+import UserManagement from './Components/Admin/User Management'
+import AssessmentCreation from './Components/Admin/Assessment Creation/AssessmentCreation'
+import ViewAssessmentModal from './Components/Admin/ViewAssessmentModal'
+
+function App() {
 
   return (
     
@@ -49,19 +59,34 @@ function App() {
            <Route path='signup' element={<Signup/>}/>
            <Route path='book-consultation' element={<BookConsultationPage/>}/>
            <Route path='help' element={<Help/>}/>
-
            <Route path='forgot-password' element={<ForgotPassword/>}/>
         </Route>
 
         {/* after login */}
         <Route path='/home' element={<ProtectedRoute> <HomeLayout/></ProtectedRoute>  }>
         <Route index element={<Welcome/>}/>
+
+
+        <Route path='create-course' element={<CreateCourse/>}>
+        <Route path='assign-trainers' element={<AssignTrainersModal/>}/>
+        <Route path='assign-assessors' element={<AssignAssessorsModal/>}/>
+        <Route path='assign-learners' element={<AssignLearnersModal/>}/>
+        <Route path="courses/:courseid" element={<AssessmentCreation/>}/>
+        </Route>
+
+       
         <Route path='upload-courseware' element={<UploadCourseware/>}/>
-        <Route path='upload-assesment-plan' element={<UploadAssesmentPlan/>}/>
+        <Route path='upload-assessment-plan' element={<UploadAssesmentPlan/>}/>
         <Route path='all-assessments' element={<AssessmentDashboard/>}/>
-        <Route path='assign-trainers' element={<AssignTrainers/>}/>
-        <Route path='assign-learner' element={<AssignLearner/>}/>
-        <Route path='assign-tsc' element={<AssignTSC/>}/>
+
+        {/* View all assessments created under a course */}
+        <Route path='view/all-assessments/:courseid' element={<ViewAssessmentModal/>}/>
+       
+        <Route path='add-trainers' element={<CreateTrainers/>}/>
+        <Route path='add-learners' element={<CreateLearners/>}/>
+        <Route path='add-assessors' element={<CreateAssessors/>}/>
+        <Route path='user-management' element={<UserManagement/>}/>
+        
         </Route>
 
         {/* Routes for settings */}

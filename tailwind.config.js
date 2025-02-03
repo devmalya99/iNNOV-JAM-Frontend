@@ -14,6 +14,10 @@ module.exports = withMT({
         // Add custom colors here if needed
       },
 
+      fontFamily: {
+        playfair: ['"Playfair Display"', 'serif'],
+      },
+
       animation: {
         'blob': 'blob 7s infinite',
       },
