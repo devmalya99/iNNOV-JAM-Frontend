@@ -25,6 +25,8 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 const AssessmentCreation = () => {
   const { courseid } = useParams();
   const { data, isLoading, refetch } = FetchCourseAssessments(courseid);
+  console.log("after fetching courseAssessments data",data);
+
   const [file, setFile] = useState({});
   const [selectedFileId, setSelectedFileId] = useState({});
   const [creationState, setCreationState] = useState({});
@@ -44,7 +46,7 @@ const AssessmentCreation = () => {
     setFile((prev) => ({...prev, [assessmentId]: uploadedFile}));
     setCreationState((prev) => ({...prev, [assessmentId]: "file-selected"}));
   };
-  console.log("courseName",courseName)
+  console.log("courseName",data?.courseName)
 
 
   // Handle submit files
@@ -98,7 +100,8 @@ const AssessmentCreation = () => {
         //add a req body 
         {
           course_id: courseid,  // Add course_id here
-          course_name: courseName ,// Add course_name here
+          course_name: data?.courseName ,
+          // Add course_name here
           assessmentName: name //add assessment name here
 
         }
@@ -133,6 +136,11 @@ const AssessmentCreation = () => {
     
   };
 
+  const handleSaveAssessments = ()=>{
+    navigate(`/home`)
+    handleSuccess({success:"Assessments saved successfully"})
+  }
+
  
 
   if (!courseid) return null;
@@ -165,9 +173,9 @@ const AssessmentCreation = () => {
             >
               <RefreshCcw size={20} className="text-gray-500 dark:text-gray-400" />
             </button>
-            <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+            {/* <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
               <X size={20} className="text-gray-500 dark:text-gray-400" />
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -305,7 +313,9 @@ const AssessmentCreation = () => {
             View Assessments
           </button>
 
-          <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+          <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+          onClick={handleSaveAssessments}
+          >
             <Check size={18} />
             <span>Save Assessments</span>
           </button>

@@ -42,12 +42,14 @@ export default function ViewAssessmentModal() {
               
             ))}
               <div className="flex justify-between">
-                <button className="button-style mt-4"
+
+                {/* Reupload file button */}
+                {/* <button className="button-style mt-4"
                 onClick={()=>navigate(`/home/create-course/courses/${courseid}`)}
-                >Reupload files</button>
+                >Reupload files</button> */}
 
               <button 
-              onClick={()=>navigate(`/home`)}
+              onClick={()=>navigate(`/home/all-assessments`)}
                 
               className="button-style mt-4">Save and back to dashboard</button>
               

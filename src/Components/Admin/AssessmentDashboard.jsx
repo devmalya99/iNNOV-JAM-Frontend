@@ -1,182 +1,128 @@
-import React from 'react';
-import { FileText, Download, Eye, ChevronRight, Book, HelpCircle, Loader } from 'lucide-react';
-import { PDFDownloadLink, pdf } from '@react-pdf/renderer';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import { useFetchAllAssessments } from '../../services/fetchAllAssessments';
-import AssessmentSkeleton from '../AssessmentsSkeleton';
+import React from "react";
+import { useFetchAllCourses } from "../../services/FetchAllCourses";
+import { motion } from "framer-motion";
+import { FaBook, FaChalkboardTeacher, FaUsers, FaCalendarAlt, FaFile, FaFileContract } from "react-icons/fa";
+import { ImSpinner8 } from "react-icons/im";
+import { FaTextSlash } from "react-icons/fa6";
+import { useNavigate } from "react-router";
 
-// PDF Document Component
-const AssessmentPDF = ({ data }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Assessment Details Report</Text>
-        <Text style={styles.subtitle}>Generated on {new Date().toLocaleDateString()}</Text>
-      </View>
-      {data?.map((assessment, index) => (
-        <View key={index} style={styles.assessmentSection}>
-          <Text style={styles.sectionTitle}>
-            Assessment Type: {capitalizeWords(assessment.assessment_type)}
-          </Text>
-          <Text style={styles.context}>Context: {assessment.case_study_context}</Text>
-          <Text style={styles.questionsHeader}>Questions:</Text>
-          {assessment.data.map((question, idx) => (
-            <View key={idx} style={styles.question}>
-              <Text style={styles.questionText}>
-                Q{question.question_number}: {question.question}
-              </Text>
-              <Text style={styles.instruction}>
-                Instruction: {question.question_instruction}
-              </Text>
-              <Text style={styles.feedback}>
-                Feedback: {question.feedback || 'No feedback provided'}
-              </Text>
-              <Text style={styles.suggestion}>
-                Suggested Answer: {question.suggested_answer || 'No suggested answer provided'}
-              </Text>
-            </View>
-          ))}
-        </View>
-      ))}
-    </Page>
-  </Document>
-);
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-const styles = StyleSheet.create({
-  page: { padding: 30, fontFamily: 'Helvetica' },
-  header: { marginBottom: 30 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
-  subtitle: { fontSize: 12, color: '#666' },
-  assessmentSection: { marginBottom: 25, borderBottom: 1, borderColor: '#eee', paddingBottom: 20 },
-  sectionTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 10 },
-  context: { fontSize: 12, marginBottom: 15 },
-  questionsHeader: { fontSize: 14, fontWeight: 'bold', marginBottom: 10 },
-  question: { marginBottom: 15, marginLeft: 15 },
-  questionText: { fontSize: 12, marginBottom: 5 },
-  instruction: { fontSize: 10, color: '#666', marginBottom: 3 },
-  feedback: { fontSize: 10, color: '#444' },
-  suggestion: { fontSize: 10, color: '#2c3e50' },
-});
+const CoursesList = () => {
+  const { data: courses, isLoading, isError, error } = useFetchAllCourses();
+  const navigate = useNavigate();
+  
 
-// Helper function to capitalize headings
-const capitalizeWords = (str) =>
-  str
-    .toLowerCase()
-    .replace(/_/g, ' ')
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+  if (isLoading) {
+    return (
+      <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[...Array(6)].map((_, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="animate-pulse border rounded-xl p-6 shadow-lg bg-gray-100 dark:bg-gray-700 h-48"
+          ></motion.div>
+        ))}
+      </div>
+    );
+  }
 
-const AssessmentDashboard = () => {
-  const { data, isLoading, error } = useFetchAllAssessments();
-
-  const generatePDF = async (assessmentData) => {
-    try {
-      const blob = await pdf(<AssessmentPDF data={[assessmentData]} />).toBlob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `Assessment_${assessmentData.assessment_type}_${new Date()
-        .toISOString()
-        .split('T')[0]}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Error generating PDF. Please try again.');
-    }
-  };
-
-  // Loading, error, and no data states remain unchanged...
+  if (isError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center p-8 bg-red-50 dark:bg-red-900/20 rounded-lg">
+          <p className="text-red-600 dark:text-red-400 text-lg font-medium">
+            Error: {error?.message}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
-      
-
-      { isLoading ?
-        (<AssessmentSkeleton/>)
-        :
-        (
-          <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-              <FileText className="w-8 h-8 text-blue-600" />
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-                Assessment Dashboard
-              </h1>
-            </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              Total Assessments: {data?.length}
-            </div>
-          </div>
-  
-          {/* Assessment Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data?.map((assessment, index) => (
-              <div
-                key={index}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700 overflow-hidden w-[300px] h-[400px] mx-auto"
-              >
-                {/* Card Header */}
-                <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Book className="w-5 h-5 text-blue-600" />
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 truncate">
-                      {capitalizeWords(assessment?.assessment_type)}
-                    </h2>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 h-8">
-                    {assessment?.case_study_context}
-                  </p>
+    <div className="p-8 h-[calc(100vh-72px)] overflow-y-auto
+    bg-gradient-to-b from-white to-gray-50
+    dark:from-gray-900 dark:to-gray-800">
+      <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        Explore Our Courses
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {courses?.map((course) => (
+          <motion.div
+            key={course?._id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-xl hover:scale-102 transform transition-all duration-300"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                  <FaBook className="text-xl text-blue-600 dark:text-blue-400" />
                 </div>
-  
-                {/* Questions Section */}
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <HelpCircle className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                    <h3 className="font-semibold text-gray-700 dark:text-gray-300">Questions</h3>
-                  </div>
-                  <div className="space-y-3">
-                    {assessment.data.slice(0, 3).map((q, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
-                        <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-1" />
-                        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1">
-                          Q{q.question_number}: {q.question}
-                        </p>
-                      </div>
-                    ))}
-                    {assessment.data.length > 3 && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400 italic pl-6">
-                        +{assessment?.data.length - 3} more questions
-                      </p>
-                    )}
-                  </div>
-                </div>
-  
-                {/* Card Footer */}
-                <div className="p-6 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
-                  <button
-                    onClick={() => generatePDF(assessment)}
-                    className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
-                  >
-                    <Download className="w-4 h-4" />
-                    <span>Download PDF</span>
-                  </button>
-                </div>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                  {course?.courseName}
+                </h2>
               </div>
-            ))}
-          </div>
-        </div>
+              <div className="px-3 py-1 text-sm bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
+                Active
+              </div>
+            </div>
+            
+            <p className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-2 min-h-12">
+              {course?.description}
+            </p>
 
-        )
-      }
-      
-      
-      
-     
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <FaChalkboardTeacher className="text-lg text-gray-500 dark:text-gray-400" />
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {course?.assigned_trainers?.join(", ") || "No trainers assigned"}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <FaUsers className="text-lg text-gray-500 dark:text-gray-400" />
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {course?.assigned_learners?.length || 0} Students Enrolled
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <FaCalendarAlt className="text-lg text-gray-500 dark:text-gray-400" />
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {new Date(course?.examScheduleDate).toLocaleDateString() || "TBD"}
+                </p>
+              </div>
+
+              {/* View Assessments Button */}
+              <div 
+              onClick={() => {
+                navigate(`/home/view/all-assessments/${course?._id}`);
+              }}
+              className="flex items-center justify-between gap-3
+               p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer">
+                <div className="flex items-center gap-3">
+                <FaFileContract className="text-lg text-gray-500 dark:text-gray-400" />
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  View Assessments
+                </p>
+                </div>
+
+                <p className="text-sm font-medium text-green-700 dark:text-green-300">
+                  {course?.assessments?.length || 0}
+                </p>
+              </div>
+
+
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default AssessmentDashboard;
+export default CoursesList;

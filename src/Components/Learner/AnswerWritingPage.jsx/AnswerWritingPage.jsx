@@ -35,7 +35,7 @@ function AnswerWritingPage() {
   const { data, refetch, error, isLoading, isError } =
     useFetchAssessmentData(id);
 
-  //console.log("query fetched data", data);
+  console.log("fetched assessment data", data);
 
   const saveAnswer = async (assessmentId, questionId, studentAnswer) => {
     try {

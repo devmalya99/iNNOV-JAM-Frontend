@@ -110,7 +110,7 @@ const Sidebar = () => {
     },
     
     {
-      name: "All Assessments",
+      name: "All Courses",
       icon: <FaAccusoft className="text-2xl text-green-600" />,
       link: "/home/all-assessments",
       roles: ["admin", "super_admin"],
