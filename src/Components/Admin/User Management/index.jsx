@@ -49,7 +49,7 @@ const RoleCard = ({ data, title, icon: Icon }) => {
             <tr>
               <th className="px-4 py-3 font-medium">User</th>
               <th className="px-4 py-3 font-medium hidden md:table-cell">Created</th>
-              <th className="px-4 py-3 font-medium text-right">Actions</th>
+              {/* <th className="px-4 py-3 font-medium text-right">Actions</th> */}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -85,7 +85,9 @@ const RoleCard = ({ data, title, icon: Icon }) => {
                     {new Date(user.createdAt).toLocaleDateString()}
                   </div>
                 </td>
-                <td className="px-4 py-3">
+
+                {/* Actions Table */}
+                {/* <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-2">
                     <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                       <Edit2 className="w-4 h-4 text-blue-500 dark:text-blue-400" />
@@ -94,7 +96,7 @@ const RoleCard = ({ data, title, icon: Icon }) => {
                       <Trash2 className="w-4 h-4 text-red-500 dark:text-red-400" />
                     </button>
                   </div>
-                </td>
+                </td> */}
               </motion.tr>
             ))}
           </tbody>

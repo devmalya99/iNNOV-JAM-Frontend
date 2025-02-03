@@ -128,7 +128,7 @@ const Sidebar = () => {
       name: "Evaluation Result",
       icon: <FaRegPenToSquare className="text-2xl text-green-600" />,
       link: "/home/assessment",
-      roles: ["admin", "super_admin", "assessor"],
+      roles: [ "assessor"],
     },
     {
       name: "Answer Writing",
@@ -225,6 +225,8 @@ const Sidebar = () => {
   </div>
 </div>
       </div>
+
+      
     </aside>
   </>
   );

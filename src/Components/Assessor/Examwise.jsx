@@ -4,7 +4,7 @@ import { useFetchAllAssessments } from '../../services/fetchAllAssessments';
 
 const Examwise = () => {
   const studentData = [
-    { name: 'John Tan', written_assessment: '5/5', case_study: '5/5' },
+    { name: 'Bartika', written_assessment: '5/5', case_study: '5/5' },
     
   ];
 
@@ -54,7 +54,7 @@ const Examwise = () => {
                 <td className=" p-3 border border-gray-300 text-center ">
                   
                   <div className='flex text-md'>
-                  <div className={`${student.written_assessment === '4/5' ? 
+                  {/* <div className={`${student.written_assessment === '4/5' ? 
                     'text-red-800 underline bg-red-100' : 'bg-green-200' }  m-1 rounded-md px-2 py-1` }>
                     {student.written_assessment}
                   </div>
@@ -64,7 +64,7 @@ const Examwise = () => {
                     onClick={() => handleResubmit('Written Assessment', student.name)}
                   >
                     Ask to Resubmit
-                  </button>
+                  </button> */}
                   <button className='button-style'>
                   <Link to={`/home/assessment/exam/date/learner/${context.wa}`} className='text-white'>
                     View Result
@@ -76,17 +76,17 @@ const Examwise = () => {
                 <td className="flex  items-center justify-center gap-2  p-3 border border-gray-300 text-center">
                   
                 <div className='flex text-md'>
-                  <div className={`${student.written_assessment === '4/5' ? 
+                  {/* <div className={`${student.written_assessment === '4/5' ? 
                     'text-red-800 underline bg-red-100' : 'bg-green-200' }  m-1 rounded-md px-2 py-1` }>
                     {student.case_study}
-                  </div>
+                  </div> */}
                   
-                  <button 
+                  {/* <button 
                     className=" mx-2 px-2 py-1 bg-green-500 text-white rounded hover:bg-blue-600" 
                     onClick={() => handleResubmit('Written Assessment', student.name)}
                   >
                     Ask to Resubmit
-                  </button>
+                  </button> */}
                   <button className='button-style'>
                   <Link to={`/home/assessment/exam/date/learner/${context.cs}`} className='text-white'>
                     View Result

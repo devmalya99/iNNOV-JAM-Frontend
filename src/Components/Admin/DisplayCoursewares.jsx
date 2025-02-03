@@ -93,7 +93,9 @@ const CoursewareList = () => {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-2 mt-4">
+              {/* Actions  */}
+
+              {/* <div className="flex items-center space-x-2 mt-4">
             
                 <button
                   onClick={() => handleEdit(courseware._id)}
@@ -114,7 +116,9 @@ const CoursewareList = () => {
                   <Trash2 className="h-4 w-4" />
                   <span>Delete</span>
                 </button>
-              </div>
+              </div> */}
+
+
             </div>
           ))}
         </div>
