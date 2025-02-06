@@ -28,6 +28,8 @@ import ThemeSlider from "./ThemeSlider";
 import UseSidebarStore from "../../Zustand/SidebarStore";
 import { CgOrganisation } from "react-icons/cg";
 import UseScreensizeStore from "../../Zustand/ScreensizeStore";
+import { IoStarSharp } from "react-icons/io5";
+import { RiStarSFill } from "react-icons/ri";
 // Sidebar component
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
@@ -73,23 +75,12 @@ const Sidebar = () => {
       roles: ["admin", "super_admin", "assessor", "trainer", "learner"],
     },
     {
-      name: "Create Trainers",
+      name: "Create Users",
       icon: <FaChalkboardTeacher className="text-2xl text-green-600" />,
-      link: "/home/add-trainers",
+      link: "/home/create-users",
       roles: ["admin", "super_admin"],
     },
-    {
-      name: "Create Learners",
-      icon: <FaGraduationCap className="text-2xl text-green-600" />,
-      link: "/home/add-learners",
-      roles: ["admin", "super_admin"],
-    },
-    {
-      name: "Create Assessors",
-      icon: <FaCheck className="text-2xl text-green-600" />,
-      link: "/home/add-assessors",
-      roles: ["admin", "super_admin"],
-    },
+    
     {
       name: "User Management",
       icon: <Users2Icon className="text-2xl text-green-600" />,
@@ -182,6 +173,28 @@ const Sidebar = () => {
           </div>
         )
       }
+
+      {/* Dark mode toggle button */}
+      {
+        isSmallScreen && (
+          <div className="p-4 flex items-center justify-between 
+          hover:bg-gray-200 dark:hover:bg-gray-700 text-white">
+            <div className="flex gap-2">
+              <RiStarSFill className="text-2xl bg-green-500   "/>
+              <p className="text-lg">Theme</p>
+            </div>
+           
+            <button
+              className="text-2xl"
+              onClick={() => setViewSidebar(false)}
+            >
+            <ThemeSlider/>
+            </button>
+          </div>
+        )
+      }
+
+
       
 
       {/* Sidebar Content */}

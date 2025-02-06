@@ -35,16 +35,14 @@ import { ToastContainer } from 'react-toastify';
 
 import AssessmentDashboard from './Components/Admin/AssessmentDashboard'
 import CreateCourse from './Components/Admin/CreateCourse'
-import CreateTrainers from './Components/Admin/CreateTrainers/CreateTrainers'
-import CreateLearners from './Components/Admin/CreateLearners/CreateLearners'
-import CreateAssessors from './Components/Admin/CreateAssessors/CreateAssessors'
+
 import AssignTrainersModal from './Components/Admin/AssignUser/AssignTrainersModal'
 import AssignAssessorsModal from './Components/Admin/AssignUser/AssignAssessorsModal'
 import AssignLearnersModal from './Components/Admin/AssignUser/AssignLearnersModal'
 import UserManagement from './Components/Admin/User Management'
 import AssessmentCreation from './Components/Admin/Assessment Creation/AssessmentCreation'
 import ViewAssessmentModal from './Components/Admin/ViewAssessmentModal'
-
+import CreateUsers from './Components/Admin/Create User/CreateUsers'
 function App() {
 
   return (
@@ -82,9 +80,8 @@ function App() {
         {/* View all assessments created under a course */}
         <Route path='view/all-assessments/:courseid' element={<ViewAssessmentModal/>}/>
        
-        <Route path='add-trainers' element={<CreateTrainers/>}/>
-        <Route path='add-learners' element={<CreateLearners/>}/>
-        <Route path='add-assessors' element={<CreateAssessors/>}/>
+        <Route path='create-users' element={<CreateUsers/>}/>
+        
         <Route path='user-management' element={<UserManagement/>}/>
         
         </Route>
