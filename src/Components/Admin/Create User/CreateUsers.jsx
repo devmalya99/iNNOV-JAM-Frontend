@@ -5,29 +5,28 @@ import handleCreateUsers from "../../../services/handleCreateUsers";
 const CreateUsers = () => {
   // State to store Users
   const [Users, setUsers] = useState([]);
-  
 
-  const [role, setRole] = useState("");
+  const [userRole, setUserRole] = useState("");
 
-  const roles = ["Admin", "Trainer", "Assessor", "Learner"];
+  const roles = ['admin', 'learner', 'assessor', 'trainer']
 
   // -------------------------------------------------
   // Course code selection
 
-  const courseCodes = ["m24","b24","c24"]
+  const courseCodes = ["m24", "b24", "c24"];
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [isCodesOpen, setIsCodesOpen] = useState(false);
   const toggleDropdown = () => setIsCodesOpen(!isCodesOpen);
 
-  const handleRemoveCodes = (code) =>{
-    setSelectedCourses((prev)=>prev.filter((ele)=>ele!==code))
-  }
+  const handleRemoveCodes = (code) => {
+    setSelectedCourses((prev) => prev.filter((ele) => ele !== code));
+  };
 
-  const handleCodeSelect = (code)=>{
-    setSelectedCourses((prev)=> prev.includes(code)? 
-    prev.filter((ele)=>ele!==code) : [...prev,code])
-  }
-  
+  const handleCodeSelect = (code) => {
+    setSelectedCourses((prev) =>
+      prev.includes(code) ? prev.filter((ele) => ele !== code) : [...prev, code]
+    );
+  };
 
   // -------------------------------------------------
 
@@ -40,10 +39,8 @@ const CreateUsers = () => {
   // Temporary state to store CSV-parsed Users before saving
   const [csvUsers, setCsvUsers] = useState([]);
 
-  
-
   // Handle "Add Assessor" button click
-  const handleAddAssessorClick = () => {
+  const handleCreateUserClick = () => {
     setAddMethod("choose");
     setEditIndex(null);
   };
@@ -58,30 +55,43 @@ const CreateUsers = () => {
     setAddMethod(method);
   };
 
-
   // Handle role changes
   const handleRoleChange = (event) => {
-      const selectedRole = event.target.value;
-      setRole(selectedRole);
-      
-    };
+    const selectedRole = event.target.value;
+    setUserRole(selectedRole);
+  };
 
   // Handle form submission for adding or editing an assessor
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const name = e.target.name.value.trim();
     const email = e.target.email.value.trim();
-    const course = e.target.course.value.trim();
-    if (name && email && course) {
+    const course_code = selectedCourses;
+    const password = e.target.password.value.trim();
+    const confirmPassword = e.target.confirmPassword.value.trim();
+    const role = userRole;
+
+    if (
+      name &&
+      email &&
+      course_code &&
+      password &&
+      confirmPassword &&
+      role &&
+      password === confirmPassword
+    ) {
       if (editIndex !== null) {
         // Editing existing assessor
-        const updatedUsers = Users.map((assessor, idx) =>
-          idx === editIndex ? { name, email, course } : assessor
+        const updatedUsers = Users.map((user, idx) =>
+          idx === editIndex
+            ? { name, email, course_code, password, confirmPassword, role }
+            : user
         );
         setUsers(updatedUsers);
       } else {
         // Adding new assessor
-        setUsers([...Users, { name, email, course }]);
+        setUsers([...Users, { name, email, course_code, password, role }]);
+        console.log("Users:", Users);
       }
       // Reset states
       setShowForm(false);
@@ -151,20 +161,21 @@ const CreateUsers = () => {
   // Handle Save All button click (for entire list)
   const handleSaveAll = () => {
     // Add role field to all learners
-const newUsers = Users.map((assessor) => ({ ...assessor, role: "assessor" }));
-setUsers(newUsers);
-console.log("Saving newLearners:", newUsers);
-handleCreateUsers(newUsers)
-handleSuccess({ success: "All Users have been saved successfully!" });
-alert("All Users have been saved successfully!");
+    const newUsers = Users.map((user) => ({ ...user }));
+    setUsers(newUsers);
+    console.log("Saving newLearners:", newUsers);
+    handleCreateUsers(newUsers);
+    handleSuccess({ success: "All Users have been saved successfully!" });
+    alert("All Users have been saved successfully!");
   };
+
+  console.log(Users);
 
   return (
     // Toggle the dark class if darkMode is true
-    <div >
+    <div>
       {/* Outer container with Tailwind's dark mode support */}
       <div className="p-6 h-screen-[calc(100vh-40px)] bg-gradient-to-r from-blue-100 to-blue-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
-        
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
           {/* Title */}
@@ -175,15 +186,15 @@ alert("All Users have been saved successfully!");
           <div className="flex space-x-3">
             {/* Add Assessor Button */}
             <button
-              onClick={handleAddAssessorClick}
+              onClick={handleCreateUserClick}
               className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-lg hover:bg-blue-600 transition-all"
             >
-             Create New Users
+              Create New Users
             </button>
           </div>
         </div>
 
-        {/* Users List */}
+        {/*Display Users List */}
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-auto">
           {/* Table Header */}
           <div className="hidden md:flex bg-gray-100 dark:bg-gray-700 p-4 font-semibold text-gray-700 dark:text-gray-200">
@@ -194,8 +205,8 @@ alert("All Users have been saved successfully!");
           </div>
 
           {/* User Rows */}
-          {Users.length > 0 ? (
-            Users.map((assessor, index) => (
+          {Users?.length > 0 ? (
+            Users?.map((user, index) => (
               // On mobile, use flex-col; on md+ screens, use flex-row
               <div
                 key={index}
@@ -208,32 +219,32 @@ alert("All Users have been saved successfully!");
                 {/* Name */}
                 <div className="w-full md:w-1/4 flex items-center space-x-2 mb-2 md:mb-0">
                   <span className="text-base md:text-lg font-medium text-gray-800 dark:text-gray-200">
-                    {index + 1}. {assessor.name}
+                    {index + 1}. {user?.name}
                   </span>
                 </div>
                 {/* Email */}
                 <div className="w-full md:w-1/4 mb-2 md:mb-0">
                   <span className="text-sm text-gray-600 dark:text-gray-300">
-                    {assessor.email}
+                    {user?.email}
                   </span>
                 </div>
                 {/* Course */}
                 <div className="w-full md:w-1/4 mb-2 md:mb-0">
                   <span className="text-sm text-gray-600 dark:text-gray-300">
-                    {assessor.course}
+                    {user?.course_code.join(", ")}
                   </span>
                 </div>
                 {/* Actions */}
                 <div className="w-full md:w-1/4 flex space-x-2">
                   <button
                     onClick={() => handleEdit(index)}
-                    className="px-3 py-1 bg-yellow-500 text-white text-sm font-medium rounded hover:bg-yellow-600"
+                    className="px-3 py-1 bg-green-800 text-white text-sm font-medium rounded hover:bg-yellow-600"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(index)}
-                    className="px-3 py-1 bg-red-500 text-white text-sm font-medium rounded hover:bg-red-600"
+                    className="px-3 py-1 bg-red-800 text-white text-sm font-medium rounded hover:bg-red-600"
                   >
                     Delete
                   </button>
@@ -311,10 +322,10 @@ alert("All Users have been saved successfully!");
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                     required
                   />
-                  </div>
+                </div>
 
-                  {/* Email */}
-                
+                {/* Email */}
+
                 <div>
                   <label
                     htmlFor="email"
@@ -334,9 +345,9 @@ alert("All Users have been saved successfully!");
                   />
                 </div>
 
-                 {/* Password */}
-                
-                 <div>
+                {/* Password */}
+
+                <div>
                   <label
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -375,70 +386,74 @@ alert("All Users have been saved successfully!");
                   />
                 </div>
 
-
-
                 {/* Course */}
                 <div className="relative w-64">
-      <div
-        className="border p-2 rounded cursor-pointer bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white "
-        onClick={toggleDropdown}
-      >
-         {selectedCourses.length > 0 ? (
-          <div className="flex flex-wrap gap-2 p-2">
-            {selectedCourses.map((code) => (
-              <span
-                key={code}
-                className="bg-green-300 px-2 py-1 rounded flex items-center gap-1"
-              >
-                {code}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveCodes(code);
-                  }}
-                  className="text-red-500 ml-1"
-                >
-                  &#10005;
-                </button>
-              </span>
-            ))}
-          </div>
-        ) : (
-          "Select course codes"
-        )}
-      </div>
-      {isCodesOpen && (
-        <ul className="absolute w-full border mt-1 bg-white shadow-md rounded">
-          {courseCodes.map((code) => (
-            <li
-              key={code}
-              className={`p-2  bg-gray-300 border border-gray-200 cursor-pointer hover:bg-gray-200 flex justify-between`}
-              onClick={() => handleCodeSelect(code)}
-            >
-              <span className="">{code}</span>
-              {selectedCourses.includes(code) && <span>&#10003;</span>}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+                  <div
+                    className="border p-2 rounded cursor-pointer bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white "
+                    onClick={toggleDropdown}
+                  >
+                    {selectedCourses.length > 0 ? (
+                      <div className="flex flex-wrap gap-2 p-2">
+                        {selectedCourses.map((code) => (
+                          <span
+                            key={code}
+                            className="bg-green-300 px-2 py-1 rounded flex items-center gap-1"
+                          >
+                            {code}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRemoveCodes(code);
+                              }}
+                              className="text-red-500 ml-1"
+                            >
+                              &#10005;
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      "Select course codes"
+                    )}
+                  </div>
+                  {isCodesOpen && (
+                    <ul className="absolute w-full border mt-1 bg-white shadow-md rounded">
+                      {courseCodes.map((code) => (
+                        <li
+                          key={code}
+                          className={`p-2  bg-gray-300 border border-gray-200 cursor-pointer hover:bg-gray-200 flex justify-between`}
+                          onClick={() => handleCodeSelect(code)}
+                        >
+                          <span className="">{code}</span>
+                          {selectedCourses.includes(code) && (
+                            <span>&#10003;</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
 
                 {/* Role selection */}
                 <div className="w-64">
-      <label className="block text-gray-700 font-medium mb-2">Select Role</label>
-      <select
-        value={role}
-        onChange={handleRoleChange}
-        className="w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-indigo-200"
-      >
-        <option value="" disabled>Select a role</option>
-        {roles.map((roleOption) => (
-          <option key={roleOption} value={roleOption}>
-            {roleOption}
-          </option>
-        ))}
-      </select>
-    </div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Select Role
+                  </label>
+                  <select
+                    value={userRole}
+                    onChange={handleRoleChange}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-indigo-200"
+                  >
+                    <option value="" disabled>
+                      Select a role
+                    </option>
+                    {roles.map((roleOption) => (
+                      <option key={roleOption} value={roleOption}>
+                        {roleOption}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 {/* Cancel */}
                 <div className="flex justify-end space-x-4">
