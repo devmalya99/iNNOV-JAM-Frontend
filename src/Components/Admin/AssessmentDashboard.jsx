@@ -1,11 +1,46 @@
 import React from "react";
 import { useFetchAllCourses } from "../../services/FetchAllCourses";
 import { motion } from "framer-motion";
-import { FaBook, FaChalkboardTeacher, FaUsers, FaCalendarAlt, FaFileContract } from "react-icons/fa";
+import {
+  FaBook,
+  FaChalkboardTeacher,
+  FaUsers,
+  FaCalendarAlt,
+  FaFileContract,
+  FaEdit,
+  FaTrash,
+} from "react-icons/fa";
 import { ImSpinner8 } from "react-icons/im";
 import { useNavigate } from "react-router";
+import {handleSuccess, handleError} from "../../utils/toast";
+import axios from "axios";
+
+
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+
+const handleDelete = async (id, refetch) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this course? This action cannot be undone."
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    const response = await axios.delete(`${VITE_API_URL}/api/courses/remove/${id}`);
+
+    if (response.status === 200) {
+      handleSuccess({ success: "Course deleted successfully!" });
+      refetch(); // Refetch courses after deletion
+    } else {
+      throw new Error("Failed to delete course. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    
+  }
+};
 
 const CoursesList = () => {
   const { data: courses, isLoading, isError, error } = useFetchAllCourses();
@@ -79,24 +114,50 @@ const CoursesList = () => {
               <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <FaCalendarAlt className="text-lg text-gray-500 dark:text-gray-400" />
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {new Date(course?.startDate).toLocaleDateString()} - {new Date(course?.endDate).toLocaleDateString()}
+                  {new Date(course?.startDate).toLocaleDateString()} -{" "}
+                  {new Date(course?.endDate).toLocaleDateString()}
                 </p>
               </div>
               <div
-                onClick={() => navigate(`/home/view/all-assessments/${course?._id}`)}
+                onClick={() =>
+                  navigate(`/home/view/all-assessments/${course?._id}`)
+                }
                 className="flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <FaFileContract className="text-lg text-gray-500 dark:text-gray-400" />
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">View Assessments</p>
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:underline transition duration-200">
+                    View Assessments
+                  </p>
+
+                  
                 </div>
+              </div>
+
+              {/* Footer action button */}
+
+              <div className="action button footer flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer mt-4">
+
+                <button className="bg-red-700 px-4 py-2 rounded-lg">
+                  <FaTrash 
+
+                  onClick={()=>handleDelete(course?._id)}
+                  
+                  className="text-md text-gray-100 dark:text-gray-400" />
+                </button>
+
+                <button className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
+                  <FaEdit className="text-md text-gray-100 dark:text-gray-400" />
+                </button>
               </div>
             </motion.div>
           ))}
         </div>
       ) : (
         <div className="text-center p-8 bg-gray-100 dark:bg-gray-800 rounded-lg">
-          <p className="text-lg font-medium text-gray-600 dark:text-gray-300">No courses available</p>
+          <p className="text-lg font-medium text-gray-600 dark:text-gray-300">
+            No courses available
+          </p>
         </div>
       )}
     </div>

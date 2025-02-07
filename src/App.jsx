@@ -43,6 +43,7 @@ import UserManagement from './Components/Admin/User Management'
 import AssessmentCreation from './Components/Admin/Assessment Creation/AssessmentCreation'
 import ViewAssessmentModal from './Components/Admin/ViewAssessmentModal'
 import CreateUsers from './Components/Admin/Create User/CreateUsers'
+import UserCourses from './Components/Common/UserCourses'
 function App() {
 
   return (
@@ -107,6 +108,7 @@ function App() {
         {/* Protected Route for learners */}
         <Route path='home/learner' element={<ProtectedRoute><LearnerLayout /></ProtectedRoute>}>
         <Route index element={<Welcome/>}/>
+        <Route path="view-all-courses" element={<UserCourses/>}/>
         <Route path='instructions' element={<InstructionsPage/>}/>
         <Route path='answer-writing/:id' element={<AnswerWritingPage/>}/>
         <Route path='assessment-submission/confirm/:id' element={<ConfirmModal/>}/>

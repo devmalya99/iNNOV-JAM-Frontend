@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { handleSuccess } from "../../../utils/toast";
 import handleCreateUsers from "../../../services/handleCreateUsers";
+import { useFetchAllCourses } from "../../../services/FetchAllCourses";
 
 const CreateUsers = () => {
   // State to store Users
@@ -10,10 +11,16 @@ const CreateUsers = () => {
 
   const roles = ['admin', 'learner', 'assessor', 'trainer']
 
+  const { data: courses, isLoading, isError, error } = useFetchAllCourses();
+
   // -------------------------------------------------
   // Course code selection
 
-  const courseCodes = ["m24", "b24", "c24"];
+  console.log("courses", courses);
+  const courseCodes = courses ? courses.map(course => course.course_code) : [];
+
+
+  
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [isCodesOpen, setIsCodesOpen] = useState(false);
   const toggleDropdown = () => setIsCodesOpen(!isCodesOpen);
@@ -418,7 +425,7 @@ const CreateUsers = () => {
                   </div>
                   {isCodesOpen && (
                     <ul className="absolute w-full border mt-1 bg-white shadow-md rounded">
-                      {courseCodes.map((code) => (
+                      {courseCodes?.map((code) => (
                         <li
                           key={code}
                           className={`p-2  bg-gray-300 border border-gray-200 cursor-pointer hover:bg-gray-200 flex justify-between`}

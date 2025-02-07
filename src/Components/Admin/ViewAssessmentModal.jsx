@@ -18,12 +18,18 @@ export default function ViewAssessmentModal() {
           Assessments
         </h1>
 
+        <div className="my-4">
+          <button 
+          onClick={()=>navigate(`/home/create-course/courses/${courseid}`)}
+          className="button-style">Create New Assesments</button>
+        </div>
+
         {isLoading ? (
           <div className="flex justify-center items-center min-h-[200px]">
             <AiOutlineLoading3Quarters className="text-blue-500 dark:text-blue-300 text-4xl animate-spin" />
           </div>
         ) : error ? (
-          <p className="text-red-500 dark:text-red-400 text-center">Failed to load assessments.</p>
+          <p className="text-red-500 dark:text-red-400 text-center">No assessments found</p>
         ) : (
           <div className="space-y-4">
             {assessments?.map((assessment) => (

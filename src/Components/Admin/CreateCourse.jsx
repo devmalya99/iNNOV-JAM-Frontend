@@ -93,7 +93,7 @@ function CreateCourse() {
       console.log("Course Created:", response?.data);
 
       // Navigate to the newly created course page
-      navigate(`courses/${response?.data?._id}`);
+      navigate(`/home/all-assessments`);
     } catch (error) {
       console.error("Failed to create course:", error);
       setError("Failed to create course. Please try again.");

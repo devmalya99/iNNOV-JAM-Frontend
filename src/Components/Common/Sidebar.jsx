@@ -19,7 +19,7 @@ import {
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { Link, useLocation } from "react-router"; // Ensure correct version of react-router
-import { LucideGraduationCap, PowerOffIcon, StarsIcon, Users2Icon } from "lucide-react";
+import { BookAIcon, LucideGraduationCap, PowerOffIcon, StarsIcon, Users2Icon } from "lucide-react";
 import Logo from "/FirstComLogo.png";
 import { useAuth } from "../../../Context/AuthContext";
 import SkeletonPage from "../SkeletonPage";
@@ -105,6 +105,14 @@ const Sidebar = () => {
       icon: <FaAccusoft className="text-2xl text-green-600" />,
       link: "/home/all-assessments",
       roles: ["admin", "super_admin"],
+    },
+
+    // View All the course
+    {
+      name: "Enrolled Courses",
+      icon: <BookAIcon className="text-2xl text-green-600" />,
+      link: "learner/view-all-courses",
+      roles: ["learner"],
     },
     
     
