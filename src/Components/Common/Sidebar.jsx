@@ -178,7 +178,7 @@ const Sidebar = () => {
       {
         isSmallScreen && (
           <div className="p-4 flex items-center justify-between 
-          hover:bg-gray-200 dark:hover:bg-gray-700 text-white">
+          hover:bg-gray-200 dark:hover:bg-gray-700  dark:text-white">
             <div className="flex gap-2">
               <RiStarSFill className="text-2xl bg-green-500   "/>
               <p className="text-lg">Theme</p>

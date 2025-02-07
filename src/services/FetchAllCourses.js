@@ -5,7 +5,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 const fetchAllCourses = async () => {
     
     const { data } = await axios.get(
-      `${VITE_API_URL}/api/courses`
+      `${VITE_API_URL}/api/courses/getcourses`
     );
     console.log("All courses",data);
     

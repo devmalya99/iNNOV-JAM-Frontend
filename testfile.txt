@@ -1,1 +1,3 @@
-New branch practice line 1
+//Route to new assessment creation
+
+http://localhost:5173/home/create-course/courses/course-code
