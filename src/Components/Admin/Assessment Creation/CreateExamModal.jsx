@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { handleSuccess, handleError } from "../../../utils/toast";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, X, FileText, CheckCircle, AlertCircle } from "lucide-react";
 
@@ -12,6 +12,8 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const { courseid } = useParams();
+
+  const navigate = useNavigate();
 
   const createExam = async (assessment) => {
     if (!assessment) return;
@@ -41,6 +43,8 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
 
       setSuccess(true);
       handleSuccess({ success: "Assessment Created Successfully!" });
+      
+    
     } catch (error) {
       setError(error.response?.data?.message || "Failed to create assessment");
       handleError({ error: "Failed to create assessment. Try again." });
@@ -79,7 +83,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
               </div>
             </div>
             <button
-              onClick={() => setShowCreateAssessmentModal(false)}
+              onClick={()=>navigate(`/home/view/all-assessments/${courseid}`)}
               className="p-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <X className="h-5 w-5" />
@@ -144,7 +148,10 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => setShowCreateAssessmentModal(false)}
+              onClick={() => {
+                navigate(`/home/view/all-assessments/${courseid}`);
+                
+              }}
               className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-800 
                          dark:hover:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 
                          dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 

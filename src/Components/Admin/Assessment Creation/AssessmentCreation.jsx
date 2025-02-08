@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Upload, Check, EyeIcon, X, PenIcon } from "lucide-react";
+import { Plus, Upload, Check, EyeIcon, X, PenIcon, ArrowBigLeftDash } from "lucide-react";
 import { FaSpinner } from "react-icons/fa";
 import { SiTicktick } from "react-icons/si";
 import axios from "axios";
@@ -150,6 +150,20 @@ for (let pair of formData.entries()) {
 
         {/* Footer */}
         <div className="flex justify-end gap-3 mt-6 pt-4 border-t dark:border-gray-700">
+          
+
+        <button
+            onClick={() => {
+              navigate(`/home/view/all-assessments/${courseid}`);
+              
+            }}
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
+          >
+            <ArrowBigLeftDash className="w-4 h-4 inline mr-2" />
+            Go Back
+          </button>
+
+
           
           <button
             onClick={() => {

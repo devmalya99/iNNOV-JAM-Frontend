@@ -62,7 +62,7 @@ export default function ViewCourseAssessments() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 overflow-y-auto">
+    <div className="h-[calc(100vh-80px)]  bg-gray-100 dark:bg-gray-900 p-6 overflow-y-auto">
       {/* Handle delete */}
       {showDeleteModal && (
         <DeleteAssessmentModal
@@ -79,7 +79,7 @@ export default function ViewCourseAssessments() {
         <ViewAssessmentDetails assessmentId={selectedAssessment?._id} setOpenAssessmentModal={setOpenAssessmentModal} />
       )}
 
-      <div className="max-w-6xl mx-auto p-6 rounded-xl shadow-2xl bg-white dark:bg-gray-800">
+      <div className="max-w-6xl mx-auto p-6 rounded-xl shadow-2xl bg-white dark:bg-gray-800 ">
         <h1 className="text-3xl font-extrabold text-blue-800 dark:text-blue-400 text-center mb-6">
           Assessments
         </h1>

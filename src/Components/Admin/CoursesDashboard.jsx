@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useFetchAllCourses } from "../../services/FetchAllCourses";
 import { motion } from "framer-motion";
 import {
@@ -10,41 +10,58 @@ import {
   FaEdit,
   FaTrash,
 } from "react-icons/fa";
-import { ImSpinner8 } from "react-icons/im";
-import { useNavigate } from "react-router";
-import {handleSuccess, handleError} from "../../utils/toast";
 import axios from "axios";
-
-
+import { useNavigate } from "react-router";
+import { handleSuccess, handleError } from "../../utils/toast";
+import DeleteConfirmationModal from "./DeleteCourseModal";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-
-const handleDelete = async (id, refetch) => {
-  const confirmDelete = window.confirm(
-    "Are you sure you want to delete this course? This action cannot be undone."
-  );
-
-  if (!confirmDelete) return;
-
-  try {
-    const response = await axios.delete(`${VITE_API_URL}/api/courses/remove/${id}`);
-
-    if (response.status === 200) {
-      handleSuccess({ success: "Course deleted successfully!" });
-      refetch(); // Refetch courses after deletion
-    } else {
-      throw new Error("Failed to delete course. Please try again.");
-    }
-  } catch (error) {
-    console.error("Error deleting course:", error);
-    
-  }
-};
-
 const CoursesDashboard = () => {
   const { data: courses, isLoading, isError, error } = useFetchAllCourses();
+  const [filteredCourses, setFilteredCourses] = useState([]);
   const navigate = useNavigate();
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+const [courseToDelete, setCourseToDelete] = useState(null);
+
+
+
+  useEffect(() => {
+    if (courses) {
+      setFilteredCourses(courses);
+    }
+  }, [courses]);
+
+  const handleDelete = (course) => {
+    setCourseToDelete(course);
+    setIsDeleteModalOpen(true);
+  };
+
+
+  const confirmDelete = async () => {
+    if (!courseToDelete) return;
+    
+    try {
+      const response = await axios.delete(`${VITE_API_URL}/api/courses/remove/${courseToDelete._id}`);
+  
+      if (response.status === 200) {
+        handleSuccess({ success: "Course deleted successfully!" });
+        setFilteredCourses((prevCourses) => 
+          prevCourses.filter(course => course._id !== courseToDelete._id)
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      handleError({ error: "Failed to delete course." });
+    } finally {
+      setIsDeleteModalOpen(false);
+      setCourseToDelete(null);
+    }
+  };
+
+
+
 
   if (isLoading) {
     return (
@@ -76,12 +93,25 @@ const CoursesDashboard = () => {
 
   return (
     <div className="p-8 h-[calc(100vh-72px)] overflow-y-auto bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      
+
+      {/* Display delete course modal */}
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={confirmDelete}
+          itemName="course"
+        />
+      )}
+      
+      
       <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
         Explore Our Courses
       </h1>
-      {courses?.length > 0 ? (
+      {filteredCourses?.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {courses.map((course) => (
+          {filteredCourses.map((course) => (
             <motion.div
               key={course?._id}
               initial={{ opacity: 0, y: 20 }}
@@ -101,7 +131,6 @@ const CoursesDashboard = () => {
                 <div className="px-3 py-1 text-sm bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
                   {course?.course_code}
                 </div>
-
                 <div className="px-3 py-1 text-sm bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
                   {course?.visibility}
                 </div>
@@ -115,8 +144,6 @@ const CoursesDashboard = () => {
                   {course?.total_enrollment} Students Enrolled
                 </p>
               </div>
-
-              
               <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <FaCalendarAlt className="text-lg text-gray-500 dark:text-gray-400" />
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -135,23 +162,17 @@ const CoursesDashboard = () => {
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:underline transition duration-200">
                     View Assessments
                   </p>
-
-                  
                 </div>
               </div>
 
-              {/* Footer action button */}
-
-              <div className="action button footer flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer mt-4">
-
-                <button className="bg-red-700 px-4 py-2 rounded-lg">
-                  <FaTrash 
-
-                  onClick={()=>handleDelete(course?._id)}
-                  
-                  className="text-md text-gray-100 dark:text-gray-400" />
+              {/* Footer action buttons */}
+              <div className="action-button-footer flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer mt-4">
+                <button
+                  className="bg-red-700 px-4 py-2 rounded-lg"
+                  onClick={() => handleDelete(course)}
+                >
+                  <FaTrash className="text-md text-gray-100 dark:text-gray-400" />
                 </button>
-
                 <button className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
                   <FaEdit className="text-md text-gray-100 dark:text-gray-400" />
                 </button>
