@@ -10,11 +10,14 @@ import {
   ChevronRight,
   ClipboardList,
   Edit2,
+  Eye,
   Trash2,
   Users,
 } from "lucide-react";
 import DeleteAssessmentModal from "./DeleteAssessment/DeleteAssessmentModal";
 import ViewAssessmentDetails from "./ViewAssessmentDetails/ViewAssessmentDetails";
+
+import AssignLearnerModal from "./AssignLearnerModal";
 
 export default function ViewCourseAssessments() {
   const { courseid } = useParams();
@@ -23,15 +26,26 @@ export default function ViewCourseAssessments() {
     isLoading,
     error,
   } = FetchAllAssessmentsByCourse(courseid);
-  console.log("displaying assessments",assessments);
-
-
+  console.log("displaying assessments", assessments);
 
   const [selectedAssessment, setSelectedAssessment] = useState(null);
   // In your parent component
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [openAssessmentModal, setOpenAssessmentModal] = useState(false);
+
+  const [openAssignLearnersModal, setOpenAssignLearnersModal] = useState(false);
+  const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
+
+  const [openViewLearnersModal, setOpenViewLearnersModal] = useState(false);
+
+  {
+    /* Handle assign Learner */
+  }
+  const handleAssignLearner = (assessment) => {
+    setSelectedAssessmentId(assessment?._id);
+    setOpenAssignLearnersModal(true);
+  };
 
   // Add this to your delete button onClick
   const handleDeleteClick = (assessment) => {
@@ -61,6 +75,11 @@ export default function ViewCourseAssessments() {
     show: { opacity: 1, x: 0 },
   };
 
+  const ViewAssignedLearners = (assessment) => {
+    setSelectedAssessmentId(assessment?._id);
+    setOpenViewLearnersModal(true);
+  };
+
   return (
     <div className="h-[calc(100vh-80px)]  bg-gray-100 dark:bg-gray-900 p-6 overflow-y-auto">
       {/* Handle delete */}
@@ -76,8 +95,30 @@ export default function ViewCourseAssessments() {
 
       {/* Open Assessment Modal */}
       {openAssessmentModal && (
-        <ViewAssessmentDetails assessmentId={selectedAssessment?._id} setOpenAssessmentModal={setOpenAssessmentModal} />
+        <ViewAssessmentDetails
+          assessmentId={selectedAssessment?._id}
+          setOpenAssessmentModal={setOpenAssessmentModal}
+        />
       )}
+
+      {/* Assign Learners Modal */}
+      {openAssignLearnersModal && (
+        <AssignLearnerModal
+          selectedAssessmentId={selectedAssessmentId}
+          setOpenAssignLearnersModal={setOpenAssignLearnersModal}
+        />
+      )}
+
+      {/* View Learners */}
+      {
+  openViewLearnersModal && (
+    <AssignLearnerModal
+      selectedAssessmentId={selectedAssessmentId}
+      setOpenAssignLearnersModal={setOpenViewLearnersModal} // Ensure the correct function is passed
+    />
+  )
+}
+
 
       <div className="max-w-6xl mx-auto p-6 rounded-xl shadow-2xl bg-white dark:bg-gray-800 ">
         <h1 className="text-3xl font-extrabold text-blue-800 dark:text-blue-400 text-center mb-6">
@@ -161,12 +202,26 @@ export default function ViewCourseAssessments() {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-green-600 
-                             dark:text-green-400 bg-green-50 dark:bg-green-900/30 rounded-lg
-                             hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
+                        onClick={() => handleAssignLearner(assessment)}
+                        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white 
+                             dark:text-green-400 bg-green-400 dark:bg-green-900/30 rounded-lg
+                             hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors animate-pulse"
                       >
                         <Users className="h-4 w-4" />
                         <span className="hidden sm:inline">Assign Learner</span>
+                      </motion.button>
+
+                      {/* View Assigned Learners */}
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => ViewAssignedLearners(assessment)}
+                        className="flex justify-center items-center gap-2 px-3 py-2 text-sm font-medium text-white 
+                             dark:text-green-400 bg-blue-900/50 dark:bg-green-900/30 rounded-lg
+                             hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors "
+                      >
+                        <Eye className="h-4 w-4" />
+                        <span className="hidden sm:inline">View</span>
                       </motion.button>
 
                       <motion.button
