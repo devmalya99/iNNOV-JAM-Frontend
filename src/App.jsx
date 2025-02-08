@@ -44,6 +44,7 @@ import AssessmentCreation from './Components/Admin/Assessment Creation/Assessmen
 import ViewAssessmentModal from './Components/Admin/ViewAssessmentModal'
 import CreateUsers from './Components/Admin/Create User/CreateUsers'
 import UserCourses from './Components/Common/UserCourses'
+import ViewAssessmentFiles from './Components/Admin/Assessment Creation/ViewAssessmentFiles'
 function App() {
 
   return (
@@ -72,6 +73,8 @@ function App() {
         <Route path='assign-learners' element={<AssignLearnersModal/>}/>
         <Route path="courses/:courseid" element={<AssessmentCreation/>}/>
         </Route>
+        
+        <Route path="view-assessment-files/:courseid" element={<ViewAssessmentFiles/>}/>
 
        
         <Route path='upload-courseware' element={<UploadCourseware/>}/>
