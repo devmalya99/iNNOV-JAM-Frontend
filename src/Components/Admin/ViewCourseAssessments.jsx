@@ -6,9 +6,10 @@ import { useNavigate, useParams } from "react-router";
 import {FetchAllAssessmentsByCourse} from "../../services/fetchAllAssessmentsByCourse";
 import { motion } from "framer-motion";
 
-export default function ViewAssessmentModal() {
+export default function ViewCourseAssessments() {
   const { courseid } = useParams();
   const { data: assessments, isLoading, error } = FetchAllAssessmentsByCourse(courseid);
+  console.log(assessments)
   const [selectedAssessment, setSelectedAssessment] = useState(null);
   const navigate = useNavigate();
   return (
@@ -36,7 +37,7 @@ export default function ViewAssessmentModal() {
           </div>
         ) : error ? (
           <div className="my-8 bg-gray-300 py-6  rounded-xl">
-            <p className="text-red-500 dark:text-red-400 text-center">No assessments created yet </p>
+            <p className="text-red-500 dark:text-red-400 text-center">No assessments created yet ...</p>
           </div>
           
         ) : (

@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import io from "socket.io-client";
 import DeleteModal from "./DeleteModal";
-import CreateExamModal from "./CreateExamModal";
+import CreateExamModal from "../Admin/Assessment Creation/CreateExamModal";
 import { Download, Upload, Settings } from "lucide-react";
 import { FaSpinner } from "react-icons/fa";
 const VITE_API_URL = import.meta.env.VITE_API_URL;

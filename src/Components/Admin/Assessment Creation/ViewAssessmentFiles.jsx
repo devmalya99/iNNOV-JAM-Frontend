@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from "axios"; // Ensure axios is imported
 // import { Pencil, Trash2, Upload, FileText, Loader2 } from 'lucide-react';
 import { useParams } from 'react-router';
 import { useFetchAllAssessmentFiles } from '../../../services/FetchAllAssessmentFilesByCourse';
@@ -7,10 +8,14 @@ import { useFetchAllAssessmentFiles } from '../../../services/FetchAllAssessment
 import { Pencil, Trash2, Upload, FileText, Loader2, File } from 'lucide-react';
 
 import { motion } from 'framer-motion';
+import CreateExamModal from './CreateExamModal';
 
 const ViewAssessmentFiles = () => {
   const { courseid } = useParams();
   const { data, isLoading } = useFetchAllAssessmentFiles(courseid);
+  const [showCreateAssessmentModal, setShowCreateAssessmentModal] = useState(false);
+const [selectedAssessment, setSelectedAssessment] = useState(null);
+
 
   const container = {
     hidden: { opacity: 0 },
@@ -69,9 +74,13 @@ const ViewAssessmentFiles = () => {
     });
   };
 
-  const handleCreateAssessment=()=>{
+ 
 
-  }
+const handleCreateAssessment = (assessment) => {
+  setSelectedAssessment(assessment); // Store the selected assessment
+  setShowCreateAssessmentModal(true);
+};
+
 
   const handleEdit = (assessment) => {
     console.log('Edit:', assessment);
@@ -87,6 +96,16 @@ const ViewAssessmentFiles = () => {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-h-[calc(100vh-80px)] overflow-y-auto bg-gray-250 dark:bg-gray-900">
+
+      {/* Show create assessment modal */}
+      {
+        showCreateAssessmentModal && (
+          <CreateExamModal 
+          assessment={selectedAssessment}
+          setShowCreateAssessmentModal={setShowCreateAssessmentModal}
+          />
+        )
+      }
       <motion.div 
         variants={container}
         initial="hidden"
@@ -126,13 +145,16 @@ const ViewAssessmentFiles = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => handleCreateAssessment()}
+                  onClick={() => handleCreateAssessment(assessment)}
                   className="p-2 text-gray-600 hover:text-indigo-600 dark:text-gray-400 
                            dark:hover:text-indigo-400 rounded-lg hover:bg-indigo-50 
                            dark:hover:bg-indigo-900/30 transition-colors"
                   title="Create Assessment"
                 >
-                  <button className='px-2 py-1 text-md bg-blue-500 rounded-lg text-white '>Create Assessment</button>
+                  <button className='px-2 py-1 text-md bg-blue-500 rounded-lg text-white'
+                 
+                  
+                  >Create Assessment</button>
                 </motion.button>
 
 

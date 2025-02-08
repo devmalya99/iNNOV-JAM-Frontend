@@ -33,7 +33,7 @@ import InstructionsPage from './Components/Learner/InstructionsPage'
 import ConfirmModal from './Components/Learner/ConfirmModal'
 import { ToastContainer } from 'react-toastify';
 
-import AssessmentDashboard from './Components/Admin/AssessmentDashboard'
+import CoursesDashboard from './Components/Admin/CoursesDashboard'
 import CreateCourse from './Components/Admin/CreateCourse'
 
 import AssignTrainersModal from './Components/Admin/AssignUser/AssignTrainersModal'
@@ -41,7 +41,7 @@ import AssignAssessorsModal from './Components/Admin/AssignUser/AssignAssessorsM
 import AssignLearnersModal from './Components/Admin/AssignUser/AssignLearnersModal'
 import UserManagement from './Components/Admin/User Management'
 import AssessmentCreation from './Components/Admin/Assessment Creation/AssessmentCreation'
-import ViewAssessmentModal from './Components/Admin/ViewAssessmentModal'
+import ViewCourseAssessments from './Components/Admin/ViewCourseAssessments'
 import CreateUsers from './Components/Admin/Create User/CreateUsers'
 import UserCourses from './Components/Common/UserCourses'
 import ViewAssessmentFiles from './Components/Admin/Assessment Creation/ViewAssessmentFiles'
@@ -79,10 +79,10 @@ function App() {
        
         <Route path='upload-courseware' element={<UploadCourseware/>}/>
         <Route path='upload-assessment-plan' element={<UploadAssesmentPlan/>}/>
-        <Route path='all-assessments' element={<AssessmentDashboard/>}/>
+        <Route path='all-assessments' element={<CoursesDashboard/>}/>
 
         {/* View all assessments created under a course */}
-        <Route path='view/all-assessments/:courseid' element={<ViewAssessmentModal/>}/>
+        <Route path='view/all-assessments/:courseid' element={<ViewCourseAssessments/>}/>
        
         <Route path='create-users' element={<CreateUsers/>}/>
         

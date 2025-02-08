@@ -42,7 +42,7 @@ const handleDelete = async (id, refetch) => {
   }
 };
 
-const CoursesList = () => {
+const CoursesDashboard = () => {
   const { data: courses, isLoading, isError, error } = useFetchAllCourses();
   const navigate = useNavigate();
 
@@ -99,6 +99,10 @@ const CoursesList = () => {
                   </h2>
                 </div>
                 <div className="px-3 py-1 text-sm bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
+                  {course?.course_code}
+                </div>
+
+                <div className="px-3 py-1 text-sm bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
                   {course?.visibility}
                 </div>
               </div>
@@ -111,6 +115,8 @@ const CoursesList = () => {
                   {course?.total_enrollment} Students Enrolled
                 </p>
               </div>
+
+              
               <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <FaCalendarAlt className="text-lg text-gray-500 dark:text-gray-400" />
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -164,4 +170,4 @@ const CoursesList = () => {
   );
 };
 
-export default CoursesList;
+export default CoursesDashboard;
