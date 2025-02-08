@@ -6,7 +6,7 @@ import axios from "axios";
 import { FetchAssignedLearnersByAssessments } from "../../services/FetchAssignedLearnersByAssessment";
 
 
-const AssignLearnerModal = ( selectedAssessmentId, setOpenViewLearnersModal ) => {
+const ViewAssignedLearnerModal = ( selectedAssessmentId, setOpenViewLearnersModal ) => {
 
   
   const { data: users, isLoading } = FetchAssignedLearnersByAssessments(selectedAssessmentId);
@@ -16,10 +16,7 @@ const AssignLearnerModal = ( selectedAssessmentId, setOpenViewLearnersModal ) =>
   console.log("assigned learners", users);
 
   // Function to assign learners
-  const handleAssignLearnersFinal = async () => {
-
-  
-  };
+ 
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -62,12 +59,7 @@ const AssignLearnerModal = ( selectedAssessmentId, setOpenViewLearnersModal ) =>
 
         {/* Buttons */}
         <div className="mt-4 text-right">
-          <button
-            onClick={handleAssignLearnersFinal}
-            className="px-4 mx-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
-          >
-            Assign Learners
-          </button>
+          
 
           
 
@@ -83,4 +75,4 @@ const AssignLearnerModal = ( selectedAssessmentId, setOpenViewLearnersModal ) =>
   );
 };
 
-export default AssignLearnerModal;
+export default ViewAssignedLearnerModal;

@@ -17,6 +17,8 @@ import {
 import DeleteAssessmentModal from "./DeleteAssessment/DeleteAssessmentModal";
 import ViewAssessmentDetails from "./ViewAssessmentDetails/ViewAssessmentDetails";
 
+import ViewAssignedLearnerModal from "./ViewAssignedLearnerModal"
+
 import AssignLearnerModal from "./AssignLearnerModal";
 
 export default function ViewCourseAssessments() {
@@ -111,10 +113,10 @@ export default function ViewCourseAssessments() {
 
       {/* View Learners */}
       {
-  openViewLearnersModal && (
-    <AssignLearnerModal
+      openViewLearnersModal && (
+    <ViewAssignedLearnerModal
       selectedAssessmentId={selectedAssessmentId}
-      setOpenAssignLearnersModal={setOpenViewLearnersModal} // Ensure the correct function is passed
+      setOpenViewLearnersModal={setOpenViewLearnersModal} // Ensure the correct function is passed
     />
   )
 }

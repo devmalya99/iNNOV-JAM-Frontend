@@ -117,12 +117,12 @@ const Sidebar = () => {
     
     
     
-    {
-      name: "Settings",
-      icon: <MdOutlineSettingsSuggest className="text-2xl text-green-600" />,
-      link: "/settings",
-      roles: ["super_admin"],
-    },
+    // {
+    //   name: "Settings",
+    //   icon: <MdOutlineSettingsSuggest className="text-2xl text-green-600" />,
+    //   link: "/settings",
+    //   roles: ["super_admin"],
+    // },
     {
       name: "Evaluation Result",
       icon: <FaRegPenToSquare className="text-2xl text-green-600" />,
