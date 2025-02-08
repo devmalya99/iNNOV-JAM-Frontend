@@ -38,6 +38,7 @@ const AssessmentCreation = () => {
   };
 
   const submitFiles = async (id, name) => {
+    console.log("name is",name)
     if (!files[id]) return;
     setCreationState((prev) => ({ ...prev, [id]: "uploading" }));
 
@@ -46,7 +47,15 @@ const AssessmentCreation = () => {
     formData.append("file", files[id]);
     formData.append("courseId", courseid);
 
+    // Debugging: Log the FormData values
+for (let pair of formData.entries()) {
+  console.log(pair[0] + ": " + pair[1]); // This will show if "title" is correctly set
+}
+
+    
+
     try {
+      
       await axios.post(`${VITE_API_URL}/api/files/upload-assesmentFiles`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
