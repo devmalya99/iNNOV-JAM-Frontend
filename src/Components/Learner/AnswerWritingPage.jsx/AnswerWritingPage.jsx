@@ -18,10 +18,15 @@ function AnswerWritingPage() {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const user_id = user?.id;
+
+
   
 
   const { assessmentId } = useParams();
   console.log("assessment assessmentId is", assessmentId);
+  console.log("userId is", user_id);
 
   //if active exam exists in local storage get the item and make it active assessmentId
   //if active exam does not exist in local storage make PARAMS assessmentId active assessmentId AND STORE IT
@@ -39,45 +44,52 @@ function AnswerWritingPage() {
 
   console.log("fetched assessment data", data);
 
-  const saveAnswer = async (assessmentId, questionassessmentId, studentAnswer) => {
+  const saveAnswer = async (user_id, question_id, studentAnswer) => {
     try {
-      await axios.put(
-        `${VITE_API_URL}/api/assessments/${assessmentassessmentId}/questions/${questionassessmentId}`,
-        { student_answer: studentAnswer }
+      await axios.post(
+        `${VITE_API_URL}/api/student-answers/create`,
+        { user_id, 
+          question_id, 
+
+          student_answer:studentAnswer },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      //handleSuccess({ success: "Answer saved successfully" });
-      refetch(); // Trigger refetch to get updated data
-      //console.log(data)
-    } catch {
-      //handleError({ error: "Error saving data" });
+      refetch(); // Refresh the data after saving
+    } catch (error) {
+      console.error("Error saving data:", error);
     }
-  };
+};
 
-  const saveAndUpdateData = () => {
-    const studentAnswer = getPlainText(content); // Extract plain text from HTML content
-    const questionassessmentId = data?.data?.[activeQuestion]._assessmentId;
-    console.log("before sending data to database", {
-      assessmentId,
-      questionassessmentId,
-      studentAnswer,
-    });
 
-    if (questionassessmentId && studentAnswer) {
-      saveAnswer(assessmentId, questionassessmentId, studentAnswer);
+const saveAndUpdateData = (user_id, question_id) => {
+  setContent((prevContent) => {
+    const studentAnswer = getPlainText(prevContent);
+    console.log("Saving data:", { user_id, question_id, studentAnswer });
+
+    if (user_id && question_id && studentAnswer) {
+      saveAnswer(user_id, question_id, studentAnswer);
     }
 
-    setContent("");
-  };
+    return ""; // Reset after saving
+  });
+};
 
-  const handlePrevious = () => {
+
+  const handlePrevious = (user_id,question_id) => {
     setActiveQuestion((prev) => Math.max(prev - 1, 0));
-    saveAndUpdateData();
+    saveAndUpdateData(user_id,question_id);
   };
 
   const handleNext = () => {
-    setActiveQuestion((prev) => Math.min(prev + 1, data?.data?.length - 1));
-    saveAndUpdateData();
+    const question_id = data?.questions?.[activeQuestion]?._id;
+    saveAndUpdateData(user_id, question_id);
+    setActiveQuestion((prev) => Math.min(prev + 1, data?.questions?.length - 1));
   };
+  
 
   const handleSubmit=()=>{
     saveAndUpdateData();
@@ -164,7 +176,7 @@ function AnswerWritingPage() {
             {/* Navigation */}
             <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700">
               <button
-                onClick={handlePrevious}
+                onClick={()=>handlePrevious( data?.questions?.[activeQuestion]?._id)}
                 className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <FaArrowLeft /> <span>Previous</span>
@@ -173,7 +185,7 @@ function AnswerWritingPage() {
               
 
               <button
-                onClick={handleNext}
+                onClick={()=>handleNext(data?.questions?.[activeQuestion]?._id)}
                 className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <span>Next</span> <FaArrowRight />
