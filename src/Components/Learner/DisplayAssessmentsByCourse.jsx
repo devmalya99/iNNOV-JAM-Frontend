@@ -53,6 +53,10 @@ const DisplayAssessmentsByCourse = () => {
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
       case 'in_progress':
         return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+
+        case 'pending':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+
       default:
         return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
     }
@@ -98,7 +102,7 @@ const DisplayAssessmentsByCourse = () => {
 
                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                   <button className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
-                    View Details
+                    Start The Assessment
                   </button>
                 </div>
               </div>
