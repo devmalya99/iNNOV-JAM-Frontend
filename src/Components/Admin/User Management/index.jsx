@@ -100,6 +100,10 @@ const RoleCard = ({ data = [], title, icon: Icon }) => {
 const UserManagement = () => {
   const { data: All_Data, refetch, isLoading } = FetchAllUsers();
 
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   const roleConfig = [
     { data: All_Data?.admins, title: 'Administrators', icon: UserCog },
     { data: All_Data?.trainers, title: 'Trainers', icon: Users },
