@@ -121,7 +121,10 @@ function AnswerWritingPage() {
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full">
           {/* Header */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-            <Heading subject={data?.assessment_type} />
+            <Heading 
+            subject={data?.assessment_type}
+            duration={data?.duration}
+             />
           </div>
 
           <div className="p-4 flex-grow flex flex-col space-y-4">
