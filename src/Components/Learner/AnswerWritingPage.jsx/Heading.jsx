@@ -1,20 +1,14 @@
 import { useState, useEffect } from "react";
 import { LuClock3 } from "react-icons/lu";
 
-function Heading({ subject, duration }) {
+function Heading({ subject, duration = 60 * 60 }) {
   const capitalizeWords = (str) =>
     str
       .toLowerCase()
       .replace(/_/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
 
-  // Extract minutes from the duration string
-  const extractMinutes = (durationStr) => {
-    const match = durationStr.match(/\d+/); // Extracts numbers from "60 mins"
-    return match ? parseInt(match[0], 10) * 60 : 0; // Convert to seconds
-  };
-
-  const [timeLeft, setTimeLeft] = useState(extractMinutes(duration));
+  const [timeLeft, setTimeLeft] = useState(duration);
 
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -26,7 +20,7 @@ function Heading({ subject, duration }) {
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  // Format time (mm:ss)
+  // Format time as MM:SS
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60)
       .toString()
