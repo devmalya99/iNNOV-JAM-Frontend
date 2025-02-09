@@ -129,12 +129,7 @@ const Sidebar = () => {
       link: "/home/assessment",
       roles: [ "assessor"],
     },
-    {
-      name: "Answer Writing",
-      icon: <FaRegPenToSquare className="text-2xl text-green-600" />,
-      link: "/home/learner/instructions",
-      roles: ["learner"],
-    },
+    
 
   ];
 
