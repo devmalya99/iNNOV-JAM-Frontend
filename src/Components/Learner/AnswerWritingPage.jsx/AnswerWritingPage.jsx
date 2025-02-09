@@ -64,6 +64,24 @@ function AnswerWritingPage() {
     }
 };
 
+// Function to fetch the latest answer
+
+const fetchLatestAnswer = async (user_id, question_id) => {
+  try {
+    const response = await axios.get(`${VITE_API_URL}/api/student-answers/getanswerbyquestion`, {
+      params: { user_id, question_id },
+    });
+
+    if (response.data && response.data.student_answer) {
+      setContent(response.data.student_answer);
+    } else {
+      setContent(""); // Reset if no answer is found
+    }
+  } catch (error) {
+    console.error("Error fetching latest answer:", error);
+  }
+};
+
 
 const saveAndUpdateData = (user_id, question_id) => {
   setContent((prevContent) => {
@@ -79,15 +97,45 @@ const saveAndUpdateData = (user_id, question_id) => {
 };
 
 
-  const handlePrevious = (user_id,question_id) => {
-    setActiveQuestion((prev) => Math.max(prev - 1, 0));
-    saveAndUpdateData(user_id,question_id);
-  };
+const handlePrevious = () => {
+  saveAndUpdateData(user_id, data?.questions?.[activeQuestion]?._id);
+  setActiveQuestion((prev) => {
+    const prevQuestionIndex = Math.max(prev - 1, 0);
+    const prevQuestionId = data?.questions?.[prevQuestionIndex]?._id;
+
+    if (prevQuestionId) {
+      fetchLatestAnswer(user_id, prevQuestionId);
+    }
+
+    return prevQuestionIndex;
+  });
+};
+
+// Function to handle question click and fetch new data
+
+const handleQuestionClick = (index) => {
+  saveAndUpdateData(user_id, data?.questions?.[activeQuestion]?._id);
+  setActiveQuestion(index);
+  const questionId = data?.questions?.[index]?._id;
+
+  if (questionId) {
+    fetchLatestAnswer(user_id, questionId);
+  }
+};
 
   const handleNext = () => {
     const question_id = data?.questions?.[activeQuestion]?._id;
     saveAndUpdateData(user_id, question_id);
-    setActiveQuestion((prev) => Math.min(prev + 1, data?.questions?.length - 1));
+    setActiveQuestion((prev) => {
+      const nextQuestionIndex = Math.min(prev + 1, data?.questions?.length - 1);
+      const nextQuestionId = data?.questions?.[nextQuestionIndex]?._id;
+  
+      if (nextQuestionId) {
+        fetchLatestAnswer(user_id, nextQuestionId);
+      }
+  
+      return nextQuestionIndex;
+    });
   };
   
 
