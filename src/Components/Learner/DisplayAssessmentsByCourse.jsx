@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { FaClipboardCheck, FaSpinner, FaExclamationCircle, FaClock, FaFileAlt, FaBookReader } from "react-icons/fa";
 import { FetchAssessmentsWithinCourseOfLearner } from "../../services/FetchAssessmentsWithinCourseOfLearner";
 
@@ -8,9 +8,13 @@ const DisplayAssessmentsByCourse = () => {
 
   const { data: assessments, isLoading, isError, refetch } = FetchAssessmentsWithinCourseOfLearner(userId, courseId);
 
+  console.log("fetched assessments", assessments);
+
   useEffect(() => {
     refetch?.();
   }, [refetch]);
+
+  const navigate  = useNavigate();
 
   if (isLoading) {
     return (
@@ -101,7 +105,11 @@ const DisplayAssessmentsByCourse = () => {
                 </div>
 
                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                  <button className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
+                  <button 
+
+                  onClick={()=>navigate(`/home/learner/instructions/${assessment?.assessmentId?._id}`)}
+                  
+                  className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
                     Start The Assessment
                   </button>
                 </div>

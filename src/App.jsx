@@ -111,7 +111,7 @@ function App() {
         <Route path='home/learner' element={<ProtectedRoute><LearnerLayout /></ProtectedRoute>}>
         <Route index element={<Welcome/>}/>
         <Route path="view-all-courses" element={<UserCourses/>}/>
-        <Route path='instructions' element={<InstructionsPage/>}/>
+        <Route path='instructions/:assessmentId' element={<InstructionsPage/>}/>
         <Route path='answer-writing/:id' element={<AnswerWritingPage/>}/>
         <Route path='assessment-submission/confirm/:id' element={<ConfirmModal/>}/>
         <Route path='exam/date/learner' element={<LearnerWise/>}/>
