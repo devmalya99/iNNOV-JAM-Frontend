@@ -17,7 +17,7 @@ import {
 import DeleteAssessmentModal from "../DeleteAssessment/DeleteAssessmentModal";
 import ViewAssessmentDetails from "../ViewAssessmentDetails/ViewAssessmentDetails";
 
-import ViewAssignedLearnerModal from "./AssignLearnerModal"
+import ViewAssignedLearnerModal from "./ViewAssignedLearnerModal"
 
 import AssignLearnerModal from "./AssignLearnerModal";
 
@@ -110,7 +110,7 @@ export default function ViewCourseAssessments() {
         />
       )}
 
-      {/* Assign Learners Modal */}
+      {/* Open modal to Assign Learners */}
       {openModalToAssignLearners && (
         <AssignLearnerModal
           selectedAssessmentId={selectedAssessmentId}
@@ -118,7 +118,7 @@ export default function ViewCourseAssessments() {
         />
       )}
 
-      {/* View Learners */}
+      {/* View Assigned Learners to a specific assessment */}
       {
       openViewLearnersModal && (
     <ViewAssignedLearnerModal

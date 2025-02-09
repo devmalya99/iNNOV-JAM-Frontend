@@ -25,7 +25,7 @@ const AssignLearnerModal = ({ selectedAssessmentId, setOpenModalToAssignLearners
 
       if (response.status === 200) {
         alert("Learners successfully assigned!"); // Show success message
-        setOpenAssignLearnersModal(false); // Close modal
+        setOpenModalToAssignLearners(false); // Close modal
       } else {
         alert("Failed to assign learners. Please try again.");
       }

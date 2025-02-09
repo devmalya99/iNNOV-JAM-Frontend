@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { FaTimes, FaUser } from "react-icons/fa";
 import { useParams } from "react-router";
 import axios from "axios";
-import { FetchAssignedLearnersByAssessments } from "../../services/FetchAssignedLearnersByAssessment";
+import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssignedLearnersByAssessment";
 
 
-const ViewAssignedLearnerModal = ( selectedAssessmentId, setOpenViewLearnersModal ) => {
+const ViewAssignedLearnerModal = ( {selectedAssessmentId, setOpenViewLearnersModal} ) => {
 
   
   const { data: users, isLoading,refetch } = FetchAssignedLearnersByAssessments(selectedAssessmentId);
@@ -48,14 +48,14 @@ const ViewAssignedLearnerModal = ( selectedAssessmentId, setOpenViewLearnersModa
                 <li key={user._id} className="flex flex-col p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
                   <div className="flex items-center gap-3">
                     <FaUser className="text-blue-500 dark:text-blue-300" />
-                    <span className="text-gray-800 dark:text-gray-200 font-semibold">{user?.name}</span>
+                    <span className="text-gray-800 dark:text-gray-200 font-semibold">{user?.userId?.name}</span>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{user?.email}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{user?.userId?.email}</p>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-center text-gray-500 dark:text-gray-400">No users assigned.</p>
+            <p className="text-center text-gray-500 dark:text-gray-400">No learner assigned yet.</p>
           )}
         </div>
 
