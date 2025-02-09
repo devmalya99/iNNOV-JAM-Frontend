@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaTimes, FaUser } from "react-icons/fa";
 import { useParams } from "react-router";
 import axios from "axios";
-import { FetchAllLearnersByCourse } from "../../services/FetchLearnersByCourse";
+import { FetchAllLearnersByCourse } from "../../../services/FetchLearnersByCourse";
 
-const AssignLearnerModal = ({ selectedAssessmentId, setOpenAssignLearnersModal } ) => {
+const AssignLearnerModal = ({ selectedAssessmentId, setOpenModalToAssignLearners } ) => {
   const { courseid } = useParams();
-  const { data: users, isLoading } = FetchAllLearnersByCourse(courseid);
+  const { data: users, isLoading,refetch } = FetchAllLearnersByCourse(courseid);
+
+  useEffect(() => {
+      refetch();
+    }, [refetch]);
 
   const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -44,7 +48,7 @@ const AssignLearnerModal = ({ selectedAssessmentId, setOpenAssignLearnersModal }
           <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
             Assigned Users for Assessment
           </h2>
-          <button onClick={() => setOpenAssignLearnersModal(false)} className="text-gray-500 hover:text-red-600">
+          <button onClick={() => setOpenModalToAssignLearners(false)} className="text-gray-500 hover:text-red-600">
             <FaTimes size={20} />
           </button>
         </div>
@@ -79,7 +83,7 @@ const AssignLearnerModal = ({ selectedAssessmentId, setOpenAssignLearnersModal }
             Assign Learners
           </button>
           <button
-            onClick={() => setOpenAssignLearnersModal(false)}
+            onClick={() => setOpenModalToAssignLearners(false)}
             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
           >
             Close

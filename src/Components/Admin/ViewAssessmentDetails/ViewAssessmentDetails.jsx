@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaClipboardList } from "react-icons/fa";
 import { IoMdBook } from "react-icons/io";
 import { motion } from "framer-motion";
 import {FetchAssessmentsDetails} from "../../../services/FetchAssessmentDetails";
 
 const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
-  const { data: AssessmentDetails, isLoading, error } = FetchAssessmentsDetails(assessmentId);
+  const { data: AssessmentDetails, isLoading, error , refetch} = FetchAssessmentsDetails(assessmentId);
+
+    
+  useEffect(() => {
+      refetch();
+    }, [refetch]);
+
 
   console.log("AssessmentDetails", AssessmentDetails);
 
@@ -30,7 +36,8 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+    <div className="fixed inset-0 flex items-center justify-center
+     bg-black/50 backdrop-blur-sm z-50">
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}

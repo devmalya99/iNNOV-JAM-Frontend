@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios"; // Ensure axios is imported
 // import { Pencil, Trash2, Upload, FileText, Loader2 } from 'lucide-react';
 import { useParams } from 'react-router';
@@ -12,7 +12,12 @@ import CreateExamModal from './CreateExamModal';
 
 const ViewAssessmentFiles = () => {
   const { courseid } = useParams();
-  const { data, isLoading } = useFetchAllAssessmentFiles(courseid);
+  const { data, isLoading, refetch } = useFetchAllAssessmentFiles(courseid);
+   
+  useEffect(() => {
+      refetch();
+    }, [refetch]);
+  
   const [showCreateAssessmentModal, setShowCreateAssessmentModal] = useState(false);
 const [selectedAssessment, setSelectedAssessment] = useState(null);
 

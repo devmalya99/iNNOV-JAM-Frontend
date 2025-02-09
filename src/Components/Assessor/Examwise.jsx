@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router';
 import { useFetchAllAssessments } from '../../services/fetchAllAssessments';
 
@@ -8,7 +8,13 @@ const Examwise = () => {
     
   ];
 
-  const {data} = useFetchAllAssessments();
+  const {data,isLoading,refetch} = useFetchAllAssessments();
+
+  useEffect(() => {
+      refetch();
+    }, [refetch]);
+
+
 
   const context = {
     cs: data?.find((item) => item.assessment_type === 'case_study')?._id,

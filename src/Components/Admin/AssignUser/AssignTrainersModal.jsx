@@ -9,7 +9,10 @@ const AssignTrainersModal = ({ open, setOpen }) => {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const { data: TrainersData = [], isLoading, refetch } = useUsersByRole("trainer");
   const {selectedTrainers,setSelectedTrainers,isOpenAssignModal,setOpenAssignModal,}=useCourseStore();
-
+  
+  useEffect(() => {
+      refetch();
+    }, [refetch]);
 
   const handleSelectAll = () => {
     if (isAllSelected) {

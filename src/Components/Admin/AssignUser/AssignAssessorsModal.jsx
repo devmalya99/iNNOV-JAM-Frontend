@@ -32,7 +32,7 @@ const AssignAssessorsModal = () => {
 
   useEffect(() => { 
     refetch();
-  },[])
+  },[refetch])
 
   //console.log("AssessorsData", AssessorsData);
 

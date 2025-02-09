@@ -22,7 +22,7 @@ const AssignLearnersModal = () => {
   // Fetch latest learners' data when the component mounts
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   // Function to handle "Select All" functionality
   const handleSelectAll = () => {

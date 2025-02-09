@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { handleSuccess } from "../../../utils/toast";
 import handleCreateUsers from "../../../services/handleCreateUsers";
 import { useFetchAllCourses } from "../../../services/FetchAllCourses";
@@ -11,7 +11,12 @@ const CreateUsers = () => {
 
   const roles = ['admin', 'learner', 'assessor', 'trainer']
 
-  const { data: courses, isLoading, isError, error } = useFetchAllCourses();
+  const { data: courses, isLoading, isError, error,refetch } = useFetchAllCourses();
+
+   useEffect(() => {
+       refetch();
+     }, [refetch]);
+    
 
   // -------------------------------------------------
   // Course code selection

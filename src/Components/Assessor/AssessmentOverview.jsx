@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFetchAllCourses } from '../../services/FetchAllCourses'; // Assuming your custom hook is in the 'hooks.js' file
 import { Link } from 'react-router';
 
 const CourseResultsTable = () => {
   // Using the custom hook to fetch courses data
-  const { data, isLoading, isError, error } = useFetchAllCourses();
+  const { data, isLoading, isError, error, refetch } = useFetchAllCourses();
+  
+   useEffect(() => {
+       refetch();
+     }, [refetch]);
 
   // Helper function to format date
   const formatDate = (date) => {

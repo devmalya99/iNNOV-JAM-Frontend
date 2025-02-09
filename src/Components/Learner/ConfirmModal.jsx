@@ -9,7 +9,12 @@ const ConfirmModal = () => {
   const navigate = useNavigate(); // Initialize useNavigate
   const { id } = useParams(); // Fetch the id from the UR
 
-  const { data } = useFetchAssessmentData(id); // Fetch assessment data
+  const { data, refetch } = useFetchAssessmentData(id); // Fetch assessment data
+    
+  useEffect(() => {
+      refetch();
+    }, [refetch]);
+ 
   const [isLoading, setIsLoading] = useState(false); // Loading state for spinner
   
   const [currentDummyIndex, setCurrentDummyIndex] = useState(0);

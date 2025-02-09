@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaClipboardList } from "react-icons/fa";
 import { IoMdBook } from "react-icons/io";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router";
-import { FetchAllAssessmentsByCourse } from "../../services/fetchAllAssessmentsByCourse";
+import { FetchAllAssessmentsByCourse } from "../../../services/fetchAllAssessmentsByCourse";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -14,10 +14,10 @@ import {
   Trash2,
   Users,
 } from "lucide-react";
-import DeleteAssessmentModal from "./DeleteAssessment/DeleteAssessmentModal";
-import ViewAssessmentDetails from "./ViewAssessmentDetails/ViewAssessmentDetails";
+import DeleteAssessmentModal from "../DeleteAssessment/DeleteAssessmentModal";
+import ViewAssessmentDetails from "../ViewAssessmentDetails/ViewAssessmentDetails";
 
-import ViewAssignedLearnerModal from "./ViewAssignedLearnerModal"
+import ViewAssignedLearnerModal from "./AssignLearnerModal"
 
 import AssignLearnerModal from "./AssignLearnerModal";
 
@@ -27,7 +27,14 @@ export default function ViewCourseAssessments() {
     data: assessments,
     isLoading,
     error,
+    refetch
   } = FetchAllAssessmentsByCourse(courseid);
+
+  useEffect(() => {
+      refetch();
+    }, [refetch]);
+
+
   console.log("displaying assessments", assessments);
 
   const [selectedAssessment, setSelectedAssessment] = useState(null);
@@ -36,7 +43,7 @@ export default function ViewCourseAssessments() {
 
   const [openAssessmentModal, setOpenAssessmentModal] = useState(false);
 
-  const [openAssignLearnersModal, setOpenAssignLearnersModal] = useState(false);
+  const [openModalToAssignLearners, setOpenModalToAssignLearners] = useState(false);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
 
   const [openViewLearnersModal, setOpenViewLearnersModal] = useState(false);
@@ -46,7 +53,7 @@ export default function ViewCourseAssessments() {
   }
   const handleAssignLearner = (assessment) => {
     setSelectedAssessmentId(assessment?._id);
-    setOpenAssignLearnersModal(true);
+    setOpenModalToAssignLearners(true);
   };
 
   // Add this to your delete button onClick
@@ -95,7 +102,7 @@ export default function ViewCourseAssessments() {
         />
       )}
 
-      {/* Open Assessment Modal */}
+      {/* Open Assessment question and answers Modal */}
       {openAssessmentModal && (
         <ViewAssessmentDetails
           assessmentId={selectedAssessment?._id}
@@ -104,10 +111,10 @@ export default function ViewCourseAssessments() {
       )}
 
       {/* Assign Learners Modal */}
-      {openAssignLearnersModal && (
+      {openModalToAssignLearners && (
         <AssignLearnerModal
           selectedAssessmentId={selectedAssessmentId}
-          setOpenAssignLearnersModal={setOpenAssignLearnersModal}
+          setOpenModalToAssignLearners={setOpenModalToAssignLearners}
         />
       )}
 

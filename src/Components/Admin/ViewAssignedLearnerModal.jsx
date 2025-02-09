@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaTimes, FaUser } from "react-icons/fa";
 import { useParams } from "react-router";
@@ -9,9 +9,11 @@ import { FetchAssignedLearnersByAssessments } from "../../services/FetchAssigned
 const ViewAssignedLearnerModal = ( selectedAssessmentId, setOpenViewLearnersModal ) => {
 
   
-  const { data: users, isLoading } = FetchAssignedLearnersByAssessments(selectedAssessmentId);
+  const { data: users, isLoading,refetch } = FetchAssignedLearnersByAssessments(selectedAssessmentId);
 
-  
+  useEffect(() => {
+      refetch();
+    }, [refetch]);
 
   console.log("assigned learners", users);
 

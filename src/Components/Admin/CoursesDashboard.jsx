@@ -18,14 +18,22 @@ import DeleteConfirmationModal from "./DeleteCourseModal";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const CoursesDashboard = () => {
-  const { data: courses, isLoading, isError, error } = useFetchAllCourses();
+  const {
+    data: courses,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useFetchAllCourses();
   const [filteredCourses, setFilteredCourses] = useState([]);
   const navigate = useNavigate();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-const [courseToDelete, setCourseToDelete] = useState(null);
+  const [courseToDelete, setCourseToDelete] = useState(null);
 
-
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   useEffect(() => {
     if (courses) {
@@ -38,17 +46,18 @@ const [courseToDelete, setCourseToDelete] = useState(null);
     setIsDeleteModalOpen(true);
   };
 
-
   const confirmDelete = async () => {
     if (!courseToDelete) return;
-    
+
     try {
-      const response = await axios.delete(`${VITE_API_URL}/api/courses/remove/${courseToDelete._id}`);
-  
+      const response = await axios.delete(
+        `${VITE_API_URL}/api/courses/remove/${courseToDelete._id}`
+      );
+
       if (response.status === 200) {
         handleSuccess({ success: "Course deleted successfully!" });
-        setFilteredCourses((prevCourses) => 
-          prevCourses.filter(course => course._id !== courseToDelete._id)
+        setFilteredCourses((prevCourses) =>
+          prevCourses.filter((course) => course._id !== courseToDelete._id)
         );
       }
     } catch (error) {
@@ -59,9 +68,6 @@ const [courseToDelete, setCourseToDelete] = useState(null);
       setCourseToDelete(null);
     }
   };
-
-
-
 
   if (isLoading) {
     return (
@@ -93,8 +99,6 @@ const [courseToDelete, setCourseToDelete] = useState(null);
 
   return (
     <div className="p-8 h-[calc(100vh-72px)] overflow-y-auto bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-      
-
       {/* Display delete course modal */}
       {isDeleteModalOpen && (
         <DeleteConfirmationModal
@@ -104,8 +108,7 @@ const [courseToDelete, setCourseToDelete] = useState(null);
           itemName="course"
         />
       )}
-      
-      
+
       <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
         Explore All Courses
       </h1>

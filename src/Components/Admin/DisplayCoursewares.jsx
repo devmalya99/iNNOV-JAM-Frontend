@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useFetchAllCoursewares } from '../../services/fetchAllCoursewares';
 import { File, FileEdit, Trash2, ExternalLink, RefreshCw, AlertCircle } from 'lucide-react';
 
 const CoursewareList = () => {
   const { data, isLoading, isError, error, refetch } = useFetchAllCoursewares();
+
+
+    useEffect(() => {
+        refetch();
+      }, [refetch]);  
 
   const handleEdit = (id) => {
     // Implement edit functionality
