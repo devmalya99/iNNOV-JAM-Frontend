@@ -112,7 +112,7 @@ function App() {
         <Route index element={<Welcome/>}/>
         <Route path="view-all-courses" element={<UserCourses/>}/>
         <Route path='instructions/:assessmentId' element={<InstructionsPage/>}/>
-        <Route path='answer-writing/:id' element={<AnswerWritingPage/>}/>
+        <Route path='answer-writing/:assessmentId' element={<AnswerWritingPage/>}/>
         <Route path='assessment-submission/confirm/:id' element={<ConfirmModal/>}/>
         <Route path='exam/date/learner' element={<LearnerWise/>}/>
         <Route path='assessments/:userId/:courseId' element={<DisplayAssessmentsByCourse/>}/> 

@@ -9,6 +9,7 @@ import { useFetchAssessmentData } from "../../../hooks/useFetchAssessmentData";
 
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
+import { FaArrowLeft, FaArrowRight, FaSave, FaSpinner } from "react-icons/fa";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 function AnswerWritingPage() {
@@ -17,30 +18,31 @@ function AnswerWritingPage() {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
-  const activeId = localStorage.getItem("assessment").id;
+  
 
-  const { id } = useParams();
+  const { assessmentId } = useParams();
+  console.log("assessment assessmentId is", assessmentId);
 
-  //if active exam exists in local storage get the item and make it active id
-  //if active exam does not exist in local storage make PARAMS ID active id AND STORE IT
+  //if active exam exists in local storage get the item and make it active assessmentId
+  //if active exam does not exist in local storage make PARAMS assessmentId active assessmentId AND STORE IT
 
   const getPlainText = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
   };
 
-  //console.log("active id is",id)
+  //console.log("active assessmentId is",assessmentId)
 
   //call the useFetchAssessmentData hook to fetch data
   const { data, refetch, error, isLoading, isError } =
-    useFetchAssessmentData(id);
+    useFetchAssessmentData(assessmentId);
 
   console.log("fetched assessment data", data);
 
-  const saveAnswer = async (assessmentId, questionId, studentAnswer) => {
+  const saveAnswer = async (assessmentId, questionassessmentId, studentAnswer) => {
     try {
       await axios.put(
-        `${VITE_API_URL}/api/assessments/${assessmentId}/questions/${questionId}`,
+        `${VITE_API_URL}/api/assessments/${assessmentassessmentId}/questions/${questionassessmentId}`,
         { student_answer: studentAnswer }
       );
       //handleSuccess({ success: "Answer saved successfully" });
@@ -53,15 +55,15 @@ function AnswerWritingPage() {
 
   const saveAndUpdateData = () => {
     const studentAnswer = getPlainText(content); // Extract plain text from HTML content
-    const questionId = data?.data?.[activeQuestion]._id;
+    const questionassessmentId = data?.data?.[activeQuestion]._assessmentId;
     console.log("before sending data to database", {
-      id,
-      questionId,
+      assessmentId,
+      questionassessmentId,
       studentAnswer,
     });
 
-    if (questionId && studentAnswer) {
-      saveAnswer(id, questionId, studentAnswer);
+    if (questionassessmentId && studentAnswer) {
+      saveAnswer(assessmentId, questionassessmentId, studentAnswer);
     }
 
     setContent("");
@@ -79,153 +81,140 @@ function AnswerWritingPage() {
 
   const handleSubmit=()=>{
     saveAndUpdateData();
-    navigate(`/home/learner/assessment-submission/confirm/${id}`);
+    navigate(`/home/learner/assessment-submission/confirm/${assessmentId}`);
   }
 
-  // useEffect(() => {
-  //   // Trigger fullscreen when this component is mounted
-  //   const handleFullScreen = () => {
-  //     if (document.documentElement.requestFullscreen) {
-  //       document.documentElement.requestFullscreen();
-  //     } else if (document.documentElement.mozRequestFullScreen) {
-  //       // Firefox
-  //       document.documentElement.mozRequestFullScreen();
-  //     } else if (document.documentElement.webkitRequestFullscreen) {
-  //       // Chrome, Safari and Opera
-  //       document.documentElement.webkitRequestFullscreen();
-  //     } else if (document.documentElement.msRequestFullscreen) {
-  //       // IE/Edge
-  //       document.documentElement.msRequestFullscreen();
-  //     }
-  //   };
-
-  //   handleFullScreen(); // Trigger fullscreen when the page loads
-
-  //   // Clean up when the component is unmounted or leaves fullscreen
-  //   return () => {
-  //     if (document.exitFullscreen) {
-  //       document.exitFullscreen();
-  //     } else if (document.mozCancelFullScreen) {
-  //       document.mozCancelFullScreen(); // Firefox
-  //     } else if (document.webkitExitFullscreen) {
-  //       document.webkitExitFullscreen(); // Safari and Chrome
-  //     } else if (document.msExitFullscreen) {
-  //       document.msExitFullscreen(); // IE/Edge
-  //     }
-  //   };
-  // }, []);
-
-  //Final function to send data to AI model for evaluation
-
+  
   return (
-    <div className="grid grid-cols-12 dark:bg-gray-900 h-[calc(100vh-80px)]">
+    <div className="grid grid-cols-12 dark:bg-gray-900 h-[calc(100vh-70px)] gap-4 p-4">
       {isError && (
-        <div className="text-red-500">Error fetching data: {error.message}</div>
-      )}
-
-      {/* Case Study box in left */}
-      {data?.assessment_type === "case_study" && (
-        <div className="box-1 col-span-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg my-1 shadow-md p-6 mx-1 overflow-y-auto">
-          {/* Title */}
-          <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
-            Case Study Context
-          </h2>
-          {/* Content */}
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-            {isLoading ? "Loading..." : data?.case_study_context}
-          </p>
+        <div className="col-span-12 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center text-red-700 dark:text-red-400">
+          <FaExclamationCircle className="mr-2" />
+          Error fetching data: {error.message}
         </div>
       )}
 
-      {/* Answer Writing box in middle */}
-
-      <div
-        className={`box-2 leftBox1  ${
-          data?.assessment_type === "case_study" ? "col-span-7" : "col-span-10"
-        }  h-[calc(100vh-80px)] m-1`}
-      >
-        <div className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-6 h-full">
-          <Heading subject={data?.assessment_type}/>
-
-          {/* Question Box */}
-          <div className="border-2 p-2 bg-gradient-to-r from-cyan-500 to-blue-500 dark:from-cyan-700 dark:to-blue-700 backdrop-blur-lg my-4 rounded-xl font-semibold flex justify-between">
-            <p className="text-gray-100 text-md">
-              {isLoading
-                ? "Loading..."
-                : data?.data?.[activeQuestion].question_number}
-              {". "}
-              {isLoading ? "Loading..." : 
-              data?.data?.[activeQuestion].question}
-            </p>
+      {/* Case Study Section */}
+      {data?.assessment_type === "case_study" && (
+        <div className="col-span-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+              Case Study Context
+            </h2>
           </div>
-
-          {/* Instruction Box */}
-          <div className="border-2 px-2 py-1 bg-gradient-to-r from-cyan-200 to-blue-100 dark:from-cyan-800 dark:to-blue-800 backdrop-blur-lg my-2 rounded-xl font-bold flex justify-between">
-            <p className="text-sm text-gray-800 dark:text-gray-200">
-              {isLoading
-                ? "Loading..."
-                : data?.data?.[activeQuestion].question_instruction}
-            </p>
-          </div>
-
-          {/* Text Editor */}
-
-          <div className="max-w-full  mb-auto">
-            <JoditEditor
-              ref={editor}
-              value={
-                data?.data?.[activeQuestion]?.student_answer
-                  ? data?.data?.[activeQuestion]?.student_answer
-                  : content
-              }
-              tabIndex={1} // tabIndex of textarea
-              onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-              onChange={(newContent) => setContent(newContent)}
-            />
-          </div>
-
-          {/* Navigation */}
-          <div className="flex flex-col mt-auto justify-end">
-            <div className="flex justify-between items-center p-2 bg-white/30 rounded-md text-white font-bold hover:bg-white/40 transition-all duration-300 ease-in-out cursor-pointer">
-              <div className="button-style" onClick={() => handlePrevious()}>
-                Previous
+          <div className="p-4 overflow-y-auto max-h-[calc(100vh-200px)] prose dark:prose-invert">
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <FaSpinner className="animate-spin text-gray-400" />
               </div>
+            ) : (
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                {data?.case_study_context}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
 
-              <div className="button-style" onClick={() => handleNext()}>
-                Next
-              </div>
+      {/* Main Answer Section */}
+      <div className={`${data?.assessment_type === "case_study" ? "col-span-7" : "col-span-10"} flex flex-col h-[calc(100vh-90px)]`}>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full">
+          {/* Header */}
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+            <Heading subject={data?.assessment_type} />
+          </div>
+
+          <div className="p-4 flex-grow flex flex-col space-y-4">
+            {/* Question Display */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 rounded-xl p-4 shadow-md">
+              <p className="text-white text-lg font-medium">
+                {isLoading ? (
+                  <FaSpinner className="animate-spin" />
+                ) : (
+                  <>
+                    <span className="font-bold">Question {data?.questions?.[activeQuestion].question_number}:</span>{" "}
+                    {data?.questions?.[activeQuestion].question}
+                  </>
+                )}
+              </p>
+            </div>
+
+            {/* Instruction Box */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl p-3">
+              <p className="text-sm text-blue-800 dark:text-blue-200">
+                {isLoading ? "Loading..." : data?.questions?.[activeQuestion].question_instruction}
+              </p>
+            </div>
+
+            {/* Editor */}
+            <div className="flex-grow">
+              <JoditEditor
+                ref={editor}
+                value={data?.data?.[activeQuestion]?.student_answer ?? content}
+                tabIndex={1}
+                onBlur={(newContent) => setContent(newContent)}
+                onChange={(newContent) => setContent(newContent)}
+                className="h-full"
+              />
+            </div>
+
+            {/* Navigation */}
+            <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700">
+              <button
+                onClick={handlePrevious}
+                className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <FaArrowLeft /> <span>Previous</span>
+              </button>
+
+              
+
+              <button
+                onClick={handleNext}
+                className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <span>Next</span> <FaArrowRight />
+              </button>
             </div>
           </div>
-
-          
         </div>
       </div>
 
-      {/* ANswer Tracker Component */}
-
-      <div className="box-3 col-span-2  p-1 mx-1 dark:bg-gray-800 bg-gray-100 backdrop-blur-lg rounded-lg shadow-md max-h-[calc(100vh-80px)] ">
-        <Headbar />
-
-        <div className="grid grid-cols-5  gap-2 p-2 ">
-          {data?.data?.map((item, index) => (
-            <div
-              key={item._id}
-              className="border-2 flex justify-center items-center px-2 py-1 bg-white/65 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 ease-in-out dark:shadow-gray-400  cursor-pointer"
-              onClick={() => {
-                setActiveQuestion(Number(index));
-                saveAndUpdateData();
-                //console.log(activeQuestion)
-              }}
-            >
-              <span className="text-lg font-medium text-gray-700">
+      {/* Answer Tracker */}
+      <div className="col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+          <h3 className="font-semibold text-gray-800 dark:text-gray-100">Question Navigator</h3>
+        </div>
+        
+        <div className="p-4 flex-grow">
+          <div className="grid grid-cols-4 gap-2">
+            {data?.questions?.map((item, index) => (
+              <button
+                key={item._id}
+                onClick={() => {
+                  setActiveQuestion(Number(index));
+                  saveAndUpdateData();
+                }}
+                className={`h-10 flex items-center justify-center rounded-lg font-medium transition-all
+                  ${activeQuestion === index 
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  }`}
+              >
                 {item.question_number}
-              </span>
-            </div>
-          ))}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Footer */}
-        <FooterSec className="mt-auto " />
+        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <button
+                onClick={handleSubmit}
+                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center space-x-2"
+              >
+                <FaSave /> <span>Save & Submit</span>
+              </button>
+        </div>
       </div>
     </div>
   );

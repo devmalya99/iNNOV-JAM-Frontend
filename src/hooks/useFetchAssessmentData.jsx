@@ -4,20 +4,24 @@ import axios from 'axios';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 // Fetch files from the backend
-const fetchAssessmentData = async (id) => {
-  console.log("id is ",id);
+const fetchAssessmentData = async (assessmentId) => {
+  console.log("assessmentId is ",assessmentId);
+
+  // http://192.168.1.40:7000/api/assessments/getquestionsforassessment/67a861fc722aad0535f1fdb9
+
+
   const { data } = await axios.get(
-    `${VITE_API_URL}/api/assessments/${id}`
+    `${VITE_API_URL}/api/assessments/getquestionsforassessment/${assessmentId}`
   );
   console.log("data is ",data);
   return data;
 };
 
 // Custom hook to use React Query for fetching files
-export const useFetchAssessmentData = (id) => {
+export const useFetchAssessmentData = (assessmentId) => {
     return useQuery({
         queryKey: ["assessmentData"],  // Query key
-        queryFn:() => fetchAssessmentData(id),  // Fetch function
+        queryFn:() => fetchAssessmentData(assessmentId),  // Fetch function
         //refetchInterval: 5000,         // Automatically fetch every 5 seconds
         refetchOnWindowFocus: true,    // Refetch when the window gains focus
         retry: 1,                      // Retry failed requests once

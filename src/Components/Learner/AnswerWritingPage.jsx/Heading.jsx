@@ -17,9 +17,7 @@ function Heading({subject}) {
           <span className=" py-2  mx-2 text-sm md:text-lg lg:text-xl bg-white/15 backdrop-blur-lg font-semibold border-2 px-6 rounded-xl text-gray-800">
             {subject? capitalizeWords(subject):"Subject"}
           </span>
-          <span className=" py-2  mx-2 text-lg  bg-white/15 backdrop-blur-lg font-semibold border-2 px-4 rounded-xl text-gray-800">
-            1st Sem
-          </span>
+          
         </div>
 
         {/* Clock  */}
