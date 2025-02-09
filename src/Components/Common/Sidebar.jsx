@@ -111,7 +111,7 @@ const Sidebar = () => {
     {
       name: "Enrolled Courses",
       icon: <BookAIcon className="text-2xl text-green-600" />,
-      link: "learner/view-all-courses",
+      link: "/home/learner/view-all-courses",
       roles: ["learner"],
     },
     

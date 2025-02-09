@@ -43,6 +43,7 @@ import ViewCourseAssessments from './Components/Admin/AssessmentManagement/ViewC
 import CreateUsers from './Components/Admin/Create User/CreateUsers'
 import UserCourses from './Components/Common/UserCourses'
 import ViewAssessmentFiles from './Components/Admin/Assessment Creation/ViewAssessmentFiles'
+import DisplayAssessmentsByCourse from './Components/Learner/DisplayAssessmentsByCourse'
 function App() {
 
   return (
@@ -114,6 +115,8 @@ function App() {
         <Route path='answer-writing/:id' element={<AnswerWritingPage/>}/>
         <Route path='assessment-submission/confirm/:id' element={<ConfirmModal/>}/>
         <Route path='exam/date/learner' element={<LearnerWise/>}/>
+        <Route path='assessments/:userId/:courseId' element={<DisplayAssessmentsByCourse/>}/> 
+        
         </Route>
         
 
