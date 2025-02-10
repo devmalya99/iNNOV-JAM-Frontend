@@ -152,10 +152,17 @@ const handleQuestionClick = (index) => {
   };
   
 
-  const handleSubmit=()=>{
-    saveAndUpdateData();
-    navigate(`/home/learner/assessment-submission/confirm/${assessmentId}`);
-  }
+  const handleSubmit =  (id) => {
+    
+      // Save the last answer before submitting
+      saveAndUpdateData(user_id, data?.assessmentdata?.questions?.[activeQuestion]?._id);
+  
+      
+      // Navigate to the confirmation page
+      navigate(`/home/learner/assessment-submission/confirm/${id}`);
+    
+  };
+  
 
   
   return (
@@ -285,7 +292,7 @@ const handleQuestionClick = (index) => {
 
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
         <button
-                onClick={handleSubmit}
+                onClick={()=>handleSubmit(data?.assigned?._id)}
                 className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center space-x-2"
               >
                 <FaSave /> <span>Save & Submit</span>
