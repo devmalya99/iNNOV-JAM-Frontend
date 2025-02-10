@@ -1,15 +1,22 @@
-import React, { useEffect } from 'react';
-import { FetchAssessmentResultInDetails } from '../../services/Assessor/FetchAssessmentResultInDetails';
-import { useParams } from 'react-router';
-import { Loader2 } from 'lucide-react';
+import React, { useEffect } from "react";
+import { FetchAssessmentResultInDetails } from "../../services/Assessor/FetchAssessmentResultInDetails";
+import { useNavigate, useParams } from "react-router";
+import { ArrowBigLeftIcon, Loader2 } from "lucide-react";
+import { BsBack } from "react-icons/bs";
 
 const ViewCourseResultDetailed = () => {
   const { courseId, assessmentId } = useParams();
-  const { data: assessmentResult, isLoading, refetch } = FetchAssessmentResultInDetails(assessmentId);
+  const {
+    data: assessmentResult,
+    isLoading,
+    refetch,
+  } = FetchAssessmentResultInDetails(assessmentId);
 
   useEffect(() => {
     refetch();
   }, [refetch]);
+
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -38,17 +45,34 @@ const ViewCourseResultDetailed = () => {
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-50 dark:bg-gray-700">
-                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">#</th>
-                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Student Name</th>
-                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Total Marks</th>
-                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Score</th>
-                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Attempted</th>
-                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Total Questions</th>
+                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                    #
+                  </th>
+                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                    Student Name
+                  </th>
+                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                    Total Marks
+                  </th>
+                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                    Score
+                  </th>
+                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                    Attempted
+                  </th>
+
+                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                    Total Questions
+                  </th>
+
+                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                    View Result
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {assessmentResult?.result?.map((student, index) => (
-                  <tr 
+                  <tr
                     key={student.user_id}
                     className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
@@ -59,7 +83,9 @@ const ViewCourseResultDetailed = () => {
                       {student.student_name}
                     </td>
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
-                      <span className="font-medium">{student.course_total_marks}</span>
+                      <span className="font-medium">
+                        {student.course_total_marks}
+                      </span>
                     </td>
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
@@ -72,15 +98,33 @@ const ViewCourseResultDetailed = () => {
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
                       {student.total_questions}
                     </td>
+
+                    <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
+                      <button 
+                      className="button-style"
+                      onClick={() => navigate(-1)}>View</button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
+            {/* Back button */}
+
+            <div className="flex bg-blue-500 w-[100px] px-4 py-2 rounded-xl">
+              <ArrowBigLeftIcon className="text-xl"/>
+              <button  onClick={() => navigate(-1)}>
+                Back
+              </button>
+            </div>
+
             {/* Empty State */}
-            {(!assessmentResult?.result || assessmentResult.result.length === 0) && (
+            {(!assessmentResult?.result ||
+              assessmentResult.result.length === 0) && (
               <div className="text-center py-12">
-                <p className="text-gray-500 dark:text-gray-400">No results found</p>
+                <p className="text-gray-500 dark:text-gray-400">
+                  No results found
+                </p>
               </div>
             )}
           </div>
