@@ -13,7 +13,7 @@ const SettingsLayout = () => {
         <Sidebar/>
       <div className='flex right-container flex-grow'>
       <SettingsSidebar />
-       <div className='w-full h-full'>
+       <div className='w-full h-[calc(100vh-80px)]'>
         <TopNavigation/>
         <Outlet/>
        </div>

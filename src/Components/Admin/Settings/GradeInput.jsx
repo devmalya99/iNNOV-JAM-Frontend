@@ -46,7 +46,7 @@ const GradeInput = () => {
   
 
   return (
-    <div className="flex justify-center min-h-screen  py-8">
+    <div className="flex justify-center h-[calc(100vh-80px)]  py-8">
       <div className="max-w-4xl w-full px-6 sm:px-8 lg:px-12">
         {/* Left Section: Form to create grades */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 mb-8">

@@ -16,7 +16,7 @@ const SettingsSidebar = () => {
 
 
   return ( 
-    <div className="flex flex-col w-64 h-screen ml-1 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex flex-col w-64 h-[calc(100vh-80px)] ml-1 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     {/* Sidebar Items Container */}
     <div className="flex flex-col space-y-1 p-4">
       <SidebarItem

@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 
 import { useTheme } from "../../../Context/THemeContext";
+import ThemeSlider from "../Common/ThemeSlider";
 
 const TopNavigation = () => {
   return (
@@ -29,10 +30,8 @@ const TopNavigation = () => {
       </div>
       
       <div className="flex items-center justify-evenly w-1/4 ">
-        <ThemeIcon />
-        <Search />
-        <BellIcon />
-        <UserCircle />
+        
+        <ThemeSlider/>
       </div>
     </div>
   );
