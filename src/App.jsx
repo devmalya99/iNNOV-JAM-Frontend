@@ -44,6 +44,8 @@ import CreateUsers from './Components/Admin/Create User/CreateUsers'
 import UserCourses from './Components/Common/UserCourses'
 import ViewAssessmentFiles from './Components/Admin/Assessment Creation/ViewAssessmentFiles'
 import DisplayAssessmentsByCourse from './Components/Learner/DisplayAssessmentsByCourse'
+import AssessorCourses from './Components/Assessor/Assessor Courses/AssessorCourses'
+import CourseResult from './Components/Assessor/CourseResult'
 function App() {
 
   return (
@@ -100,6 +102,8 @@ function App() {
          {/* Protected Assessor Routes */}
         <Route path='home/assessment' element={<ProtectedRoute><AssessorLayout /></ProtectedRoute>}>
         <Route index element={<AssessmentOverview/>}/>
+        <Route path='view-all-assigned-courses' element={<AssessorCourses/>}/>
+        <Route path='view-course-result/:courseId' element={<CourseResult/>}/>
         
 
         <Route path='exam/date' element={<Examwise/>}/>

@@ -107,12 +107,20 @@ const Sidebar = () => {
       roles: ["admin", "super_admin"],
     },
 
-    // View All the course
+    // View All the courses for learner
     {
       name: "Enrolled Courses",
       icon: <BookAIcon className="text-2xl text-green-600" />,
       link: "/home/learner/view-all-courses",
       roles: ["learner"],
+    },
+
+    // View all assigned course for assessor
+    {
+      name: "Assigned Courses",
+      icon: <BookAIcon className="text-2xl text-green-600" />,
+      link: "/home/assessment/view-all-assigned-courses",
+      roles: ["assessor"],
     },
     
     
@@ -123,12 +131,12 @@ const Sidebar = () => {
       link: "/settings",
       roles: ["super_admin"],
     },
-    {
-      name: "Evaluation Result",
-      icon: <FaRegPenToSquare className="text-2xl text-green-600" />,
-      link: "/home/assessment",
-      roles: [ "assessor"],
-    },
+    // {
+    //   name: "Evaluation Result",
+    //   icon: <FaRegPenToSquare className="text-2xl text-green-600" />,
+    //   link: "/home/assessment",
+    //   roles: [ "assessor"],
+    // },
     
 
   ];
