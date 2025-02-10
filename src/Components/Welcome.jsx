@@ -55,7 +55,7 @@ const Welcome = () => {
             Welcome, {user.name}!
           </h1>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">
-            First Com Academy
+          COL Innov jam
           </p>
         </motion.div>
 

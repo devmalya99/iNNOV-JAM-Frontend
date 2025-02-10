@@ -17,7 +17,7 @@ const Header = ({user}) => {
       {/* Logo and Title */}
       <div className="flex items-center space-x-4">
        {/* <img src={Logo} alt="Logo" className="h-6 sm:h-10  object-contain" /> */}
-        <h2 className=" font-bold tracking-wide text-sm sm:text-md md:text-lg xl:text-2xl">First Com Academy</h2>
+        <h2 className=" font-bold tracking-wide text-sm sm:text-md md:text-lg xl:text-2xl">COL Innov jam</h2>
       </div>
 
       {/* Right side: Profile icon and Theme toggle */}

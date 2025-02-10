@@ -165,8 +165,9 @@ const Sidebar = () => {
       {/* only visible if isSmallScreen */}
       {
         isSmallScreen && (
-          <div className="p-4 flex items-center justify-between bg-green-100 text-white">
-            <img src={Logo} alt="FirstCom Logo" className="h-12 w-auto" />
+          <div className="p-4 flex items-center justify-between border-b  text-white">
+            {/* <img src={Logo} alt="FirstCom Logo" className="h-12 w-auto" /> */}
+            <p className=" text-white ">COL Innov jam</p>
             <button
               className="text-2xl"
               onClick={() => setViewSidebar(false)}

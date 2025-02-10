@@ -21,10 +21,10 @@ const TopNavigation = () => {
     >
       <div className="flex font-serif ">
         <p className="title-text text-3xl text-gray-800">
-          FirstCom
+        COL 
         </p>
         <p className="title-text text-3xl text-green-800">
-          Academy
+        Innov jam
         </p>
       </div>
       
