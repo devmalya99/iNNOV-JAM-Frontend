@@ -236,7 +236,7 @@ const LearnerWise = () => {
                   <button
                     className="relative h-12 w-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
                     onClick={() => setActiveNumber(activeNumber + 1)}
-                    disabled={activeNumber === data?.data?.length - 1}
+                    disabled={activeNumber === data?.studentResponses?.length - 1}
                   >
                     »
                   </button>
