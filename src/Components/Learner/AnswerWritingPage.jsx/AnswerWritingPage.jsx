@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import Heading from "./Heading";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Headbar from "./Headbar";
 import FooterSec from "./FooterSec";
 import JoditEditor from "jodit-react";
@@ -9,7 +9,7 @@ import { useFetchAssessmentData } from "../../../hooks/useFetchAssessmentData";
 
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
-import { FaArrowLeft, FaArrowRight, FaSave, FaSpinner } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaExclamationCircle, FaSave, FaSpinner } from "react-icons/fa";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 function AnswerWritingPage() {
@@ -39,10 +39,23 @@ function AnswerWritingPage() {
   //console.log("active assessmentId is",assessmentId)
 
   //call the useFetchAssessmentData hook to fetch data
-  const { data, refetch, error, isLoading, isError } =
-    useFetchAssessmentData(assessmentId);
+  const { data, refetch, error, isLoading, isError, } =
+    useFetchAssessmentData(assessmentId,user_id);
 
-  console.log("fetched assessment data", data);
+  
+    
+console.log("fetched assessment data", data)
+
+console.log("Assessment Data:", data?.assessmentdata);
+console.log("Assigned Data:", data?.assigned);
+
+
+    useEffect(() => {
+      refetch();
+    }, [refetch]);
+
+
+
 
   const saveAnswer = async (user_id, question_id, studentAnswer) => {
     try {
@@ -98,10 +111,10 @@ const saveAndUpdateData = (user_id, question_id) => {
 
 
 const handlePrevious = () => {
-  saveAndUpdateData(user_id, data?.questions?.[activeQuestion]?._id);
+  saveAndUpdateData(user_id, data?.assessmentdata?.questions?.[activeQuestion]?._id);
   setActiveQuestion((prev) => {
     const prevQuestionIndex = Math.max(prev - 1, 0);
-    const prevQuestionId = data?.questions?.[prevQuestionIndex]?._id;
+    const prevQuestionId = data?.assessmentdata?.questions?.[prevQuestionIndex]?._id;
 
     if (prevQuestionId) {
       fetchLatestAnswer(user_id, prevQuestionId);
@@ -114,9 +127,9 @@ const handlePrevious = () => {
 // Function to handle question click and fetch new data
 
 const handleQuestionClick = (index) => {
-  saveAndUpdateData(user_id, data?.questions?.[activeQuestion]?._id);
+  saveAndUpdateData(user_id, data?.assessmentdata?.questions?.[activeQuestion]?._id);
   setActiveQuestion(index);
-  const questionId = data?.questions?.[index]?._id;
+  const questionId = data?.assessmentdata?.questions?.[index]?._id;
 
   if (questionId) {
     fetchLatestAnswer(user_id, questionId);
@@ -124,11 +137,11 @@ const handleQuestionClick = (index) => {
 };
 
   const handleNext = () => {
-    const question_id = data?.questions?.[activeQuestion]?._id;
+    const question_id = data?.assessmentdata?.questions?.[activeQuestion]?._id;
     saveAndUpdateData(user_id, question_id);
     setActiveQuestion((prev) => {
-      const nextQuestionIndex = Math.min(prev + 1, data?.questions?.length - 1);
-      const nextQuestionId = data?.questions?.[nextQuestionIndex]?._id;
+      const nextQuestionIndex = Math.min(prev + 1, data?.assessmentdata?.questions?.length - 1);
+      const nextQuestionId = data?.assessmentdata?.questions?.[nextQuestionIndex]?._id;
   
       if (nextQuestionId) {
         fetchLatestAnswer(user_id, nextQuestionId);
@@ -177,13 +190,13 @@ const handleQuestionClick = (index) => {
       )}
 
       {/* Main Answer Section */}
-      <div className={`${data?.assessment_type === "case_study" ? "col-span-7" : "col-span-10"} flex flex-col h-[calc(100vh-90px)]`}>
+      <div className={`${data?.assessmentdata?.assessment_type === "case_study" ? "col-span-7" : "col-span-10"} flex flex-col h-[calc(100vh-90px)]`}>
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full">
           {/* Header */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
             <Heading 
-            subject={data?.assessment_type}
-            duration={data?.duration}
+            subject={data?.assessmentdata?.assessment_type}
+            duration={data?.assessmentdata?.duration}
              />
           </div>
 
@@ -195,8 +208,8 @@ const handleQuestionClick = (index) => {
                   <FaSpinner className="animate-spin" />
                 ) : (
                   <>
-                    <span className="font-bold">Question {data?.questions?.[activeQuestion].question_number}:</span>{" "}
-                    {data?.questions?.[activeQuestion].question}
+                    <span className="font-bold">Question {data?.assessmentdata?.questions?.[activeQuestion].question_number}:</span>{" "}
+                    {data?.assessmentdata?.questions?.[activeQuestion].question}
                   </>
                 )}
               </p>
@@ -205,7 +218,7 @@ const handleQuestionClick = (index) => {
             {/* Instruction Box */}
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl p-3">
               <p className="text-sm text-blue-800 dark:text-blue-200">
-                {isLoading ? "Loading..." : data?.questions?.[activeQuestion].question_instruction}
+                {isLoading ? "Loading..." : data?.assessmentdata?.questions?.[activeQuestion].question_instruction}
               </p>
             </div>
 
@@ -213,7 +226,7 @@ const handleQuestionClick = (index) => {
             <div className="flex-grow">
               <JoditEditor
                 ref={editor}
-                value={data?.data?.[activeQuestion]?.student_answer ?? content}
+                value={data?.data?.assessmentdata?.questions?.[activeQuestion]?.student_answer ?? content}
                 tabIndex={1}
                 onBlur={(newContent) => setContent(newContent)}
                 onChange={(newContent) => setContent(newContent)}
@@ -224,7 +237,7 @@ const handleQuestionClick = (index) => {
             {/* Navigation */}
             <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700">
               <button
-                onClick={()=>handlePrevious( data?.questions?.[activeQuestion]?._id)}
+                onClick={()=>handlePrevious( data?.assessmentdata?.questions?.[activeQuestion]?._id)}
                 className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <FaArrowLeft /> <span>Previous</span>
@@ -233,7 +246,7 @@ const handleQuestionClick = (index) => {
               
 
               <button
-                onClick={()=>handleNext(data?.questions?.[activeQuestion]?._id)}
+                onClick={()=>handleNext(data?.assessmentdata?.questions?.[activeQuestion]?._id)}
                 className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <span>Next</span> <FaArrowRight />
@@ -251,7 +264,7 @@ const handleQuestionClick = (index) => {
         
         <div className="p-4 flex-grow">
           <div className="grid grid-cols-4 gap-2">
-            {data?.questions?.map((item, index) => (
+            {data?.assessmentdata?.questions?.map((item, index) => (
               <button
                 key={item._id}
                 onClick={() => {
