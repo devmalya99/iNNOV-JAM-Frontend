@@ -1,11 +1,14 @@
 import React from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { FetchCourseResultData } from '../../services/Assessor/FetchCourseResultData';
 import { Loader2 } from 'lucide-react';
 
 const CourseResult = () => {
     const { courseId } = useParams();
     const { data: resultData, isLoading, error } = FetchCourseResultData(courseId);
+    console.log("resultData", resultData);
+
+    const navigate = useNavigate()
 
     if (isLoading) {
         return (
@@ -66,7 +69,9 @@ const CourseResult = () => {
                                     {item.totalCompleted}
                                 </div>
                                 <div>
-                                    <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors dark:bg-blue-500 dark:hover:bg-blue-600 text-sm">
+                                    <button 
+                                    onClick={() => navigate(`/home/assessment/view-detailed-course-result/${courseId}/${item?.assessmentId}`)}
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors dark:bg-blue-500 dark:hover:bg-blue-600 text-sm">
                                         View Result
                                     </button>
                                 </div>

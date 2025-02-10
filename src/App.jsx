@@ -46,6 +46,7 @@ import ViewAssessmentFiles from './Components/Admin/Assessment Creation/ViewAsse
 import DisplayAssessmentsByCourse from './Components/Learner/DisplayAssessmentsByCourse'
 import AssessorCourses from './Components/Assessor/Assessor Courses/AssessorCourses'
 import CourseResult from './Components/Assessor/CourseResult'
+import ViewCourseResultDetailed from './Components/Assessor/ViewCourseResultDetailed'
 function App() {
 
   return (
@@ -104,7 +105,7 @@ function App() {
         <Route index element={<AssessmentOverview/>}/>
         <Route path='view-all-assigned-courses' element={<AssessorCourses/>}/>
         <Route path='view-course-result/:courseId' element={<CourseResult/>}/>
-        
+        <Route path='view-detailed-course-result/:courseId/:assessmentId' element={<ViewCourseResultDetailed/>}/>
 
         <Route path='exam/date' element={<Examwise/>}/>
         <Route path='exam/date/learner/:id' element={<LearnerWise/>}/>
