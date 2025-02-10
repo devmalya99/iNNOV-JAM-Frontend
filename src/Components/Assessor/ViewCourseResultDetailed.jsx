@@ -12,6 +12,8 @@ const ViewCourseResultDetailed = () => {
     refetch,
   } = FetchAssessmentResultInDetails(assessmentId);
 
+  console.log("assessment result fetched",assessmentResult)
+
   useEffect(() => {
     refetch();
   }, [refetch]);
@@ -102,7 +104,7 @@ const ViewCourseResultDetailed = () => {
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
                       <button 
                       className="button-style"
-                      onClick={() => navigate(-1)}>View</button>
+                      onClick={() => navigate(`/home/assessment/view-learner-result/${assessmentId}/${student.user_id}`)}>View</button>
                     </td>
                   </tr>
                 ))}
