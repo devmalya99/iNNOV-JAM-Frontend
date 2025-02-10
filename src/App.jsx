@@ -14,8 +14,8 @@ import UploadCourseware from './Components/Admin/UploadCourseware'
 import UploadAssesmentPlan from './Components/Admin/UploadAssesmentPlan'
 
 import AssessorLayout from './Components/Assessor/AssessorLayout'
-import AssessmentOverview from './Components/Assessor/AssessmentOverview'
-import Examwise from './Components/Assessor/Examwise'
+
+
 import LearnerWise from './Components/Assessor/LearnerWiseResult/LearnerWise'
 import BookConsultationPage from './Components/BookConsultationPage'
 import ProtectedRoute from './TokenValidation/ProtectedRoute'
@@ -47,6 +47,8 @@ import DisplayAssessmentsByCourse from './Components/Learner/DisplayAssessmentsB
 import AssessorCourses from './Components/Assessor/Assessor Courses/AssessorCourses'
 import CourseResult from './Components/Assessor/CourseResult'
 import ViewCourseResultDetailed from './Components/Assessor/ViewCourseResultDetailed'
+
+
 function App() {
 
   return (
@@ -102,12 +104,10 @@ function App() {
 
          {/* Protected Assessor Routes */}
         <Route path='home/assessment' element={<ProtectedRoute><AssessorLayout /></ProtectedRoute>}>
-        <Route index element={<AssessmentOverview/>}/>
+        
         <Route path='view-all-assigned-courses' element={<AssessorCourses/>}/>
         <Route path='view-course-result/:courseId' element={<CourseResult/>}/>
         <Route path='view-detailed-course-result/:courseId/:assessmentId' element={<ViewCourseResultDetailed/>}/>
-
-        <Route path='exam/date' element={<Examwise/>}/>
         <Route path='exam/date/learner/:id' element={<LearnerWise/>}/>
         </Route>
 

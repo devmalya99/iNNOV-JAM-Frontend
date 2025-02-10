@@ -127,7 +127,10 @@ const ViewCourseResultDetailed = () => {
                 </p>
               </div>
             )}
+
           </div>
+
+          
         </div>
       </div>
     </div>
