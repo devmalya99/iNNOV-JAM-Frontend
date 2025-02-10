@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import Heading from "./Heading";
 import { useEffect, useRef, useState } from "react";
@@ -9,7 +8,13 @@ import { useFetchAssessmentData } from "../../../hooks/useFetchAssessmentData";
 
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
-import { FaArrowLeft, FaArrowRight, FaExclamationCircle, FaSave, FaSpinner } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaArrowRight,
+  FaExclamationCircle,
+  FaSave,
+  FaSpinner,
+} from "react-icons/fa";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 function AnswerWritingPage() {
@@ -20,9 +25,6 @@ function AnswerWritingPage() {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const user_id = user?.id;
-
-
-  
 
   const { assessmentId } = useParams();
   console.log("assessment assessmentId is", assessmentId);
@@ -39,32 +41,30 @@ function AnswerWritingPage() {
   //console.log("active assessmentId is",assessmentId)
 
   //call the useFetchAssessmentData hook to fetch data
-  const { data, refetch, error, isLoading, isError, } =
-    useFetchAssessmentData(assessmentId,user_id);
+  const { data, refetch, error, isLoading, isError } = useFetchAssessmentData(
+    assessmentId,
+    user_id
+  );
 
-  
-    
-console.log("fetched assessment data", data)
+  console.log("fetched assessment data", data);
 
-console.log("Assessment Data:", data?.assessmentdata);
-console.log("Assigned Data:", data?.assigned);
+  console.log("Assessment Data:", data?.assessmentdata);
+  console.log("Assigned Data:", data?.assigned);
 
-
-    useEffect(() => {
-      refetch();
-    }, [refetch]);
-
-
-
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const saveAnswer = async (user_id, question_id, studentAnswer) => {
     try {
       await axios.post(
         `${VITE_API_URL}/api/student-answers/create`,
-        { user_id, 
-          question_id, 
+        {
+          user_id,
+          question_id,
 
-          student_answer:studentAnswer },
+          student_answer: studentAnswer,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -75,98 +75,110 @@ console.log("Assigned Data:", data?.assigned);
     } catch (error) {
       console.error("Error saving data:", error);
     }
-};
+  };
 
-// Function to fetch the latest answer
+  // Function to fetch the latest answer
 
-const fetchLatestAnswer = async (user_id, question_id) => {
-  try {
-    const response = await axios.get(`${VITE_API_URL}/api/student-answers/getanswerbyquestion`, {
-      params: { user_id, question_id },
+  const fetchLatestAnswer = async (user_id, question_id) => {
+    try {
+      const response = await axios.get(
+        `${VITE_API_URL}/api/student-answers/getanswerbyquestion`,
+        {
+          params: { user_id, question_id },
+        }
+      );
+
+      if (response.data && response.data.student_answer) {
+        setContent(response.data.student_answer);
+      } else {
+        setContent(""); // Reset if no answer is found
+      }
+    } catch (error) {
+      console.error("Error fetching latest answer:", error);
+    }
+  };
+
+  const saveAndUpdateData = (user_id, question_id) => {
+    setContent((prevContent) => {
+      const studentAnswer = getPlainText(prevContent);
+      console.log("Saving data:", { user_id, question_id, studentAnswer });
+
+      if (user_id && question_id && studentAnswer) {
+        saveAnswer(user_id, question_id, studentAnswer);
+      }
+
+      return ""; // Reset after saving
     });
+  };
 
-    if (response.data && response.data.student_answer) {
-      setContent(response.data.student_answer);
-    } else {
-      setContent(""); // Reset if no answer is found
+  const handlePrevious = () => {
+    saveAndUpdateData(
+      user_id,
+      data?.assessmentdata?.questions?.[activeQuestion]?._id
+    );
+    setActiveQuestion((prev) => {
+      const prevQuestionIndex = Math.max(prev - 1, 0);
+      const prevQuestionId =
+        data?.assessmentdata?.questions?.[prevQuestionIndex]?._id;
+
+      if (prevQuestionId) {
+        fetchLatestAnswer(user_id, prevQuestionId);
+      }
+
+      return prevQuestionIndex;
+    });
+  };
+
+  // Function to handle question click and fetch new data
+
+  const handleQuestionClick = (index) => {
+    saveAndUpdateData(
+      user_id,
+      data?.assessmentdata?.questions?.[activeQuestion]?._id
+    );
+    setActiveQuestion(index);
+    const questionId = data?.assessmentdata?.questions?.[index]?._id;
+
+    if (questionId) {
+      fetchLatestAnswer(user_id, questionId);
     }
-  } catch (error) {
-    console.error("Error fetching latest answer:", error);
-  }
-};
-
-
-const saveAndUpdateData = (user_id, question_id) => {
-  setContent((prevContent) => {
-    const studentAnswer = getPlainText(prevContent);
-    console.log("Saving data:", { user_id, question_id, studentAnswer });
-
-    if (user_id && question_id && studentAnswer) {
-      saveAnswer(user_id, question_id, studentAnswer);
-    }
-
-    return ""; // Reset after saving
-  });
-};
-
-
-const handlePrevious = () => {
-  saveAndUpdateData(user_id, data?.assessmentdata?.questions?.[activeQuestion]?._id);
-  setActiveQuestion((prev) => {
-    const prevQuestionIndex = Math.max(prev - 1, 0);
-    const prevQuestionId = data?.assessmentdata?.questions?.[prevQuestionIndex]?._id;
-
-    if (prevQuestionId) {
-      fetchLatestAnswer(user_id, prevQuestionId);
-    }
-
-    return prevQuestionIndex;
-  });
-};
-
-// Function to handle question click and fetch new data
-
-const handleQuestionClick = (index) => {
-  saveAndUpdateData(user_id, data?.assessmentdata?.questions?.[activeQuestion]?._id);
-  setActiveQuestion(index);
-  const questionId = data?.assessmentdata?.questions?.[index]?._id;
-
-  if (questionId) {
-    fetchLatestAnswer(user_id, questionId);
-  }
-};
+  };
 
   const handleNext = () => {
     const question_id = data?.assessmentdata?.questions?.[activeQuestion]?._id;
     saveAndUpdateData(user_id, question_id);
     setActiveQuestion((prev) => {
-      const nextQuestionIndex = Math.min(prev + 1, data?.assessmentdata?.questions?.length - 1);
-      const nextQuestionId = data?.assessmentdata?.questions?.[nextQuestionIndex]?._id;
-  
+      const nextQuestionIndex = Math.min(
+        prev + 1,
+        data?.assessmentdata?.questions?.length - 1
+      );
+      const nextQuestionId =
+        data?.assessmentdata?.questions?.[nextQuestionIndex]?._id;
+
       if (nextQuestionId) {
         fetchLatestAnswer(user_id, nextQuestionId);
       }
-  
+
       return nextQuestionIndex;
     });
   };
-  
 
-  const handleSubmit =  (id) => {
-    
-      // Save the last answer before submitting
-      saveAndUpdateData(user_id, data?.assessmentdata?.questions?.[activeQuestion]?._id);
-  
-      
-      // Navigate to the confirmation page
-      navigate(`/home/learner/assessment-submission/confirm/${id}`);
-    
+  const handleSubmit = (id) => {
+    // Save the last answer before submitting
+    saveAndUpdateData(
+      user_id,
+      data?.assessmentdata?.questions?.[activeQuestion]?._id
+    );
+
+    // Navigate to the confirmation page
+    navigate(`/home/learner/assessment-submission/confirm/${id}`);
   };
-  
 
-  
   return (
-    <div className="grid grid-cols-12 dark:bg-gray-900 h-[calc(100vh-70px)] gap-4 p-4">
+    <div className="parent-container fixed inset-0 z-50 grid grid-cols-12 dark:bg-gray-900 gap-4 p-4">
+
+      
+      
       {isError && (
         <div className="col-span-12 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center text-red-700 dark:text-red-400">
           <FaExclamationCircle className="mr-2" />
@@ -175,7 +187,7 @@ const handleQuestionClick = (index) => {
       )}
 
       {/* Case Study Section */}
-      {data?.assessment_type === "case_study" && (
+      {data?.assessmentdata?.assessment_type === "case_study" && (
         <div className="col-span-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden">
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
@@ -189,7 +201,7 @@ const handleQuestionClick = (index) => {
               </div>
             ) : (
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                {data?.case_study_context}
+                {data?.assessmentdata?.case_study_context}
               </p>
             )}
           </div>
@@ -197,14 +209,20 @@ const handleQuestionClick = (index) => {
       )}
 
       {/* Main Answer Section */}
-      <div className={`${data?.assessmentdata?.assessment_type === "case_study" ? "col-span-7" : "col-span-10"} flex flex-col h-[calc(100vh-90px)]`}>
+      <div
+        className={`${
+          data?.assessmentdata?.assessment_type === "case_study"
+            ? "col-span-7"
+            : "col-span-10"
+        } flex flex-col h-[calc(100vh-20px)]`}
+      >
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full">
           {/* Header */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-            <Heading 
-            subject={data?.assessmentdata?.assessment_type}
-            duration={data?.assessmentdata?.duration}
-             />
+            <Heading
+              subject={data?.assessmentdata?.assessment_type}
+              duration={data?.assessmentdata?.duration}
+            />
           </div>
 
           <div className="p-4 flex-grow flex flex-col space-y-4">
@@ -215,7 +233,14 @@ const handleQuestionClick = (index) => {
                   <FaSpinner className="animate-spin" />
                 ) : (
                   <>
-                    <span className="font-bold">Question {data?.assessmentdata?.questions?.[activeQuestion].question_number}:</span>{" "}
+                    <span className="font-bold">
+                      Question{" "}
+                      {
+                        data?.assessmentdata?.questions?.[activeQuestion]
+                          .question_number
+                      }
+                      :
+                    </span>{" "}
                     {data?.assessmentdata?.questions?.[activeQuestion].question}
                   </>
                 )}
@@ -225,7 +250,10 @@ const handleQuestionClick = (index) => {
             {/* Instruction Box */}
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl p-3">
               <p className="text-sm text-blue-800 dark:text-blue-200">
-                {isLoading ? "Loading..." : data?.assessmentdata?.questions?.[activeQuestion].question_instruction}
+                {isLoading
+                  ? "Loading..."
+                  : data?.assessmentdata?.questions?.[activeQuestion]
+                      .question_instruction}
               </p>
             </div>
 
@@ -233,7 +261,10 @@ const handleQuestionClick = (index) => {
             <div className="flex-grow">
               <JoditEditor
                 ref={editor}
-                value={data?.data?.assessmentdata?.questions?.[activeQuestion]?.student_answer ?? content}
+                value={
+                  data?.data?.assessmentdata?.questions?.[activeQuestion]
+                    ?.student_answer ?? content
+                }
                 tabIndex={1}
                 onBlur={(newContent) => setContent(newContent)}
                 onChange={(newContent) => setContent(newContent)}
@@ -244,16 +275,22 @@ const handleQuestionClick = (index) => {
             {/* Navigation */}
             <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700">
               <button
-                onClick={()=>handlePrevious( data?.assessmentdata?.questions?.[activeQuestion]?._id)}
+                onClick={() =>
+                  handlePrevious(
+                    data?.assessmentdata?.questions?.[activeQuestion]?._id
+                  )
+                }
                 className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <FaArrowLeft /> <span>Previous</span>
               </button>
 
-              
-
               <button
-                onClick={()=>handleNext(data?.assessmentdata?.questions?.[activeQuestion]?._id)}
+                onClick={() =>
+                  handleNext(
+                    data?.assessmentdata?.questions?.[activeQuestion]?._id
+                  )
+                }
                 className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <span>Next</span> <FaArrowRight />
@@ -266,9 +303,11 @@ const handleQuestionClick = (index) => {
       {/* Answer Tracker */}
       <div className="col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-          <h3 className="font-semibold text-gray-800 dark:text-gray-100">Question Navigator</h3>
+          <h3 className="font-semibold text-gray-800 dark:text-gray-100">
+            Question Navigator
+          </h3>
         </div>
-        
+
         <div className="p-4 flex-grow">
           <div className="grid grid-cols-4 gap-2">
             {data?.assessmentdata?.questions?.map((item, index) => (
@@ -279,9 +318,10 @@ const handleQuestionClick = (index) => {
                   saveAndUpdateData();
                 }}
                 className={`h-10 flex items-center justify-center rounded-lg font-medium transition-all
-                  ${activeQuestion === index 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ${
+                    activeQuestion === index
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                   }`}
               >
                 {item.question_number}
@@ -291,12 +331,12 @@ const handleQuestionClick = (index) => {
         </div>
 
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-        <button
-                onClick={()=>handleSubmit(data?.assigned?._id)}
-                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center space-x-2"
-              >
-                <FaSave /> <span>Save & Submit</span>
-              </button>
+          <button
+            onClick={() => handleSubmit(data?.assigned?._id)}
+            className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center space-x-2"
+          >
+            <FaSave /> <span>Save & Submit</span>
+          </button>
         </div>
       </div>
     </div>
