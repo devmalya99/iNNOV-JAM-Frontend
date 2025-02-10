@@ -147,15 +147,15 @@ const Sidebar = () => {
     {/* Overlay for small screens */}
     {isSmallScreen && viewSidebar && (
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        className="fixed inset-0 bg-black bg-opacity-50 z-50"
         onClick={() => setViewSidebar(false)}
       ></div>
     )}
 
     {/* Sidebar */}
     <aside
-      className={`fixed md:static top-0 left-0 h-[calc(100vh-4.5rem)] 
-        md:h-[calc(100vh-4.5rem)] z-25
+      className={`fixed md:static top-0 left-0 h-[calc(100vh-9rem)] 
+        md:h-[calc(100vh-5rem)] z-50
       transition-transform transform bg-white dark:bg-[#09122C] 
       ${isSmallScreen ? "w-64" : "w-72"} 
       ${viewSidebar ? "translate-x-0" : "-translate-x-full"} 

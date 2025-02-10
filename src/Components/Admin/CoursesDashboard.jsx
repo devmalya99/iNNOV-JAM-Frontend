@@ -141,12 +141,16 @@ const CoursesDashboard = () => {
               <p className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-2 min-h-12">
                 {course?.description}
               </p>
-              <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+
+              {/* Total enrollments  */}
+              {/* <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <FaUsers className="text-lg text-gray-500 dark:text-gray-400" />
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {course?.total_enrollment} Students Enrolled
                 </p>
-              </div>
+              </div> */}
+
+              
               <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <FaCalendarAlt className="text-lg text-gray-500 dark:text-gray-400" />
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
