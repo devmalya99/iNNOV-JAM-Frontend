@@ -21,6 +21,9 @@ function AnswerWritingPage() {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const editor = useRef(null);
   const [content, setContent] = useState("");
+
+  const [answeredQuestions, setAnsweredQuestions] = useState({});
+
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -176,9 +179,6 @@ function AnswerWritingPage() {
 
   return (
     <div className="parent-container fixed inset-0 z-50 grid grid-cols-12 dark:bg-gray-900 gap-4 p-4">
-
-      
-      
       {isError && (
         <div className="col-span-12 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center text-red-700 dark:text-red-400">
           <FaExclamationCircle className="mr-2" />
@@ -261,14 +261,17 @@ function AnswerWritingPage() {
             <div className="flex-grow">
               <JoditEditor
                 ref={editor}
-                value={
-                  data?.data?.assessmentdata?.questions?.[activeQuestion]
-                    ?.student_answer ?? content
-                }
+                value={content}
                 tabIndex={1}
-                onBlur={(newContent) => setContent(newContent)}
-                onChange={(newContent) => setContent(newContent)}
-                className="h-full"
+                onBlur={(newContent) => {
+                  setContent(newContent);
+                  const textContent = getPlainText(newContent);
+                  setAnsweredQuestions((prev) => ({
+                    ...prev,
+                    [data?.assessmentdata?.questions?.[activeQuestion]?._id]:
+                      textContent.trim().length > 0,
+                  }));
+                }}
               />
             </div>
 
@@ -308,6 +311,17 @@ function AnswerWritingPage() {
           </h3>
         </div>
 
+        <div className="p-4 flex justify-between text-sm font-medium">
+          <span className="text-green-600">
+            Answered: {Object.values(answeredQuestions).filter(Boolean).length}
+          </span>
+          <span className="text-red-600">
+            Not Answered:{" "}
+            {data?.assessmentdata?.questions?.length -
+              Object.values(answeredQuestions).filter(Boolean).length}
+          </span>
+        </div>
+
         <div className="p-4 flex-grow">
           <div className="grid grid-cols-4 gap-2">
             {data?.assessmentdata?.questions?.map((item, index) => (
@@ -316,12 +330,15 @@ function AnswerWritingPage() {
                 onClick={() => {
                   setActiveQuestion(Number(index));
                   saveAndUpdateData();
+                  handleQuestionClick(index);
                 }}
                 className={`h-10 flex items-center justify-center rounded-lg font-medium transition-all
                   ${
                     activeQuestion === index
                       ? "bg-blue-500 text-white"
-                      : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      : answeredQuestions[item._id]
+                      ? "bg-green-500 text-white" // Marked as answered
+                      : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
                   }`}
               >
                 {item.question_number}
