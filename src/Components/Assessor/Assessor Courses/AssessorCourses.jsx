@@ -71,6 +71,18 @@ const AssessorCourses = () => {
                         </p>
                       </div>
                     </div>
+
+                    <div className="flex items-center gap-2 bg-green-500 px-2 py-1 rounded-xl text-gray-700 dark:text-gray-300">
+  <FaClipboardList className="text-yellow-600 dark:text-yellow-400" />
+  <span className="font-semibold">{course?.course_code || "N/A"}</span>
+</div>
+
+
+
+
+
+
+
                   </div>
 
                   {/* Course Details */}
@@ -82,6 +94,14 @@ const AssessorCourses = () => {
                         {course?.total_marks || 0}
                       </span>
                     </div>
+
+                    <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+  <FaChalkboardTeacher className="text-purple-600 dark:text-purple-400" />
+  <span className="text-sm">Total Enrollment: </span>
+  <span className="font-semibold">{course?.total_enrollment || 0}</span>
+</div>
+
+
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                       <FaCalendarAlt className="text-red-600 dark:text-red-400" />
                       <span className="text-sm">End Date: </span>
@@ -119,7 +139,7 @@ const AssessorCourses = () => {
               No Courses Yet
             </h3>
             <p className="text-gray-600 dark:text-gray-300">
-              Looks like you haven't been enrolled in any courses yet.
+              Looks like you haven't been assigned to any courses yet.
             </p>
           </div>
         )}
