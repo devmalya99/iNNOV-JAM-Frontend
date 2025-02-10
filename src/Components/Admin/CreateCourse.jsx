@@ -34,7 +34,6 @@ function CreateCourse() {
     selectedTrainers,
     selectedAssessors,
     scheduleExamDate,
-    
   } = useCourseStore();
 
   const navigate = useNavigate();
@@ -50,7 +49,7 @@ function CreateCourse() {
   };
 
   const handleSubmit = async () => {
-    console.log("course clicked")
+    console.log("course clicked");
     if (
       !courseName.trim() ||
       !courseCode.trim() ||
@@ -66,15 +65,15 @@ function CreateCourse() {
     }
 
     const courseData = {
-      course_name:courseName,
-      course_code:courseCode,
-      description:courseDescription,
+      course_name: courseName,
+      course_code: courseCode,
+      description: courseDescription,
       category: customCategory.trim() || category,
-      total_marks:totalMarks,
-      startDate:startDate,
-      endDate:endDate,
-      total_enrollment:0,
-      visibility:visibility,
+      total_marks: totalMarks,
+      startDate: startDate,
+      endDate: endDate,
+      total_enrollment: 0,
+      visibility: visibility,
     };
 
     console.log("courseData", courseData);
@@ -91,6 +90,16 @@ function CreateCourse() {
 
       setSuccessMessage("Course created successfully!");
       console.log("Course Created:", response?.data);
+
+      // Reset fields after successful submission
+      setCourseName("");
+      setCourseCode("");
+      setCourseDescription("");
+      setTotalMarks("");
+      setStartDate("");
+      setEndDate("");
+      setTotalEnrollmentCount(0);
+      setVisibility("");
 
       // Navigate to the newly created course page
       navigate(`/home/all-assessments`);
@@ -173,7 +182,7 @@ function CreateCourse() {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:text-gray-100"
+              className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:text-gray-100 dark:bg-gray-700"
             />
           </div>
         </div>
@@ -190,9 +199,6 @@ function CreateCourse() {
               className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
             />
           </div>
-
-          
-
         </div>
 
         {/* Visibility */}
