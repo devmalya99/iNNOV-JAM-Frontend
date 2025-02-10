@@ -33,9 +33,25 @@ function AnswerWritingPage() {
   console.log("assessment assessmentId is", assessmentId);
   console.log("userId is", user_id);
 
-  //if active exam exists in local storage get the item and make it active assessmentId
-  //if active exam does not exist in local storage make PARAMS assessmentId active assessmentId AND STORE IT
+  // On screen Load make it full screen
+  useEffect(() => {
+    // Request full screen when component loads
+    const enterFullScreen = () => {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+        document.documentElement.msRequestFullscreen();
+      }
+    };
 
+    enterFullScreen();
+  }, []);
+
+  
   const getPlainText = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
