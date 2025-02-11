@@ -11,6 +11,7 @@ const useCourseStore = create((set) => ({
   endDate: "",
   totalEnrollmentCount: 0,
   visibility: "Public", // Can be 'Public' or 'Private'
+  gradeId: "", // Store selected grade ID
 
   assessments: [{ name: "" }],
   isOpenAssignModal: false,
@@ -30,6 +31,7 @@ const useCourseStore = create((set) => ({
   setEndDate: (endDate) => set({ endDate }),
   setTotalEnrollmentCount: (count) => set({ totalEnrollmentCount: count }),
   setVisibility: (visibility) => set({ visibility }),
+  setGradeId: (gradeId) => set({ gradeId }), // ✅ New function to update gradeId
 
   setAssessments: (assessments) => set({ assessments }),
   addAssessment: () => set((state) => ({

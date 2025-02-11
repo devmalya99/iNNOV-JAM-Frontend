@@ -25,6 +25,8 @@ const CoursesDashboard = () => {
     error,
     refetch,
   } = useFetchAllCourses();
+
+  
   const [filteredCourses, setFilteredCourses] = useState([]);
   const navigate = useNavigate();
 
