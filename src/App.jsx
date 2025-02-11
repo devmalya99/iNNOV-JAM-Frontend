@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 import HomeLayout from './layout/HomeLayout'
-import { Routes,Route } from 'react-router'
+import { Routes, Route } from 'react-router'
 import Welcome from './Components/Welcome'
 import AuthLayout from './layout/AuthLayout'
 import HeroLandingPage from './Components/Landing/HeroLandingPage'
@@ -52,83 +52,83 @@ import ViewCourseResultDetailed from './Components/Assessor/ViewCourseResultDeta
 function App() {
 
   return (
-    
+
     <div className=' dark:bg-gray-900 bg-gray-300 w-full h-screen'>
 
       <Routes>
 
-        <Route path='/' element={<AuthLayout/>}>
-           <Route index element={<HeroLandingPage/>}/>
-           <Route path='login' element={<Login/>}/>
-           <Route path='signup' element={<Signup/>}/>
-           <Route path='book-consultation' element={<BookConsultationPage/>}/>
-           <Route path='help' element={<Help/>}/>
-           <Route path='forgot-password' element={<ForgotPassword/>}/>
+        <Route path='/' element={<AuthLayout />}>
+          <Route index element={<HeroLandingPage />} />
+          <Route path='login' element={<Login />} />
+          <Route path='signup' element={<Signup />} />
+          <Route path='book-consultation' element={<BookConsultationPage />} />
+          <Route path='help' element={<Help />} />
+          <Route path='forgot-password' element={<ForgotPassword />} />
         </Route>
 
         {/* after login */}
-        <Route path='/home' element={<ProtectedRoute> <HomeLayout/></ProtectedRoute>  }>
-        <Route index element={<Welcome/>}/>
+        <Route path='/home' element={<ProtectedRoute> <HomeLayout /></ProtectedRoute>}>
+          <Route index element={<Welcome />} />
 
 
-        <Route path='create-course' element={<CreateCourse/>}>
-        <Route path='assign-trainers' element={<AssignTrainersModal/>}/>
-        <Route path='assign-assessors' element={<AssignAssessorsModal/>}/>
-        <Route path='assign-learners' element={<AssignLearnersModal/>}/>
-        <Route path="courses/:courseid" element={<AssessmentCreation/>}/>
-        </Route>
-        
-        <Route path="view-assessment-files/:courseid" element={<ViewAssessmentFiles/>}/>
+          <Route path='create-course' element={<CreateCourse />}>
+            <Route path='assign-trainers' element={<AssignTrainersModal />} />
+            <Route path='assign-assessors' element={<AssignAssessorsModal />} />
+            <Route path='assign-learners' element={<AssignLearnersModal />} />
+            <Route path="courses/:courseid" element={<AssessmentCreation />} />
+          </Route>
 
-       
-        <Route path='upload-courseware' element={<UploadCourseware/>}/>
-        <Route path='upload-assessment-plan' element={<UploadAssesmentPlan/>}/>
-        <Route path='all-assessments' element={<CoursesDashboard/>}/>
+          <Route path="view-assessment-files/:courseid" element={<ViewAssessmentFiles />} />
 
-        {/* View all assessments created under a course */}
-        <Route path='view/all-assessments/:courseid' element={<ViewCourseAssessments/>}/>
-       
-        <Route path='create-users' element={<CreateUsers/>}/>
-        
-        <Route path='user-management' element={<UserManagement/>}/>
-        
+
+          <Route path='upload-courseware' element={<UploadCourseware />} />
+          <Route path='upload-assessment-plan' element={<UploadAssesmentPlan />} />
+          <Route path='all-assessments' element={<CoursesDashboard />} />
+
+          {/* View all assessments created under a course */}
+          <Route path='view/all-assessments/:courseid' element={<ViewCourseAssessments />} />
+
+          <Route path='create-users' element={<CreateUsers />} />
+
+          <Route path='user-management' element={<UserManagement />} />
+
         </Route>
 
         {/* Routes for settings */}
-        <Route path='/settings' element={<ProtectedRoute> <SettingsLayout/></ProtectedRoute>}>
-        <Route index element={<GradeInput/>}/>
-        <Route path='models' element={<AiModelSelector/>}/>
+        <Route path='/settings' element={<ProtectedRoute> <SettingsLayout /></ProtectedRoute>}>
+          <Route index element={<GradeInput />} />
+          <Route path='models' element={<AiModelSelector />} />
         </Route>
 
 
 
-         {/* Protected Assessor Routes */}
+        {/* Protected Assessor Routes */}
         <Route path='home/assessment' element={<ProtectedRoute><AssessorLayout /></ProtectedRoute>}>
-        
-        <Route path='view-all-assigned-courses' element={<AssessorCourses/>}/>
-        <Route path='view-course-result/:courseId' element={<CourseResult/>}/>
-        <Route path='view-detailed-course-result/:courseId/:assessmentId' element={<ViewCourseResultDetailed/>}/>
-        <Route path='exam/date/learner/:id' element={<LearnerWise/>}/>
+
+          <Route path='view-all-assigned-courses' element={<AssessorCourses />} />
+          <Route path='view-course-result/:courseId' element={<CourseResult />} />
+          <Route path='view-detailed-course-result/:courseId/:assessmentId' element={<ViewCourseResultDetailed />} />
+          <Route path='exam/date/learner/:id' element={<LearnerWise />} />
         </Route>
 
 
         {/* Protected Route for learners */}
         <Route path='home/learner' element={<ProtectedRoute><LearnerLayout /></ProtectedRoute>}>
-        <Route index element={<Welcome/>}/>
-        <Route path="view-all-courses" element={<UserCourses/>}/>
-        <Route path='instructions/:assessmentId' element={<InstructionsPage/>}/>
-        <Route path='answer-writing/:assessmentId' element={<AnswerWritingPage/>}/>
-        <Route path='assessment-submission/confirm/:id' element={<ConfirmModal/>}/>
-        <Route path='exam/date/learner' element={<LearnerWise/>}/>
-        <Route path='assessments/:userId/:courseId' element={<DisplayAssessmentsByCourse/>}/> 
-        
+          <Route index element={<Welcome />} />
+          <Route path="view-all-courses" element={<UserCourses />} />
+          <Route path='instructions/:assessmentId' element={<InstructionsPage />} />
+          <Route path='answer-writing/:assessmentId' element={<AnswerWritingPage />} />
+          <Route path='assessment-submission/confirm/:id' element={<ConfirmModal />} />
+          <Route path='exam/date/learner' element={<LearnerWise />} />
+          <Route path='assessments/:userId/:courseId' element={<DisplayAssessmentsByCourse />} />
+
         </Route>
-        
+
 
       </Routes>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
-    
+
   )
 }
 
