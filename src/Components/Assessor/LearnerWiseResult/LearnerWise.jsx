@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useFetchAssessmentData } from "../../../hooks/useFetchAssessmentData";
 
 import ViewScore from "../ViewScore";
@@ -46,7 +46,7 @@ const LearnerWise = () => {
 
   
 
- 
+  const navigate = useNavigate();
 
   
 
@@ -81,16 +81,7 @@ const LearnerWise = () => {
               {data?.studentResponses[activeNumber]?.question}
             </div>
 
-            {/* Popup modal */}
-            {openScoreModal && (
-              <ViewScore
-                scores={data?.data[activeNumber]}
-                setOpenScoreModal={setOpenScoreModal}
-                
-                
-                isLoading={isLoading}
-              />
-            )}
+            
 
             {/* Case Study Modal */}
             {openCaseStudy && (
@@ -101,20 +92,13 @@ const LearnerWise = () => {
               />
             )}
 
-            {/* Overview popup */}
-            {openOverview && (
-              <OverviewResult
-                examData={data?.data}
-                
-                onClose={() => setOpenOverview(false)}
-                isLoading={isLoading}
-              />
-            )}
+            
 
             {/* Human assessor feedback box */}
             {openFeedbackBox && (
               <FeedbackBox
-                competency={competency}
+              questionId={data?.studentResponses[activeNumber]?.question_id}
+              userId={userId}
                 feedback={feedback}
                 setFeedback={setFeedback}
                 openFeedbackBox={openFeedbackBox}
@@ -188,7 +172,7 @@ const LearnerWise = () => {
              dark:text-gray-900 rounded-md p-2 mb-2 ">
               <div className="flex gap-2 justify-between mb-2 ">
                 {/* gen ai remark */}
-                <div className="flex gap-2" onClick={handleOpenDetails}>
+                <div className="flex gap-2" onClick={()=>navigate(`/home/assessment/view-learner-aiScore/${data?.studentResponses[activeNumber]?.question_id}/${userId}`)}>
                   <div
                     className={`rounded-xl shadow-lg `}
                   >
@@ -246,32 +230,22 @@ const LearnerWise = () => {
                 <div className="space-y-4">
                   {/* Human Assessor Remark */}
                   <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600/10 to-blue-400/10 p-4 rounded-xl backdrop-blur-sm shadow-lg">
-                    <strong className="text-gray-700 dark:text-gray-200">
-                      Human Assessor Remark:
-                    </strong>
-                    <div className="relative w-60">
-                      <select
-                        id="competency-dropdown"
-                        value={competency}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setCompetency(value);
-                          setOpenFeedbackBox(competency !== "not-competent"); 
-                          // Open feedback box only when 'not-competent' is selected
-                        }}
-                        className="appearance-none bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-4 py-2 pr-10 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 font-medium cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 w-full"
-                      >
-                        <option value="">Select Competency</option>
-                        <option value="competent">Competent</option>
-                        <option value="not-competent">Not Competent</option>
-                      </select>
-
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500 dark:text-gray-400">
-                        <ChevronDown size={18} />
-                      </div>
-                    </div>
+                    
+                    {/* Button to Open Feedback Box */}
+      <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600/10 to-blue-400/10 p-4 rounded-xl shadow-lg">
+        <strong className="text-gray-700 dark:text-gray-200">Human Assessor Remark:</strong>
+        <button
+          onClick={() => setOpenFeedbackBox(!openFeedbackBox)}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200"
+        >
+          {openFeedbackBox ? "Close Feedback" : "Add Feedback"}
+        </button>
+      </div>
                   </div>
                 </div>
+
+
+                
               </div>
             </div>
           </div>

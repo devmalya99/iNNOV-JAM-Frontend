@@ -47,6 +47,7 @@ import DisplayAssessmentsByCourse from './Components/Learner/DisplayAssessmentsB
 import AssessorCourses from './Components/Assessor/Assessor Courses/AssessorCourses'
 import CourseResult from './Components/Assessor/CourseResult'
 import ViewCourseResultDetailed from './Components/Assessor/ViewCourseResultDetailed'
+import ViewScore from './Components/Assessor/ViewScore'
 
 
 function App() {
@@ -111,8 +112,7 @@ function App() {
 
         <Route path='view-learner-result/:assessmentId/:userId' element={<LearnerWise/>}/>
 
-
-        <Route path='exam/date/learner/:id' element={<LearnerWise/>}/>
+        <Route path='view-learner-aiScore/:questionId/:userId' element={<ViewScore/>}/>
         </Route>
 
 

@@ -1,8 +1,51 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
+import axios from 'axios';
+import { handleSuccess } from '../../../utils/toast';
 
-const FeedbackBox = ({ competency, feedback, 
-    setFeedback,openFeedbackBox, setOpenFeedbackBox }) => {
+const FeedbackBox = ({  
+    feedback, 
+    setFeedback,
+    openFeedbackBox, 
+    setOpenFeedbackBox ,
+    questionId,
+    userId
+  
+  }) => {
+
+    const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+    console.log("questionId is ",questionId);
+    console.log("userId is ",userId);
+
+    const handleUpdateFeedback = async (questionId, userId) => {
+      try {
+        // http://192.168.1.40:7000/api/assessors/feedbackbyassessor?question_id=${questionId}&user_id=${userId}
+
+        
+        // http://192.168.1.40:7000/api/student-answers/feedbackbyassessor?question_id=67a9a41e94e13a5c232fbe57&user_id=67a9a3c394e13a5c232fbe3e
+
+
+        const response = await axios.put(
+          `${VITE_API_URL}/api/student-answers/feedbackbyassessor?question_id=${questionId}&user_id=${userId}`,
+          {
+            feedback: feedback,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Feedback updated successfully:", response.data);
+        handleSuccess({ success: "Feedback updated successfully!" });
+        setOpenFeedbackBox(false);
+        setFeedback("");  
+      } catch (error) {
+        console.error("Error updating feedback:", error);
+      }
+    }
   
   return (
     <>
@@ -37,9 +80,15 @@ const FeedbackBox = ({ competency, feedback,
           />
           
           {/* Added subtle animation and elevation on hover */}
-          <div className="mt-4 flex justify-end">
+          <div className="mt-4 flex justify-between">
+
+          <button className='button-style'
+           onClick={()=>setOpenFeedbackBox(false)}
+          >Close</button>
+
+
             <button 
-            onClick={() => setOpenFeedbackBox(false)}
+            onClick={() => handleUpdateFeedback(questionId, userId)}
             className="px-4 py-2 bg-red-600 hover:bg-red-700 
                            text-white rounded-lg 
                            transform transition-all duration-200
@@ -48,6 +97,8 @@ const FeedbackBox = ({ competency, feedback,
                          focus:ring-red-500 focus:ring-offset-2">
               Submit Feedback
             </button>
+
+            
           </div>
         </div>
       </div>
