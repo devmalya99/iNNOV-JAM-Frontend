@@ -363,14 +363,19 @@ function AnswerWritingPage() {
           </div>
         </div>
 
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-          <button
-            onClick={() => handleSubmit(data?.assigned?._id)}
-            className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center space-x-2"
-          >
-            <FaSave /> <span>Save & Submit</span>
-          </button>
-        </div>
+        {/* Only show Save & Submit when all questions are answered */}
+{Object.values(answeredQuestions).filter(Boolean).length ===
+  data?.assessmentdata?.questions?.length && (
+  <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+    <button
+      onClick={() => handleSubmit(data?.assigned?._id)}
+      className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center space-x-2"
+    >
+      <FaSave /> <span>Save & Submit</span>
+    </button>
+  </div>
+)}
+
       </div>
     </div>
   );

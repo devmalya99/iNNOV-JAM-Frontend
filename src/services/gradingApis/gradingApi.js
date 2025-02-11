@@ -26,9 +26,18 @@ export const getAllGradings = async () => {
     }
 };
 
-
-const removeGrading = async () => { };
-
+export const removeGrading = async (id) => {
+    try {
+        const response = await axios.delete(
+            `${VITE_API_URL}/api/grades/remove/${id}`
+        );
+        toast.success("Grading deleted successfully");
+        return response.data;
+    } catch (error) {
+        console.error("Error creating grading:", error);
+        toast.error("Error creating grading");
+    }
+};
 
 export const createRange = async (data) => {
     try {
@@ -47,10 +56,10 @@ export const createRange = async (data) => {
 export const getAllRanges = async (id) => {
     try {
         const response = await axios.get(`${VITE_API_URL}/api/grade-ranges/getgrade/${id}`);
-        return response.data;
+        const { gradeRanges } = response.data;
+        return gradeRanges || [];
     } catch (error) {
         console.error("Error creating grading:", error);
-        toast.error("Error creating grading");
+        // toast.error("Error creating grading");
     }
 };
-

@@ -105,7 +105,7 @@ const ViewScore = () => {
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{label}</h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{description}</p>
                   {value !== null ? (
-                    <span className="text-lg font-bold text-gray-900 dark:text-white">{value.toFixed(2)}</span>
+                    <span className="text-lg font-bold text-gray-900 dark:text-white">{value.toFixed(2)}/{10}</span>
                   ) : (
                     <span className="text-sm text-red-500 dark:text-red-400">Not available</span>
                   )}

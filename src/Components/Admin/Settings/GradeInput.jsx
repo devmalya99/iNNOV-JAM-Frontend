@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createGrading, getAllGradings } from "../../../services/gradingApis/gradingApi";
+import { createGrading, getAllGradings, createRange, getAllRanges, removeGrading } from "../../../services/gradingApis/gradingApi";
 import { toast } from "react-toastify";
 
 export default function GradeComponent() {
@@ -9,33 +9,60 @@ export default function GradeComponent() {
   const [grageId, setGradeId] = useState('')
   const [rangeStart, setRangeStart] = useState("");
   const [rangeEnd, setRangeEnd] = useState("");
+  const [label, setLabel] = useState('');
   const [grades, setGrades] = useState([]);
 
 
   useEffect(() => {
     (async () => {
       const response = await getAllGradings();
-      console.log(response)
+
       setGrades(response);
     })();
   }, [])
 
-  const onCreateGradeHandler = () => {
+
+  const onCreateGradeHandler = async () => {
     if (!gradeName) {
       toast.warning("Please enter a grade name");
       return;
     }
-    createGrading({ name: gradeName, status: false })
-    setGrades([...grades, { name: gradeName, status: false }])
+    const gradeData = await createGrading({ name: gradeName, status: false })
+    if (gradeData) {
+      setGrades([...grades, { _id: gradeData._id, name: gradeName, status: false }])
+    }
     setGradeName('')
   }
 
-  
+  const createRangeHandler = async () => {
+    if (!label) {
+      toast.warning("Please enter a label");
+      return;
+    }
 
-  const createRangeHandler = () => {
-   
+    if (+rangeStart > +rangeEnd) {
+      toast.warning("Please enter a valid range");
+      return;
+    }
+    if (+rangeStart <= +rangeEnd) {
+      const rangeData = await createRange({ grade_id: grageId, label, startRange: rangeStart, endRange: rangeEnd })
+      console.log(rangeData)
+      if (rangeData) {
+        setRanges([...ranges, { _id: rangeData.range._id, label, startRange: rangeStart, endRange: rangeEnd }])
+      }
+      setRangeStart('')
+      setRangeEnd('')
+      setLabel('')
+    }
   }
 
+  const openRangeFormHander = async (id) => {
+    setOpenForm(true);
+    setGradeId(id);
+    const rangeResponse = await getAllRanges(id);
+    console.log(rangeResponse)
+    setRanges(rangeResponse || []);
+  }
 
   return (
     <div className="flex justify-center h-[calc(100vh-80px)] py-8 bg-gray-100 dark:bg-gray-900">
@@ -55,40 +82,46 @@ export default function GradeComponent() {
               Create Grade
             </button>
           </div>
-          <ul className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+          <ul className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
             {grades?.map((grade) => (
-              <li key={grade.id} className="flex justify-between items-center bg-white dark:bg-gray-800 p-3 mt-2 rounded-lg shadow-sm">
-                <div className="flex space-x-4">
-                  <span className="font-semibold text-gray-700 dark:text-white">
+              <li
+                key={grade.id}
+                className="flex justify-between items-center bg-white dark:bg-gray-800 p-4 mt-3 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+              >
+                {/* Grade Name & Status */}
+                <div className="flex flex-col space-y-1">
+                  <span className="font-semibold text-gray-800 dark:text-white text-lg">
                     {grade.name}
                   </span>
-                  <span className="text-sm mt-1 text-gray-500 dark:text-gray-300">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
                     {grade.status}
                   </span>
                 </div>
-                <button
-                  className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition"
-                >
-                  remove
-                </button>
-                <button
 
-                  className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition"
-                >
-                  edit
-                </button>
-                <button
-                  onClick={() => {
-                    setOpenForm(true)
-                    setGradeId(grade._id)
-                  }}
-                  className="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition"
-                >
-                  Create Range
-                </button>
+                {/* Buttons */}
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => {
+                      removeGrading(grade._id)
+                      setGrades(grades.filter((g) => g._id !== grade._id))
+                    }}
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
+                    Remove
+                  </button>
+                  <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => openRangeFormHander(grade._id)}
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"
+                  >
+                    Create Range
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
+
         </div>
       ) : (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 w-full max-w-4xl">
@@ -98,6 +131,7 @@ export default function GradeComponent() {
               setGradeName('')
               setRangeStart('')
               setRangeEnd('')
+              setLabel('')
             }}
             className="text-xl float-right text-gray-600 dark:text-gray-300"
           >
@@ -114,8 +148,8 @@ export default function GradeComponent() {
                   </label>
                   <input
                     type="text"
-                    value={gradeName}
-                    onChange={(e) => setGradeName(e.target.value)}
+                    value={label}
+                    onChange={(e) => setLabel(e.target.value)}
                     className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-300 dark:focus:border-blue-400"
                     placeholder="Enter grade label"
                     required
@@ -152,6 +186,7 @@ export default function GradeComponent() {
 
                 {/* Create Range Button */}
                 <button
+                  onClick={createRangeHandler}
                   className="bg-green-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300"
                 >
                   Create Range
@@ -166,14 +201,22 @@ export default function GradeComponent() {
               </h2>
               {grades.length > 0 ? (
                 <ul className="space-y-4">
-                  {ranges.map((grade, index) => (
+                  {ranges?.map((grade, index) => (
                     <li
                       key={index}
-                      className="flex justify-between items-center text-lg text-gray-800 dark:text-white border-2 px-8 py-3 rounded-md gap-6 dark:border-gray-600"
+                      className="flex justify-between items-center bg-white dark:bg-gray-800 text-lg text-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition duration-300"
                     >
-                      <div>{grade.label}</div>
-                      <div className="flex justify-end text-gray-500 dark:text-gray-400 w-full">
+                      <div className="font-medium">{grade.label}</div>
+                      <div className="flex-1 text-center text-gray-600 dark:text-gray-400">
                         ({grade.startRange} - {grade.endRange}) %
+                      </div>
+                      <div className="flex space-x-3">
+                        <button className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 text-sm rounded-lg transition duration-300">
+                          Edit
+                        </button>
+                        <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 text-sm rounded-lg transition duration-300">
+                          Remove
+                        </button>
                       </div>
                     </li>
                   ))}
