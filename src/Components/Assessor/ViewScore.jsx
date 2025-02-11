@@ -1,115 +1,134 @@
-import { FaClipboard, FaCode, FaLanguage, FaCogs, FaUsers, FaBrain } from "react-icons/fa";
+import React from 'react';
 import { useNavigate, useParams } from "react-router";
 import { FetchAiScoreOfQuestion } from "../../services/Assessor/FetchAiScoreOfQuestion";
+import { Loader2, ClipboardCheck, Users, Cog, Languages, XCircle, CheckCircle2, X } from "lucide-react";
 
 const ViewScore = () => {
   const { userId, questionId } = useParams();
   const navigate = useNavigate();
+  const { data: scores, isLoading, error } = FetchAiScoreOfQuestion(questionId, userId);
 
-  const { data: scores, isLoading } = FetchAiScoreOfQuestion(questionId, userId);
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-gray-900/90 flex justify-center items-center z-50">
+        <div className="flex flex-col items-center space-y-4 p-8 rounded-lg bg-white dark:bg-gray-800">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
+          <p className="text-gray-600 dark:text-gray-400 animate-pulse">Analyzing scores...</p>
+        </div>
+      </div>
+    );
+  }
 
-  if (isLoading) return <div className="text-center text-white">Loading scores...</div>;
+  if (error) {
+    return (
+      <div className="fixed inset-0 bg-gray-900/90 flex justify-center items-center z-50">
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-md mx-4">
+          <div className="flex flex-col items-center space-y-4">
+            <XCircle className="h-12 w-12 text-red-500" />
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Failed to Load Scores</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-center">
+              There was an error loading the AI evaluation scores. Please try again.
+            </p>
+            <button
+              onClick={() => navigate(-1)}
+              className="mt-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-colors"
+            >
+              Go Back
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const scoreData = scores?.aiScoreReport || {};
 
+  const scoreItems = [
+    {
+      label: "Gemini Score",
+      value: scoreData.gemini_score,
+      description: "Google's AI model for reasoning and understanding.",
+      icon: <ClipboardCheck className="text-orange-500 h-6 w-6" />,
+    },
+    {
+      label: "SBERT Score",
+      value: scoreData.sbert_score,
+      description: "Measures sentence similarity and contextual meaning.",
+      icon: <Users className="text-pink-500 h-6 w-6" />,
+    },
+    {
+      label: "MiniLM Score",
+      value: scoreData.minilm_score,
+      description: "Compact AI model for NLP tasks.",
+      icon: <Cog className="text-red-500 h-6 w-6" />,
+    },
+    {
+      label: "LabSE Score",
+      value: scoreData.labse_score,
+      description: "Multilingual sentence embeddings.",
+      icon: <Languages className="text-teal-500 h-6 w-6" />,
+    },
+  ];
+
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-90 flex justify-center items-center z-50 transition-all ease-in-out duration-300">
-      <div className="bg-gradient-to-bl from-blue-100 via-gray-100 to-gray-100 p-8 rounded-xl w-4/5 max-h-[80vh] overflow-auto shadow-xl transform transition-all ease-in-out duration-500">
+    <div className="fixed inset-0 bg-gray-900/90 flex justify-center items-center z-50 p-4 animate-in fade-in duration-200">
+      <div className="bg-gradient-to-bl from-blue-100 via-gray-100 to-gray-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 
+                    p-6 md:p-8 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-auto shadow-xl 
+                    transform transition-all duration-300 animate-in slide-in-from-bottom-4">
         {/* Modal Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
             AI Evaluation Scores
           </h2>
           <button
-            className="text-gray-600 hover:text-gray-800 transition-colors duration-300"
+            className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
             onClick={() => navigate(-1)}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="h-6 w-6" />
           </button>
         </div>
 
-        {/* Score Details */}
-        <div className="space-y-5">
-          <div className="space-y-3">
-            {/* <p className="text-gray-700">
-              <strong className="font-bold text-gray-900">Student Answer:</strong> {scoreData.student_answer}
-            </p> */}
-            <p className="text-gray-700">
-              <strong className="font-bold text-gray-900">Competency Status:</strong>{" "}
-              {scoreData.isCompetent ? "Competent ✅" : "Not Competent ❌"}
-            </p>
-          </div>
+        
 
-          {/* Scores List */}
-          <div className="space-y-4 max-h-[50vh] overflow-y-auto">
-            {[
-              {
-                label: "Gemini Score",
-                value: scoreData.gemini_score,
-                description: "Google's AI model for reasoning and understanding.",
-                icon: <FaClipboard className="text-orange-500 text-3xl" />,
-              },
-              {
-                label: "SBERT Score",
-                value: scoreData.sbert_score,
-                description: "Measures sentence similarity and contextual meaning.",
-                icon: <FaUsers className="text-pink-500 text-3xl" />,
-              },
-              {
-                label: "MiniLM Score",
-                value: scoreData.minilm_score,
-                description: "Compact AI model for NLP tasks.",
-                icon: <FaCogs className="text-red-500 text-3xl" />,
-              },
-              {
-                label: "LabSE Score",
-                value: scoreData.labse_score,
-                description: "Multilingual sentence embeddings.",
-                icon: <FaLanguage className="text-teal-500 text-3xl" />,
-              },
-            ].map(({ label, value, description, icon }) => (
-              <div
-                key={label}
-                className="flex justify-between items-center py-3 px-4 mx-4 rounded-lg bg-gray-50 shadow-sm hover:shadow-lg transition-transform transform hover:scale-105"
-              >
-                <div className="flex items-center space-x-3">
-                  {icon}
-                  <span className="text-gray-600 font-semibold">{label}</span>
-                </div>
-                <div className="text-right flex-1">
-                  <p className="text-sm text-gray-500">{description}</p>
+        {/* Scores Grid */}
+        <div className="grid gap-4 mb-6">
+          {scoreItems.map(({ label, value, description, icon }, index) => (
+            <div
+              key={label}
+              className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 
+                       transform hover:scale-[1.02] animate-in slide-in-from-bottom-4"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">{icon}</div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{label}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{description}</p>
                   {value !== null ? (
-                    <span className="text-gray-900 font-bold">{value.toFixed(2)}</span>
+                    <span className="text-lg font-bold text-gray-900 dark:text-white">{value.toFixed(2)}</span>
                   ) : (
-                    <p className="text-red-500">Not available</p>
+                    <span className="text-sm text-red-500 dark:text-red-400">Not available</span>
                   )}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
 
-          {/* Feedback */}
-          <div>
-            <p className="text-gray-700">
-              <strong className="font-bold text-gray-900">AI Feedback:</strong>
-            </p>
-            <p className="text-gray-600">{scoreData.feedback || "No feedback available."}</p>
-          </div>
+        {/* Feedback Section */}
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg mb-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">AI Feedback</h3>
+          <p className="text-gray-600 dark:text-gray-300">
+            {scoreData.feedback || "No feedback available."}
+          </p>
         </div>
 
         {/* Close Button */}
-        <div className="mt-6 flex justify-end">
+        <div className="flex justify-end">
           <button
-            className="bg-blue-600 text-white py-2 px-6 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200"
             onClick={() => navigate(-1)}
+            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg 
+                     transition-colors duration-200 transform hover:scale-105"
           >
             Close
           </button>

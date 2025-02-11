@@ -20,11 +20,7 @@ const FeedbackBox = ({
 
     const handleUpdateFeedback = async (questionId, userId) => {
       try {
-        // http://192.168.1.40:7000/api/assessors/feedbackbyassessor?question_id=${questionId}&user_id=${userId}
-
-        
         // http://192.168.1.40:7000/api/student-answers/feedbackbyassessor?question_id=67a9a41e94e13a5c232fbe57&user_id=67a9a3c394e13a5c232fbe3e
-
 
         const response = await axios.put(
           `${VITE_API_URL}/api/student-answers/feedbackbyassessor?question_id=${questionId}&user_id=${userId}`,
@@ -38,7 +34,7 @@ const FeedbackBox = ({
           }
         );
 
-        console.log("Feedback updated successfully:", response.data);
+        console.log("Feedback updated successfully:", response.data.message);
         handleSuccess({ success: "Feedback updated successfully!" });
         setOpenFeedbackBox(false);
         setFeedback("");  
