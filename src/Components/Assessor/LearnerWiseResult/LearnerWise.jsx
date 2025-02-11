@@ -1,31 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useParams } from "react-router";
 import { useFetchAssessmentData } from "../../../hooks/useFetchAssessmentData";
-import useGradeStore from "../../../store";
+
 import ViewScore from "../ViewScore";
 import CaseStudyModal from "../CaseStudyModal";
 import OverviewResult from "../OverviewResult/OverviewResult";
 import OverviewResultSkeleton from "../OverviewResult/OverviewResultSkeleton";
 import LearnerWiseSkeleton from "../LearnerWiseResult/LearnerWiseSkeleton";
 
-import calculatePredeterminedGrade, {
-  calculateAverageScore,
-  getBackgroundGradient,
-} from "../../../utils/helper";
+
 import { FaPenNib } from "react-icons/fa";
 import { ChevronDown, MessageCircle } from "lucide-react";
 import FeedbackBox from "./FeedbackBox";
+import { FetchAssessmentResultDataByLearner } from "../../../services/Assessor/FetchAssessmentResultDataByLearner";
 const LearnerWise = () => {
   const [activeNumber, setActiveNumber] = useState(0);
 
   const [openOverview, setOpenOverview] = useState(true);
 
-  const { id } = useParams();
+  const { assessmentId,userId } = useParams();
 
-  const { grades, addGrade } = useGradeStore();
+  
 
-  const { data, isLoading } = useFetchAssessmentData(id);
+  
+
+
+   console.log("assessmentId" ,assessmentId);
+   console.log("userId", userId);
+  const { data, isLoading,refetch } = FetchAssessmentResultDataByLearner(assessmentId,userId);
+
+  console.log("fetched assessment result data by learner is", data)
+
+  // use refetch on screen load
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   const [openScoreModal, setOpenScoreModal] = useState(false);
   const [openCaseStudy, setOpenCaseStudy] = useState(false);
 
@@ -33,25 +44,13 @@ const LearnerWise = () => {
   const [feedback, setFeedback] = useState("");
   const [openFeedbackBox, setOpenFeedbackBox] = useState(false);
 
-  console.log("grades from zustand store", grades);
+  
 
-  const avgScore = calculateAverageScore(data?.data[activeNumber]);
+ 
 
-  function handleCustomisedGrading(grades, avgscore) {
-    const grade = grades.find(
-      (item) => avgscore * 10 <= item.end && avgscore * 10 >= item.start
-    );
-    return grade ? grade.name : "No Grade Found"; // Return a fallback message
-  }
+  
 
-  let aiGrade;
-  if (grades.length === 0) {
-    aiGrade = calculatePredeterminedGrade(avgScore);
-    console.log("grades is empty", aiGrade, avgScore);
-  } else {
-    aiGrade = handleCustomisedGrading(grades, avgScore);
-    console.log("grades is not empty", aiGrade, avgScore);
-  }
+  
 
   function handleOpenDetails() {
     setOpenScoreModal(true);
@@ -70,16 +69,16 @@ const LearnerWise = () => {
       ) : (
         <div className="w-full  p-4 h-[calc(100vh-90px)] bg-gray-100 dark:bg-gray-900 ">
           <h2 className="text-xl font-semibold mb-4 dark:text-gray-400">
-            {`15 October 2025 – Digital Marketing – Jhon Tan – ${
+            {`${data?.student_name} – ${
               isLoading
                 ? "loading"
-                : data?.assessment_type.replace("_", " ").toUpperCase()
+                : data?.assessment?.assessment_name?.replace("_", " ").toUpperCase()
             } `}
           </h2>
           <div>
             <div className="bg-blue-50 p-4 mb-4 rounded-md font-semibold tracking-wide h-[80px]">
-              {data?.data[activeNumber]?.question_number}{" "}
-              {data?.data[activeNumber]?.question}
+              {data?.studentResponses[activeNumber]?.question_number}{" "}
+              {data?.studentResponses[activeNumber]?.question}
             </div>
 
             {/* Popup modal */}
@@ -87,8 +86,8 @@ const LearnerWise = () => {
               <ViewScore
                 scores={data?.data[activeNumber]}
                 setOpenScoreModal={setOpenScoreModal}
-                avgScore={avgScore}
-                aiGrade={aiGrade}
+                
+                
                 isLoading={isLoading}
               />
             )}
@@ -106,7 +105,7 @@ const LearnerWise = () => {
             {openOverview && (
               <OverviewResult
                 examData={data?.data}
-                avgScore={avgScore}
+                
                 onClose={() => setOpenOverview(false)}
                 isLoading={isLoading}
               />
@@ -133,7 +132,7 @@ const LearnerWise = () => {
                   Suggested Answers
                 </h2>
                 <div className="overflow-y-auto h-[calc(100vh-420px)]">
-                  {data?.data[activeNumber]?.suggested_answer.map(
+                  {data?.studentResponses[activeNumber]?.suggested_answer.map(
                     (item, index) => {
                       const colonIndex = item?.indexOf(":");
                       const beforeColon =
@@ -166,6 +165,9 @@ const LearnerWise = () => {
                 </div>
               </div>
 
+
+
+
               {/* Learner Response Section */}
               <div className="w-1/2 bg-white/80 dark:bg-gray-800 rounded-lg shadow-md p-4">
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
@@ -174,7 +176,7 @@ const LearnerWise = () => {
                 <div className="overflow-y-auto h-[calc(100vh-500px)]">
                   <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 mb-4 shadow-sm">
                     <p className="text-gray-700 dark:text-gray-200">
-                      {data?.data[activeNumber]?.student_answer ||
+                      {data?.studentResponses[activeNumber]?.student_answer ||
                         "No response provided."}
                     </p>
                   </div>
@@ -188,14 +190,12 @@ const LearnerWise = () => {
                 {/* gen ai remark */}
                 <div className="flex gap-2" onClick={handleOpenDetails}>
                   <div
-                    className={`rounded-xl shadow-lg ${getBackgroundGradient(
-                      avgScore
-                    )}`}
+                    className={`rounded-xl shadow-lg `}
                   >
                     <div className="flex p-2 m-1 cursor-pointer rounded-lg hover:font-bold transition duration-300">
                       <strong className="mr-2">AI Grade: </strong>
                       <p className="font-semibold hover:scale-105 transition-transform duration-300">
-                        {aiGrade}
+                        ai grade
                       </p>
                     </div>
 
@@ -236,7 +236,7 @@ const LearnerWise = () => {
                   <button
                     className="relative h-12 w-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
                     onClick={() => setActiveNumber(activeNumber + 1)}
-                    disabled={activeNumber === data?.data?.length - 1}
+                    disabled={activeNumber === data?.studentResponses?.length - 1}
                   >
                     »
                   </button>

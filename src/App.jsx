@@ -104,11 +104,15 @@ function App() {
 
         {/* Protected Assessor Routes */}
         <Route path='home/assessment' element={<ProtectedRoute><AssessorLayout /></ProtectedRoute>}>
+        
+        <Route path='view-all-assigned-courses' element={<AssessorCourses/>}/>
+        <Route path='view-course-result/:courseId' element={<CourseResult/>}/>
+        <Route path='view-detailed-course-result/:courseId/:assessmentId' element={<ViewCourseResultDetailed/>}/>
 
-          <Route path='view-all-assigned-courses' element={<AssessorCourses />} />
-          <Route path='view-course-result/:courseId' element={<CourseResult />} />
-          <Route path='view-detailed-course-result/:courseId/:assessmentId' element={<ViewCourseResultDetailed />} />
-          <Route path='exam/date/learner/:id' element={<LearnerWise />} />
+        <Route path='view-learner-result/:assessmentId/:userId' element={<LearnerWise/>}/>
+
+
+        <Route path='exam/date/learner/:id' element={<LearnerWise/>}/>
         </Route>
 
 
