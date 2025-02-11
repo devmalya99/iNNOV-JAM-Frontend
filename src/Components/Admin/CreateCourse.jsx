@@ -5,7 +5,7 @@ import axios from "axios";
 import AssignSection from "./AssignSection";
 import { Outlet, useNavigate } from "react-router";
 import useCourseStore from "../../Zustand/useCourseStore";
-
+import { FetchAllGrade } from "../../services/Admin/FetchAllGrade";
 const VITE_API_URL = import.meta.env.VITE_API_URL; // Replace with your backend URL if needed
 
 function CreateCourse() {
@@ -18,7 +18,6 @@ function CreateCourse() {
     totalMarks,
     startDate,
     endDate,
-    totalEnrollmentCount,
     visibility,
     assessments,
     setCourseName,
@@ -30,16 +29,15 @@ function CreateCourse() {
     setTotalEnrollmentCount,
     setVisibility,
     setAssessments,
-    selectedLearners,
-    selectedTrainers,
-    selectedAssessors,
-    scheduleExamDate,
   } = useCourseStore();
 
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Fetch all  grades
+  const { data: grades, isLoading, refetch } = FetchAllGrade();
 
   const handleAssessmentChange = (index, value) => {
     const updatedAssessments = [...assessments];
@@ -198,6 +196,22 @@ function CreateCourse() {
               onChange={(e) => setTotalMarks(Number(e.target.value))}
               className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
             />
+          </div>
+
+          
+          {/* Display grades dropdown */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+              Select Grade System
+            </label>
+            <select className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100">
+              <option value="">Select a grade</option>
+              {grades?.map((grade) => (
+                <option key={grade._id} value={grade.name}>
+                  {grade.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
