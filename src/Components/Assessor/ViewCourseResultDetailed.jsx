@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { ArrowBigLeftIcon, Loader2 } from "lucide-react";
 import { BsBack } from "react-icons/bs";
 import axios from "axios";
-
+import { handleSuccess } from "../../utils/toast";
 const ViewCourseResultDetailed = () => {
   const VITE_API_URL = import.meta.env.VITE_API_URL;
   const { courseId, assessmentId } = useParams();
@@ -33,16 +33,23 @@ const ViewCourseResultDetailed = () => {
     );
   }
 
-  const handleResubmit = (userId) => {
-    const resubmitResponse = axios.put(
-      `${VITE_API_URL}/api/assigned-assessments/reassignassessment`,
-      {
-        userId: userId,
-        assessmentId: assessmentResult?.assessment?._id,
-      }
-    );
-    refetch();
-    console.log(resubmitResponse);
+  const handleResubmit = async (userId) => {
+    try {
+      const resubmitResponse = await axios.put(
+        `${VITE_API_URL}/api/assigned-assessments/reassignassessment`,
+        {
+          userId: userId,
+          assessmentId: assessmentResult?.assessment?._id,
+        }
+      );
+      refetch();
+      alert("Resubmitted successfully! please refresh");
+      handleSuccess({ success: "Resubmitted successfully!" });
+
+      console.log(resubmitResponse);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
