@@ -14,7 +14,7 @@ const handleCreateUsers = async (users ) => {
       if (response.ok) {
         const data = await response.json();
         console.log('Users created:', data);
-        alert('Users created successfully');
+        // alert('Users created successfully');
       } else {
         console.error('Error creating users:', response.statusText);
         alert('Error creating users');

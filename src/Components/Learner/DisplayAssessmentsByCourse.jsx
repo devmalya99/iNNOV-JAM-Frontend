@@ -132,7 +132,7 @@ const DisplayAssessmentsByCourse = () => {
                   </div>
 
                   <div className="text-sm text-gray-500 dark:text-gray-400">
-                    ID: {assessment?.assessmentId?._id}
+                    Type: {assessment?.assessmentId?.assessment_type}
                   </div>
                 </div>
 

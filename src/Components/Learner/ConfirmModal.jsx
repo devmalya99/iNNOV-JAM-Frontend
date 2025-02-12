@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
-
+import {TbLoader} from 'react-icons/tb'
 const ConfirmModal = () => {
   const navigate = useNavigate(); // Initialize useNavigate
   const { id } = useParams(); // Fetch the id from the URL
@@ -68,14 +68,19 @@ const ConfirmModal = () => {
                   className="bg-green-500 text-white rounded-lg px-4 py-3 hover:bg-green-600"
                   disabled={loading}
                 >
-                  {loading ? "Submitting..." : "Confirm Submission"}
+                  {loading ? (
+                    <TbLoader className="animate-spin text-white"/>
+                  ) : "Confirm Submission"}
                 </button>
-                <button
-                  onClick={() => navigate(-1)}
-                  className="bg-gray-300 hover:bg-blue-gray-500 text-black rounded-lg px-6 py-3 ml-4"
-                >
-                  Cancel
-                </button>
+                {
+                  loading ? (""):(<button
+                    onClick={() => navigate(-1)}
+                    className="bg-gray-300 hover:bg-blue-gray-500 text-black rounded-lg px-6 py-3 ml-4"
+                  >
+                    Cancel
+                  </button>)
+                }
+                
               </div>
             </>
           )}

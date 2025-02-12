@@ -48,7 +48,7 @@ const InstructionsPage = () => {
             </h1>
             <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-300">
               <FaClock className="text-blue-500" />
-              <span>{data?.duration || '60 mins'}</span>
+              <span>{'60 mins'}</span>
             </div>
           </div>
           <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm">

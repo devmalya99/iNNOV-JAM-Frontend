@@ -3,8 +3,10 @@ import { FetchAssessmentResultInDetails } from "../../services/Assessor/FetchAss
 import { useNavigate, useParams } from "react-router";
 import { ArrowBigLeftIcon, Loader2 } from "lucide-react";
 import { BsBack } from "react-icons/bs";
+import axios from "axios";
 
 const ViewCourseResultDetailed = () => {
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
   const { courseId, assessmentId } = useParams();
   const {
     data: assessmentResult,
@@ -12,7 +14,7 @@ const ViewCourseResultDetailed = () => {
     refetch,
   } = FetchAssessmentResultInDetails(assessmentId);
 
-  console.log("assessment result fetched",assessmentResult)
+  console.log("assessment result fetched", assessmentResult);
 
   useEffect(() => {
     refetch();
@@ -30,6 +32,18 @@ const ViewCourseResultDetailed = () => {
       </div>
     );
   }
+
+  const handleResubmit = (userId) => {
+    const resubmitResponse = axios.put(
+      `${VITE_API_URL}/api/assigned-assessments/reassignassessment`,
+      {
+        userId: userId,
+        assessmentId: assessmentResult?.assessment?._id,
+      }
+    );
+    refetch();
+    console.log(resubmitResponse);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
@@ -57,14 +71,11 @@ const ViewCourseResultDetailed = () => {
                     Total Marks
                   </th>
                   <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Score
-                  </th>
-                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Attempted
+                    Grade
                   </th>
 
                   <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Total Questions
+                    Ask to Resubmit
                   </th>
 
                   <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
@@ -91,20 +102,30 @@ const ViewCourseResultDetailed = () => {
                     </td>
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                        {student.total_score}
+                        {student?.grade_label}
                       </span>
-                    </td>
-                    <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
-                      {student.attempted_questions}
-                    </td>
-                    <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
-                      {student.total_questions}
                     </td>
 
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
-                      <button 
-                      className="button-style"
-                      onClick={() => navigate(`/home/assessment/view-learner-result/${assessmentId}/${student.user_id}`)}>View</button>
+                      <button
+                        className="button-style"
+                        onClick={() => handleResubmit(student?.user_id)}
+                      >
+                        Resubmit
+                      </button>
+                    </td>
+
+                    <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
+                      <button
+                        className="button-style"
+                        onClick={() =>
+                          navigate(
+                            `/home/assessment/view-learner-result/${assessmentId}/${student.user_id}`
+                          )
+                        }
+                      >
+                        View
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -114,10 +135,8 @@ const ViewCourseResultDetailed = () => {
             {/* Back button */}
 
             <div className="flex bg-blue-500 w-[100px] px-4 py-2 rounded-xl">
-              <ArrowBigLeftIcon className="text-xl"/>
-              <button  onClick={() => navigate(-1)}>
-                Back
-              </button>
+              <ArrowBigLeftIcon className="text-xl" />
+              <button onClick={() => navigate(-1)}>Back</button>
             </div>
 
             {/* Empty State */}
@@ -129,10 +148,7 @@ const ViewCourseResultDetailed = () => {
                 </p>
               </div>
             )}
-
           </div>
-
-          
         </div>
       </div>
     </div>

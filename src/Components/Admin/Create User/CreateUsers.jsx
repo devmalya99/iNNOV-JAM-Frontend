@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { handleSuccess } from "../../../utils/toast";
 import handleCreateUsers from "../../../services/handleCreateUsers";
 import { useFetchAllCourses } from "../../../services/FetchAllCourses";
+import { useNavigate } from "react-router";
 
 const CreateUsers = () => {
   // State to store Users
@@ -16,6 +17,8 @@ const CreateUsers = () => {
    useEffect(() => {
        refetch();
      }, [refetch]);
+
+     const navigate = useNavigate()
     
 
   // -------------------------------------------------
@@ -177,8 +180,12 @@ const CreateUsers = () => {
     setUsers(newUsers);
     console.log("Saving newLearners:", newUsers);
     handleCreateUsers(newUsers);
+    // Reset Users list after saving
+    setUsers([]);
+
     handleSuccess({ success: "All Users have been saved successfully!" });
-    alert("All Users have been saved successfully!");
+    // alert("All Users have been saved successfully!");
+    navigate("/home/user-management");
   };
 
   console.log(Users);
@@ -293,12 +300,12 @@ const CreateUsers = () => {
               >
                 Add with Form
               </button>
-              <button
+              {/* <button
                 onClick={() => handleSelectAddMethod("csv")}
                 className="block w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all"
               >
                 Add with CSV
-              </button>
+              </button> */}
               <button
                 onClick={handleCancel}
                 className="mt-4 text-sm text-gray-500 dark:text-gray-300 hover:underline"

@@ -20,12 +20,17 @@ const AssignLearnerModal = ({ selectedAssessmentId, setOpenModalToAssignLearners
   // Function to assign learners
   const handleAssignLearnersFinal = async () => {
     try {
+      if (!courseid) {
+        alert("Course ID is missing. Please refresh and try again.");
+        return;
+      }
+  
       const apiUrl = `${VITE_API_URL}/api/assigned-assessments/assignassessment?assessmentId=${selectedAssessmentId}`;
-      const response = await axios.post(apiUrl,courseid);
-
+      const response = await axios.post(apiUrl, { courseid });
+  
       if (response.status === 200) {
-        alert("Learners successfully assigned!"); // Show success message
-        setOpenModalToAssignLearners(false); // Close modal
+        alert("Learners successfully assigned!");
+        setOpenModalToAssignLearners(false);
       } else {
         alert("Failed to assign learners. Please try again.");
       }
@@ -34,6 +39,7 @@ const AssignLearnerModal = ({ selectedAssessmentId, setOpenModalToAssignLearners
       alert("An error occurred while assigning learners.");
     }
   };
+  
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">

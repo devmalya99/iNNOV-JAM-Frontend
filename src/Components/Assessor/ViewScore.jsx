@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from "react-router";
 import { FetchAiScoreOfQuestion } from "../../services/Assessor/FetchAiScoreOfQuestion";
 import { Loader2, ClipboardCheck, Users, Cog, Languages, XCircle, CheckCircle2, X } from "lucide-react";
@@ -6,7 +6,13 @@ import { Loader2, ClipboardCheck, Users, Cog, Languages, XCircle, CheckCircle2, 
 const ViewScore = () => {
   const { userId, questionId } = useParams();
   const navigate = useNavigate();
-  const { data: scores, isLoading, error } = FetchAiScoreOfQuestion(questionId, userId);
+  const { data: scores, isLoading, error,refetch } = FetchAiScoreOfQuestion(questionId, userId);
+
+  console.log("scores is ",scores);
+
+  useEffect(() => { 
+    refetch();  
+  },[refetch]);
 
   if (isLoading) {
     return (
@@ -115,11 +121,20 @@ const ViewScore = () => {
           ))}
         </div>
 
-        {/* Feedback Section */}
+       {/* Human Feedback Section */}
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg mb-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Human Assessor Remark</h3>
+          <p className="text-gray-600 dark:text-gray-300">
+            {scoreData?.human_assess_remarks || "No feedback available."}
+          </p>
+        </div>
+
+
+         {/* Ai Feedback Section */}
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg mb-6">
           <h3 className="font-semibold text-gray-900 dark:text-white mb-2">AI Feedback</h3>
           <p className="text-gray-600 dark:text-gray-300">
-            {scoreData.feedback || "No feedback available."}
+            {scoreData?.feedback || "No feedback available."}
           </p>
         </div>
 
