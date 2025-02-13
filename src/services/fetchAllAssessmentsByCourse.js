@@ -13,7 +13,7 @@ export const FetchAllAssessmentsByCourse = (courseId) => {
     queryKey: ["all_assessments_of_course", courseId], // Unique query key per course
     queryFn: () => fetchAllAssessmentsByCourse(courseId),
     enabled: !!courseId, // Only run query if courseId exists
-    staleTime: 1000 * 60 * 2, // Cache for 5 minutes
+    
     retry: 2,
     refetchOnWindowFocus: true,
   });

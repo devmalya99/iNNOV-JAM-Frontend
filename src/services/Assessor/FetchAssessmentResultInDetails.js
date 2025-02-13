@@ -15,7 +15,6 @@ export const FetchAssessmentResultInDetails = (assessmentId) => {
     queryKey: ["all_assessments_result_details", assessmentId], // Unique query key per course
     queryFn: () => fetchAssessmentResultDetails(assessmentId),
     enabled: !!assessmentId, // Only run query if courseId exists
-    staleTime: 1000 * 60 * 2, // Cache for 5 minutes
     retry: 2,
     refetchOnWindowFocus: true,
   });

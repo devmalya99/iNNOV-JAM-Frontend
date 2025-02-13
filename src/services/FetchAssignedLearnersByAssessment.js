@@ -17,7 +17,6 @@ export const FetchAssignedLearnersByAssessments = (assessmentId) => {
     queryKey: ["all_learners_by_assessment", assessmentId], // Unique query key per course
     queryFn: () => fetchLearnersByAssessment(assessmentId),
     enabled: !!assessmentId, // Only run query if courseId exists
-    staleTime: 1000 * 60 * 2, // Cache for 5 minutes
     retry: 2,
     refetchOnWindowFocus: true,
   });

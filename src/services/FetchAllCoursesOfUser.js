@@ -14,7 +14,7 @@ export const FetchAllCoursesOfUser = (userId) => {
     queryKey: ["FetchAllCoursesOfUser", userId], // Unique query key per course
     queryFn: () => fetchAllCoursesOfUser(userId),
     enabled: !!userId, // Only run query if courseId exists
-    staleTime: 1000 * 60 * 2, // Cache for 5 minutes
+    
     retry: 2,
     refetchOnWindowFocus: true,
   });

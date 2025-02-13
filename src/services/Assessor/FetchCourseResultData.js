@@ -13,7 +13,7 @@ export const FetchCourseResultData = (courseId) => {
     queryKey: ["CourseResultData", courseId], // Unique query key per course
     queryFn: () => fetchCourseResultData(courseId),
     enabled: !!courseId, // Only run query if courseId exists
-    staleTime: 1000 * 60 * 2, // Cache for 5 minutes
+    
     retry: 2,
     refetchOnWindowFocus: true,
   });

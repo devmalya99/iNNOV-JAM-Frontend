@@ -21,7 +21,6 @@ export const FetchAiScoreOfQuestion = (questionId,userId) => {
     queryKey: ["fetchAiScoreOfQuestion", questionId,userId], // Unique query key per course
     queryFn: () => fetchAiScoresOfQuestion(questionId,userId),
     enabled: !!questionId, // Only run query if courseId exists
-    staleTime: 1000 * 60 * 2, // Cache for 5 minutes
     retry: 2,
     refetchOnWindowFocus: true,
   });

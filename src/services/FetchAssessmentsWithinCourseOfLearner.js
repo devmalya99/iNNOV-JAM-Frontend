@@ -16,7 +16,7 @@ export const FetchAssessmentsWithinCourseOfLearner = (userId,courseId) => {
     queryKey: ["fetchAssessmentsWithinCourse", userId, courseId], // Unique query key per course
     queryFn: () => fetchAssessmentsWithinCourse(userId,courseId),
     enabled: !!userId && !!courseId, // Only run query if courseId exists
-    staleTime: 1000 * 60 * 2, // Cache for 5 minutes
+    
     retry: 2,
     refetchOnWindowFocus: true,
   });
