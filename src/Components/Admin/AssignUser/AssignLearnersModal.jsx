@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, RefreshCcwIcon, Users, X } from "lucide-react";
-import { useUsersByRole } from "../../../services/fetchUsersByRole";
+import { FetchUsersByRole } from "../../../services/fetchUsersByRole";
 import useCourseStore from "../../../Zustand/useCourseStore";
 
 const AssignLearnersModal = () => {
@@ -9,7 +9,7 @@ const AssignLearnersModal = () => {
   const [isAllSelected, setIsAllSelected] = useState(false);
 
   // Fetch learners' data using a custom hook
-  const { data: LearnersData = [], isLoading, refetch } = useUsersByRole("learner");
+  const { data: LearnersData = [], isLoading, refetch } = FetchUsersByRole("learner");
 
   // Zustand store for managing modal and selected learners
   const {
