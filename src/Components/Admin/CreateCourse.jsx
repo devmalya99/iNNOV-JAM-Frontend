@@ -56,8 +56,8 @@ function CreateCourse() {
       !courseDescription.trim() ||
       !startDate ||
       !endDate ||
-      !visibility ||
-      totalMarks <= 0
+      !visibility
+      
     ) {
       setError("Please fill out all fields before submitting.");
       alert("Please fill out all fields before submitting.");
@@ -69,10 +69,8 @@ function CreateCourse() {
       course_code: courseCode,
       description: courseDescription,
       category: customCategory.trim() || category,
-      total_marks: totalMarks,
       startDate: startDate,
       endDate: endDate,
-      total_enrollment: 0,
       visibility: visibility,
       grade_id: gradeId,
     };
@@ -96,10 +94,10 @@ function CreateCourse() {
       setCourseName("");
       setCourseCode("");
       setCourseDescription("");
-      setTotalMarks("");
+      
       setStartDate("");
       setEndDate("");
-      setTotalEnrollmentCount(0);
+      
       setVisibility("");
       setGradeId("");
 
@@ -190,7 +188,7 @@ function CreateCourse() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <div>
+          {/* <div>
             <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
               Total Marks
             </label>
@@ -200,7 +198,7 @@ function CreateCourse() {
               onChange={(e) => setTotalMarks(Number(e.target.value))}
               className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
             />
-          </div>
+          </div> */}
 
           {/* Display grades dropdown */}
           <div>

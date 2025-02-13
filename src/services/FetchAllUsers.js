@@ -13,9 +13,9 @@ export const FetchAllUsers = () => {
   return useQuery({
     queryKey: ["allUsers"],
     queryFn: () => fetchAllUsers(),
-    staleTime: 1000 * 60 * 5, // 5 minutes
     retry: 2,
     refetchOnWindowFocus: true, 
+    refetchOnMount: true, // Forces refetch when the component mounts
   });
 };
 

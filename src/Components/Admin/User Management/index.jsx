@@ -1,145 +1,240 @@
-import React, { useEffect, useState } from 'react';
-import { FetchAllUsers } from '../../../services/FetchAllUsers';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { FetchAllUsers } from "../../../services/FetchAllUsers";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  Users, UserCog, GraduationCap, ClipboardCheck,
-  RotateCw, Search, Edit2, Trash2, Calendar
-} from 'lucide-react';
-
-const RoleCard = ({ data = [], title, icon: Icon }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const filteredData = data?.filter(user => 
-    user?.email?.toLowerCase()?.includes(searchTerm.toLowerCase())
-  ) || [];
-
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
-    >
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-3 mb-4">
-          <Icon className="w-5 h-5 text-blue-500" />
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-            {title} <span className="ml-2 text-sm text-gray-500">({data?.length || 0})</span>
-          </h2>
-        </div>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search users..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg 
-                     bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-          />
-        </div>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left">
-          <thead className="text-xs text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/50">
-            <tr>
-              <th className="px-4 py-3 font-medium">User</th>
-              <th className="px-4 py-3 font-medium hidden md:table-cell">Created</th>
-              <th className="px-4 py-3 font-medium text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {filteredData.length > 0 ? filteredData.map((user, index) => (
-              <motion.tr 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                key={user?._id}
-                className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-              >
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                      <span className="text-blue-600 dark:text-blue-300 font-medium text-sm">
-                        {user?.email?.[0]?.toUpperCase() || '?'}
-                      </span>
-                    </div>
-                    <div className="min-w-0">
-                      <div className="truncate text-gray-900 dark:text-gray-100 font-medium">
-                        {user?.email || 'Unknown'}
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-4 py-3 hidden md:table-cell text-gray-500 dark:text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-3 h-3" />
-                    {user?.createdAt ? new Date(user?.createdAt).toLocaleDateString() : 'N/A'}
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-right flex items-center justify-end gap-2">
-                  <button className="p-2 text-blue-500 hover:text-blue-700">
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  <button className="p-2 text-red-500 hover:text-red-700">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </td>
-              </motion.tr>
-            )) : (
-              <tr>
-                <td colSpan="3" className="text-center py-4 text-gray-500">No users found.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </motion.div>
-  );
-};
+  Users,
+  UserCog,
+  GraduationCap,
+  ClipboardCheck,
+  RotateCw,
+  Search,
+  Edit2,
+  Trash2,
+  Calendar,
+  RefreshCw,
+  Delete,
+  ChartColumnStacked,
+} from "lucide-react";
+import DeleteConfirmationModal from "../DeleteCourseModal";
+import DeleteUserModal from "./DeleteUserModal";
+import { deleteUser } from "../../../services/Admin/UseDeleteUser";
+import { FaUserAstronaut } from "react-icons/fa";
+import {  useMutation, useQueryClient } from "react-query";
 
 const UserManagement = () => {
-  const { data: All_Data, refetch, isLoading } = FetchAllUsers();
 
-  useEffect(() => {
+  // Declare queryClient first so it's available for useEffect
+  const queryClient = useQueryClient();
+
+
+  const { data: All_Users_Data, refetch, isLoading } = FetchAllUsers();
+
+   // Force a refetch when the component mounts
+   useEffect(() => {
+    queryClient.invalidateQueries(["allUsers"]);
     refetch();
   }, [refetch]);
 
-  const roleConfig = [
-    { data: All_Data?.admins, title: 'Administrators', icon: UserCog },
-    { data: All_Data?.trainers, title: 'Trainers', icon: Users },
-    { data: All_Data?.assessors, title: 'Assessors', icon: ClipboardCheck },
-    { data: All_Data?.learners, title: 'Learners', icon: GraduationCap },
-  ];
+
+
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, user: null });
+
+
+
+  // Mutation Function to delete users
+
+  const DeleteUserMutation = useMutation({
+    mutationFn: (userId) => deleteUser(userId),
+    onSuccess: (data, userId) => {
+      console.log("User deleted successfully", data);
+      // Invalidate the query to force a refetch.
+      queryClient.invalidateQueries(["allUsers"]);
+    },
+  });
+
+  // const [searchTerm, setSearchTerm] = useState('');
+
+  
+
+  const handleDelete = (user) => {
+    setDeleteModal({ isOpen: true, user: user });
+  };
+
+  const handleEdit = (user) => {
+    // Implement edit functionality
+    console.log("Edit user:", user);
+  };
+
+  const handleConfirmDelete = async (user) => {
+    if (user.role === "super_admin") {
+      alert("Super Admin cannot be deleted");
+      setDeleteModal({ isOpen: false, user: null });
+      return;
+    }
+
+    // Call mutate and let onSuccess handle refetch/invalidation
+  DeleteUserMutation.mutate(user._id);
+  setDeleteModal({ isOpen: false, user: null });
+
+
+  };
+
+  const UserTable = ({ users, title, icon: Icon }) => (
+    <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Icon className="w-6 h-6 text-blue-500" />
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              {title}
+            </h2>
+            <span className="px-3 py-1 text-sm bg-blue-100 text-blue-600 rounded-full">
+              {users?.length || 0} users
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Course Code
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {users?.map((user) => (
+              <motion.tr
+                key={user._id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
+              >
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900 dark:text-white">
+                    {user.name}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500 dark:text-gray-300">
+                    {user.email}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500 dark:text-gray-300">
+                    {user.course_code?.join(", ") || "-"}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEdit(user)}
+                      className="p-1 text-blue-600 hover:bg-blue-100 rounded transition-colors"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(user)}
+                      className="p-1 text-red-600 hover:bg-red-100 rounded transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  if (isLoading) {
+    return (
+      <div className=" refetch button flex items-center justify-center min-h-screen">
+        <RefreshCw className="w-8 h-8 animate-spin text-blue-500" />
+      </div>
+    );
+  }
 
   return (
-    <div className="h-[calc(100vh-70px)] overflow-y-auto bg-gray-100 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-6">
-        <div className="flex items-center justify-between sticky top-0 z-10 bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-sm py-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+    <div className="container mx-auto p-6 max-w-7xl h-[calc(100vh-80px)] overflow-y-auto">
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             User Management
           </h1>
-          <motion.button
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            onClick={refetch}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium"
+
+          {/* Search user feature */}
+          {/* <div className="relative">
+            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search users..."
+              className="pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div> */}
+
+          <button
+            onClick={() => refetch()}
+            className="p-2 mx-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
           >
-            <RotateCw className="w-4 h-4" />
-            Refresh
-          </motion.button>
+            <RefreshCw
+              className={`w-5 h-5 text-gray-500  
+            `}
+            />
+          </button>
         </div>
-        {isLoading ? (
-          <div className="flex justify-center py-10">
-            <span className="text-gray-500">Loading...</span>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {roleConfig.map(({ data, title, icon }) => (
-              <RoleCard key={title} data={data} title={title} icon={icon} />
-            ))}
-          </div>
-        )}
       </div>
+
+      <UserTable
+        users={All_Users_Data?.superadmin}
+        title="Super Admins"
+        icon={FaUserAstronaut}
+      />
+
+      <UserTable
+        users={All_Users_Data?.admins}
+        title="Admins"
+        icon={UserCog}
+      />
+
+      <UserTable
+        users={All_Users_Data?.trainers}
+        title="Trainer"
+        icon={ChartColumnStacked}
+      />
+
+      <UserTable
+        users={All_Users_Data?.learners}
+        title="Learners"
+        icon={GraduationCap}
+      />
+      <UserTable
+        users={All_Users_Data?.assessors}
+        title="Assessors"
+        icon={ClipboardCheck}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteUserModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, user: null })}
+        onConfirm={() => handleConfirmDelete(deleteModal.user)}
+        itemName={`${deleteModal.user?.name}'s account`}
+      />
     </div>
   );
 };

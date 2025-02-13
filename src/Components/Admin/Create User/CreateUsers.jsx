@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { handleSuccess } from "../../../utils/toast";
-import handleCreateUsers from "../../../services/handleCreateUsers";
+import  { UseCreateUser } from "../../../services/Admin/User Creation/UseCreateUser";
 import { useFetchAllCourses } from "../../../services/FetchAllCourses";
 import { useNavigate } from "react-router";
 
@@ -17,6 +17,19 @@ const CreateUsers = () => {
 
   // Extract course codes from fetched courses
   const courseCodes = courses ? courses.map((course) => course.course_code) : [];
+     const navigate = useNavigate()
+    
+
+  // -------------------------------------------------
+  // Course code selection
+
+  console.log("courses", courses);
+  const courseCodes = courses ? courses.map(course => course.course_code) : [];
+
+  const {mutate:createNewUsers} = UseCreateUser()
+
+
+  
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [isCodesOpen, setIsCodesOpen] = useState(false);
   
@@ -73,6 +86,30 @@ const CreateUsers = () => {
     setSelectedCourses([]);
     setUserRole("");
   };
+    setAddMethod("none");
+    setShowForm(false);
+    setShowCSVUpload(false);
+    setEditIndex(null);
+    // Discard any parsed CSV Users if user cancels
+    setCsvUsers([]);
+  };
+
+  // Handle Save All button click (for entire list)
+  const handleSaveAll = () => {
+    // Add role field to all learners
+    const newUsers = Users.map((user) => ({ ...user }));
+    setUsers(newUsers);
+    console.log("Saving newLearners:", newUsers);
+    createNewUsers(newUsers);
+    // Reset Users list after saving
+    setUsers([]);
+
+    handleSuccess({ success: "All Users have been saved successfully!" });
+    // alert("All Users have been saved successfully!");
+    navigate("/home/user-management");
+  };
+
+  console.log(Users);
 
   return (
     <div className="p-6 min-h-screen bg-gradient-to-r from-blue-100 to-blue-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">

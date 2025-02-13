@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, RefreshCcwIcon, Users, X } from "lucide-react";
-import { useUsersByRole } from "../../../services/fetchUsersByRole";
+import { FetchUsersByRole } from "../../../services/fetchUsersByRole";
 import useCourseStore from "../../../Zustand/useCourseStore";
 
 const AssignTrainersModal = ({ open, setOpen }) => {
   
   const [isAllSelected, setIsAllSelected] = useState(false);
-  const { data: TrainersData = [], isLoading, refetch } = useUsersByRole("trainer");
+  const { data: TrainersData = [], isLoading, refetch } = FetchUsersByRole("trainer");
   const {selectedTrainers,setSelectedTrainers,isOpenAssignModal,setOpenAssignModal,}=useCourseStore();
   
   useEffect(() => {

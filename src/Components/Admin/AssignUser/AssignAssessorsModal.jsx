@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, RefreshCcwIcon, Users, X } from "lucide-react";
-import { useUsersByRole } from "../../../services/fetchUsersByRole";
+import { FetchUsersByRole } from "../../../services/fetchUsersByRole";
 import useCourseStore from "../../../Zustand/useCourseStore";
 
 const AssignAssessorsModal = () => {
   
   const [isAllSelected, setIsAllSelected] = useState(false);
-  const { data: AssessorsData = [], isLoading,refetch } = useUsersByRole("assessor");
+  const { data: AssessorsData = [], isLoading,refetch } = FetchUsersByRole("assessor");
   const {selectedAssessors, setSelectedAssessors,isOpenAssignModal,setOpenAssignModal,}=useCourseStore();
   const handleSelectAll = () => {
     if (isAllSelected) {
