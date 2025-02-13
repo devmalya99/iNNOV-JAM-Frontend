@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { handleSuccess } from "../../../utils/toast";
-import  { UseCreateUser } from "../../../services/Admin/User Creation/UseCreateUser";
+import { UseCreateUser } from "../../../services/Admin/User Creation/UseCreateUser";
 import { useFetchAllCourses } from "../../../services/FetchAllCourses";
 import { useNavigate } from "react-router";
 
@@ -10,34 +10,21 @@ const CreateUsers = () => {
   const { data: courses, refetch } = useFetchAllCourses();
   const navigate = useNavigate();
 
-  // Fetch courses when the component mounts
+  // Update courses on component mount
   useEffect(() => {
     refetch();
   }, [refetch]);
 
-  // Extract course codes from fetched courses
+  // Extract course codes from courses data
   const courseCodes = courses ? courses.map((course) => course.course_code) : [];
-     const navigate = useNavigate()
-    
-
-  // -------------------------------------------------
-  // Course code selection
-
-  console.log("courses", courses);
-  const courseCodes = courses ? courses.map(course => course.course_code) : [];
-
-  const {mutate:createNewUsers} = UseCreateUser()
-
-
-  
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [isCodesOpen, setIsCodesOpen] = useState(false);
-  
+
   const toggleDropdown = () => setIsCodesOpen((prev) => !prev);
-  
+
   const handleRemoveCode = (code) =>
     setSelectedCourses((prev) => prev.filter((c) => c !== code));
-  
+
   const handleCodeSelect = (code) => {
     setSelectedCourses((prev) =>
       prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
@@ -48,7 +35,10 @@ const CreateUsers = () => {
     setUserRole(e.target.value);
   };
 
-  // Merged function: gathers form data, validates it, saves the new user, and navigates away
+  // Initialize our mutation hook
+  const createUserMutation = UseCreateUser();
+
+  // Merged function: validates form data and calls the mutation to create the user
   const handleSaveAll = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -59,7 +49,7 @@ const CreateUsers = () => {
     const role = userRole;
     const course_code = selectedCourses;
 
-    if (!name || !email || !password || !confirmPassword || !role || course_code.length === 0) {
+    if (!name || !email || !password || !confirmPassword || !role ) {
       alert("Please fill in all required fields");
       return;
     }
@@ -70,10 +60,10 @@ const CreateUsers = () => {
 
     const newUser = { name, email, course_code, password, role };
 
-    // Call the API to create the user. (Expecting handleCreateUsers to handle an array of users.)
-    handleCreateUsers([newUser]);
+    // Use the mutation to create the user (expects an array of users)
+    createUserMutation.mutate([newUser]);
 
-    // Reset the form and selections
+    // Reset form and state
     form.reset();
     setSelectedCourses([]);
     setUserRole("");
@@ -82,34 +72,7 @@ const CreateUsers = () => {
     navigate("/home/user-management");
   };
 
-  const handleCancel = () => {
-    setSelectedCourses([]);
-    setUserRole("");
-  };
-    setAddMethod("none");
-    setShowForm(false);
-    setShowCSVUpload(false);
-    setEditIndex(null);
-    // Discard any parsed CSV Users if user cancels
-    setCsvUsers([]);
-  };
-
-  // Handle Save All button click (for entire list)
-  const handleSaveAll = () => {
-    // Add role field to all learners
-    const newUsers = Users.map((user) => ({ ...user }));
-    setUsers(newUsers);
-    console.log("Saving newLearners:", newUsers);
-    createNewUsers(newUsers);
-    // Reset Users list after saving
-    setUsers([]);
-
-    handleSuccess({ success: "All Users have been saved successfully!" });
-    // alert("All Users have been saved successfully!");
-    navigate("/home/user-management");
-  };
-
-  console.log(Users);
+ 
 
   return (
     <div className="p-6 min-h-screen bg-gradient-to-r from-blue-100 to-blue-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
@@ -223,16 +186,10 @@ const CreateUsers = () => {
                 ))}
               </select>
             </div>
-            <div className="flex justify-end space-x-4">
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
-              >
-                Cancel
-              </button>
+            <div className="space-x-4">
+              
               <button type="submit" className="px-4 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600">
-                Save All
+                Save User
               </button>
             </div>
           </form>
