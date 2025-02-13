@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { handleSuccess } from "../../../utils/toast";
-import handleCreateUsers from "../../../services/handleCreateUsers";
+import  { UseCreateUser } from "../../../services/Admin/User Creation/UseCreateUser";
 import { useFetchAllCourses } from "../../../services/FetchAllCourses";
 import { useNavigate } from "react-router";
 
@@ -26,6 +26,8 @@ const CreateUsers = () => {
 
   console.log("courses", courses);
   const courseCodes = courses ? courses.map(course => course.course_code) : [];
+
+  const {mutate:createNewUsers} = UseCreateUser()
 
 
   
@@ -179,7 +181,7 @@ const CreateUsers = () => {
     const newUsers = Users.map((user) => ({ ...user }));
     setUsers(newUsers);
     console.log("Saving newLearners:", newUsers);
-    handleCreateUsers(newUsers);
+    createNewUsers(newUsers);
     // Reset Users list after saving
     setUsers([]);
 
