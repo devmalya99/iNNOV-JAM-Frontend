@@ -9,12 +9,12 @@ const fetchUsersByRole = async (role) => {
   return response.data;
 };
 
-export const useUsersByRole = (role) => {
+export const FetchUsersByRole = (role) => {
   return useQuery({
-    queryKey: ["users"],
+    queryKey: ["fetch_users_role"],
     queryFn: () => fetchUsersByRole(role),
-    staleTime: 1000 * 60 * 5, // 5 minutes
     retry: 2,
     refetchOnWindowFocus: true, 
+    refetchOnMount: true,
   });
 };

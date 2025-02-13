@@ -8,7 +8,10 @@ import { FetchAllLearnersByCourse } from "../../../services/FetchLearnersByCours
 const AssignLearnerModal = ({ selectedAssessmentId, setOpenModalToAssignLearners } ) => {
   const { courseid } = useParams();
   const { data: users, isLoading,refetch } = FetchAllLearnersByCourse(courseid);
-
+   
+  
+  
+  
   useEffect(() => {
       refetch();
     }, [refetch]);
