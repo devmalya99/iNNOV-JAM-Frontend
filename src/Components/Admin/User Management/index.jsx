@@ -1,61 +1,176 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FetchAllUsers } from '../../../services/FetchAllUsers';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Users, UserCog, GraduationCap, ClipboardCheck,
-  RotateCw, Search, Edit2, Trash2, Calendar
+  RotateCw, Search, Edit2, Trash2, Calendar, RefreshCw,
+  Delete,
+  ChartColumnStacked
 } from 'lucide-react';
+import DeleteConfirmationModal from '../DeleteCourseModal';
+import DeleteUserModal from './DeleteUserModal';
+import { UseDeleteUser } from '../../../services/Admin/UseDeleteUser';
+import { FaUserAstronaut } from 'react-icons/fa';
 
 const UserManagement = () => {
-  const { data: All_Data, refetch, isLoading, isFetching } = FetchAllUsers();
+  const { data: All_Users_Data, refetch, isLoading, isFetching } = FetchAllUsers();
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, user: null });
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Ensure data reloads when the component mounts
+  const { mutate: removeUser } = UseDeleteUser();
+
   useEffect(() => {
     refetch();
   }, [refetch]);
 
-  // Role configurations
-  const roleConfig = [
-    { data: All_Data?.admins, title: 'Administrators', icon: UserCog },
-    { data: All_Data?.trainers, title: 'Trainers', icon: Users },
-    { data: All_Data?.assessors, title: 'Assessors', icon: ClipboardCheck },
-    { data: All_Data?.learners, title: 'Learners', icon: GraduationCap },
-  ];
+  const handleDelete = (user) => {
+    setDeleteModal({ isOpen: true, user: user });
+  };
+
+  const handleEdit = (user) => {
+    // Implement edit functionality
+    console.log('Edit user:', user);
+  };
+
+  const handleConfirmDelete = (user) => {
+
+    if(user.role==="super_admin") {
+     alert("Super Admin cannot be deleted") 
+     setDeleteModal({ isOpen: false, user: null });
+     return ;
+    }
+
+    removeUser(user._id);
+
+    // Implement delete functionality
+    console.log('Deleting user:', user);
+    setDeleteModal({ isOpen: false, user: null });
+  };
+
+  const UserTable = ({ users, title, icon: Icon }) => (
+    <div
+      className="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+    >
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Icon className="w-6 h-6 text-blue-500" />
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h2>
+            <span className="px-3 py-1 text-sm bg-blue-100 text-blue-600 rounded-full">
+              {users?.length || 0} users
+            </span>
+          </div>
+
+          
+
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Course Code</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {users?.map((user) => (
+              <motion.tr
+                key={user._id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
+              >
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500 dark:text-gray-300">{user.email}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500 dark:text-gray-300">
+                    {user.course_code?.join(', ') || '-'}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEdit(user)}
+                      className="p-1 text-blue-600 hover:bg-blue-100 rounded transition-colors"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(user)}
+                      className="p-1 text-red-600 hover:bg-red-100 rounded transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <RefreshCw className="w-8 h-8 animate-spin text-blue-500" />
+      </div>
+    );
+  }
 
   return (
-    <div className="h-[calc(100vh-70px)] overflow-y-auto bg-gray-100 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-6">
-        <div className="flex items-center justify-between sticky top-0 z-10 bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-sm py-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
-            User Management
-          </h1>
-          <motion.button
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            onClick={refetch}
-            disabled={isFetching}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors text-sm font-medium ${
-              isFetching ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 text-white'
-            }`}
-          >
-            <RotateCw className={`w-4 h-4 ${isFetching ? 'animate-spin' : ''}`} />
-            {isFetching ? 'Refreshing...' : 'Refresh'}
-          </motion.button>
-        </div>
+    <div className="container mx-auto p-6 max-w-7xl">
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">User Management</h1>
+          <div className="relative">
+         
 
-        {/* Show loading indicator while fetching fresh data */}
-        {isLoading || isFetching ? (
-          <div className="flex justify-center py-10">
-            <span className="text-gray-500">Loading...</span>
+            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search users..."
+              className="pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {roleConfig.map(({ data, title, icon }) => (
-              <RoleCard key={title} data={data} title={title} icon={icon} />
-            ))}
-          </div>
-        )}
+
+          <button
+            onClick={() => refetch()}
+            className="p-2 mx-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+          >
+            <RefreshCw 
+            className={`w-5 h-5 text-gray-500  
+            `} />
+          </button>
+        </div>
       </div>
+
+      <UserTable users={All_Users_Data?.admins?.filter((user)=>user.role==="super_admin")} title="Super Admins" icon={FaUserAstronaut} />
+
+      <UserTable users={All_Users_Data?.admins?.filter((user)=>user.role==="admin")} title="Admins" icon={UserCog} />
+
+      <UserTable users={All_Users_Data?.trainers} title="Trainer" icon={ChartColumnStacked} />
+
+      <UserTable users={All_Users_Data?.learners} title="Learners" icon={GraduationCap} />
+      <UserTable users={All_Users_Data?.assessors} title="Assessors" icon={ClipboardCheck} />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteUserModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, user: null })}
+        onConfirm={()=>handleConfirmDelete(deleteModal.user)}
+        itemName={`${deleteModal.user?.name}'s account`}
+      />
     </div>
   );
 };
