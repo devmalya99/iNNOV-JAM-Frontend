@@ -6,6 +6,8 @@ import { ThemeProvider } from "../Context/ThemeContext.jsx";
 import { BrowserRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from 'react-query'; 
 import { AuthProvider } from "./../Context/AuthContext.jsx";
+import { ReactQueryDevtools } from "react-query/devtools";
+
 
 const queryClient = new QueryClient();
 
@@ -17,8 +19,10 @@ createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <ThemeProvider>
           <App />
+          <ReactQueryDevtools initialIsOpen={false} />
         </ThemeProvider>
       </AuthProvider>
+
     
   </BrowserRouter>
  
