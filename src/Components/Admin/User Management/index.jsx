@@ -20,6 +20,7 @@ import DeleteUserModal from "./DeleteUserModal";
 import { deleteUser } from "../../../services/Admin/UseDeleteUser";
 import { FaUserAstronaut } from "react-icons/fa";
 import {  useMutation, useQueryClient } from "react-query";
+import UpdateAssignedCourses from "./UpdateAssignedCourses";
 
 const UserManagement = () => {
 
@@ -39,6 +40,8 @@ const UserManagement = () => {
 
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, user: null });
 
+  const [EditUserCoursesModalStatus, setEditUserCoursesModalStatus] = useState({ isOpen: false, user: null });
+
   const [EditUserModalStatus, setEditUserModalStatus] = useState({ isOpen: false, user: null });
 
   // Mutation Function to delete users
@@ -54,7 +57,10 @@ const UserManagement = () => {
 
   // const [searchTerm, setSearchTerm] = useState('');
 
-  
+  const handleCourseUpdate=(user)=>{
+    setEditUserCoursesModalStatus({ isOpen: true, user: user });
+    console.log("edit courses  for user",user);
+  }
 
   const handleDelete = (user) => {
     setDeleteModal({ isOpen: true, user: user });
@@ -135,6 +141,13 @@ const UserManagement = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-500 dark:text-gray-300">
                     {user.course_code?.join(", ") || "-"}
+                    <button
+                      onClick={() => handleCourseUpdate(user)}
+                      className="p-1 text-blue-600 hover:bg-blue-100 rounded transition-colors"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                  
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -229,6 +242,18 @@ const UserManagement = () => {
         icon={ClipboardCheck}
       />
 
+      {/* Edit User courses */}
+
+      {/* Edit Profile Modal */}
+      <UpdateAssignedCourses
+        isOpen={EditUserCoursesModalStatus.isOpen}
+        onClose={() => setEditUserCoursesModalStatus({ isOpen: false, user: null })}
+        // onConfirm={() => handleConfirmDelete(deleteModal.user)}
+        user={EditUserCoursesModalStatus.user}
+      />
+
+
+
       {/* Edit Profile Modal */}
       <EditUserModal
         isOpen={EditUserModalStatus.isOpen}
@@ -236,6 +261,8 @@ const UserManagement = () => {
         // onConfirm={() => handleConfirmDelete(deleteModal.user)}
         user={EditUserModalStatus.user}
       />
+
+
 
       {/* Delete Confirmation Modal */}
       <DeleteUserModal

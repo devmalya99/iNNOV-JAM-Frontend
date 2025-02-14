@@ -72,7 +72,7 @@ function CreateCourse() {
       startDate: startDate,
       endDate: endDate,
       visibility: visibility,
-      grade_id: gradeId,
+      
     };
 
     console.log("courseData", courseData);
@@ -99,7 +99,7 @@ function CreateCourse() {
       setEndDate("");
       
       setVisibility("");
-      setGradeId("");
+     
 
       // Navigate to the newly created course page
       navigate(`/home/all-assessments`);
@@ -198,29 +198,8 @@ function CreateCourse() {
               onChange={(e) => setTotalMarks(Number(e.target.value))}
               className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
             />
-          </div> */}
-
-          {/* Display grades dropdown */}
-          <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
-              Select Grade System
-            </label>
-            <select
-              value={gradeId}
-              onChange={(e) => {
-                console.log("Selected grade ID:", e.target.value); // Debugging
-                setGradeId(e.target.value);
-              }}
-              className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
-            >
-              <option value="">Select a grade</option>
-              {grades?.map((grade) => (
-                <option key={grade._id} value={grade._id}>
-                  {grade.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          </div> */} 
+          
         </div>
 
         {/* Visibility */}
