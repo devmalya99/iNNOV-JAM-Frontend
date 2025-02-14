@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { AlertCircle, CheckCircle, Loader2, Database } from "lucide-react";
+import { AlertCircle, CheckCircle, Loader2, Database, RefreshCcw } from "lucide-react";
 import { motion } from "framer-motion";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { FetchAiModelsApi } from "../../../services/Admin/AiModels/FetchAiModelsApi";
 
+import AiModelsUpdateModal from "./AiModels/AiModelsUpdateModal"
 // React Query Delete Mutation
 const deleteAiModel = async (id) => {
   const VITE_API_URL = import.meta.env.VITE_API_URL;
@@ -16,6 +17,11 @@ const deleteAiModel = async (id) => {
 const AiModelsList = () => {
   const [error, setError] = useState("");
   const queryClient = useQueryClient();
+
+  const[openEdit,setOpenEdit] = useState(false)
+  const [selectedModelData,setSelectedModels] = useState()
+
+
 
   // Fetching AI Models
   const { data: aiModels, isLoading, refetch } = FetchAiModelsApi();
@@ -28,6 +34,7 @@ const AiModelsList = () => {
   const { mutate: deleteModel, isLoading: isDeleting } = useMutation(deleteAiModel, {
     onSuccess: () => {
       // Invalidate and refetch the AI models list after delete
+      
       queryClient.invalidateQueries(["allAiModelsCreated"]);
     },
     onError: (err) => {
@@ -71,9 +78,32 @@ const AiModelsList = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 h-[calc(100vh-80px)] overflow-y-auto">
+
+        {/* Edit optionb */}
+
+        {openEdit && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+    <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 z-50">
+      <AiModelsUpdateModal existingModelData={selectedModelData} setOpenEdit={setOpenEdit} />
+    </div>
+  </div>
+)}
+
+
+
       <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
         AI Models List
       </h2>
+
+      <div 
+      onClick={()=>refetch()}
+      className="flex justify-center button-style my-2 cursor-pointer">
+        
+        <p>Refresh</p>
+        <RefreshCcw/>
+      </div>
+
+      
 
       {/* Fallback UI if no models found */}
       {aiModels?.length === 0 ? (
@@ -128,7 +158,13 @@ const AiModelsList = () => {
                 >
                   <FaTrash className="text-md text-gray-100 dark:text-gray-400" />
                 </button>
-                <button className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
+                <button 
+                 onClick={()=>{
+                    setOpenEdit(true)
+                    setSelectedModels(model)
+                
+                 }}
+                className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
                   <FaEdit className="text-md text-gray-100 dark:text-gray-400" />
                 </button>
               </div>
