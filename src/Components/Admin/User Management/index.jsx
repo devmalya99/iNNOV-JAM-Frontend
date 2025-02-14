@@ -15,7 +15,7 @@ import {
   Delete,
   ChartColumnStacked,
 } from "lucide-react";
-import DeleteConfirmationModal from "../DeleteCourseModal";
+import EditUserModal from "./EditUserModal";
 import DeleteUserModal from "./DeleteUserModal";
 import { deleteUser } from "../../../services/Admin/UseDeleteUser";
 import { FaUserAstronaut } from "react-icons/fa";
@@ -39,7 +39,7 @@ const UserManagement = () => {
 
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, user: null });
 
-
+  const [EditUserModalStatus, setEditUserModalStatus] = useState({ isOpen: false, user: null });
 
   // Mutation Function to delete users
 
@@ -63,6 +63,7 @@ const UserManagement = () => {
   const handleEdit = (user) => {
     // Implement edit functionality
     console.log("Edit user:", user);
+    setEditUserModalStatus({ isOpen: true, user: user });
   };
 
   const handleConfirmDelete = async (user) => {
@@ -226,6 +227,14 @@ const UserManagement = () => {
         users={All_Users_Data?.assessors}
         title="Assessors"
         icon={ClipboardCheck}
+      />
+
+      {/* Edit Profile Modal */}
+      <EditUserModal
+        isOpen={EditUserModalStatus.isOpen}
+        onClose={() => setEditUserModalStatus({ isOpen: false, user: null })}
+        // onConfirm={() => handleConfirmDelete(deleteModal.user)}
+        user={EditUserModalStatus.user}
       />
 
       {/* Delete Confirmation Modal */}
