@@ -21,12 +21,22 @@ const SettingsSidebar = () => {
     <div className="flex flex-col space-y-1 p-4">
       <SidebarItem
         to="./models"
-        text="Models"
+        text="Model Creation"
         icon={<Cog className="w-5 h-5" />}
         
         onClick={()=>setActiveItem('models')}
         active={activeItem==='models'}
       />
+
+     <SidebarItem
+        to="./models-management"
+        text="Models Management"
+        icon={<Cog className="w-5 h-5" />}
+        
+        onClick={()=>setActiveItem('models-management')}
+        active={activeItem==='models-management'}
+      />
+
       <SidebarItem
         to="./"
         
@@ -35,6 +45,7 @@ const SettingsSidebar = () => {
         onClick={()=>setActiveItem('grading')}
         active={activeItem==='grading'}
       />
+
     </div>
   </div>
     

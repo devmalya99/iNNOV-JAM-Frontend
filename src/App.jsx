@@ -48,6 +48,7 @@ import AssessorCourses from './Components/Assessor/Assessor Courses/AssessorCour
 import CourseResult from './Components/Assessor/CourseResult'
 import ViewCourseResultDetailed from './Components/Assessor/ViewCourseResultDetailed'
 import ViewScore from './Components/Assessor/ViewScore'
+import AiModelsList from './Components/Admin/Settings/AiModelsList'
 
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
         <Route path='/settings' element={<ProtectedRoute> <SettingsLayout /></ProtectedRoute>}>
           <Route index element={<GradeInput />} />
           <Route path='models' element={<AiModelSelector />} />
+          <Route path='models-management' element={<AiModelsList/>}/>
         </Route>
 
 
