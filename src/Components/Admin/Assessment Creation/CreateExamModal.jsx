@@ -4,7 +4,7 @@ import { handleSuccess, handleError } from "../../../utils/toast";
 import { useNavigate, useParams } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, X, FileText, CheckCircle, AlertCircle } from "lucide-react";
-
+import {FetchAiModelsApi} from  "../../../services/Admin/AiModels/FetchAiModelsApi"
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
@@ -13,6 +13,9 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
   const [success, setSuccess] = useState(false);
   const { courseid } = useParams();
 
+  const {data:all_aiModalCombo,isLoading,refetch} = FetchAiModelsApi()
+  
+  console.log("all_aiiModalCombo", all_aiModalCombo)
   const navigate = useNavigate();
 
   const createExam = async (assessment) => {
