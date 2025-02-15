@@ -1,19 +1,48 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaClipboardList } from "react-icons/fa";
 import { IoMdBook } from "react-icons/io";
 import { motion } from "framer-motion";
-import {FetchAssessmentsDetails} from "../../../services/FetchAssessmentDetails";
+import { FetchAssessmentsDetails } from "../../../services/FetchAssessmentDetails";
+import axios from "axios";
 
 const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
-  const { data: AssessmentDetails, isLoading, error , refetch} = FetchAssessmentsDetails(assessmentId);
+  const { data: AssessmentDetails, isLoading, error, refetch } = FetchAssessmentsDetails(assessmentId);
+  const [questionsData, setQuestionsData] = useState([]);
 
-    
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-      refetch();
-    }, [refetch]);
+    refetch();
+  }, [refetch]);
 
+  // Initialize question temperatures
+  useEffect(() => {
+    if (AssessmentDetails) {
+      const formattedQuestions = AssessmentDetails.map((question) => ({
+        question_id: question._id,
+        temperature: 0, // Default value
+      }));
+      setQuestionsData(formattedQuestions);
+    }
+  }, [AssessmentDetails]);
 
-  console.log("AssessmentDetails", AssessmentDetails);
+  const handleTemperatureChange = (question_id, newTemperature) => {
+    setQuestionsData((prevData) =>
+      prevData.map((q) =>
+        q.question_id === question_id ? { ...q, temperature: newTemperature } : q
+      )
+    );
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await axios.put(`${VITE_API_URL}/api/assessments/updatequestiontemperature`, questionsData);
+      alert("Temperature updated successfully!");
+    } catch (error) {
+      console.error("Error updating temperature:", error);
+      alert("Failed to update temperature.");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -36,8 +65,7 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center
-     bg-black/50 backdrop-blur-sm z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -68,28 +96,59 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
         )}
 
         <div className="mt-6 space-y-6">
-          {AssessmentDetails?.map((question) => (
-            <div
-              key={question?._id}
-              className="p-4 border-l-4 border-blue-500 bg-white dark:bg-gray-800 shadow-md rounded-lg"
-            >
-              <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-400">
-                {question?.question_number}: {question?.question}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 italic text-lg font-bold">
-                {question?.question_instruction}
-              </p>
-              <h4 className="mt-2 font-semibold text-blue-700 dark:text-blue-300">Suggested Answers:</h4>
-              <ul className="list-disc pl-6 mt-2 space-y-2 text-gray-700 dark:text-gray-300">
-                {question?.suggested_answer?.map((answer, i) => (
-                  <li key={i} className="bg-blue-100 dark:bg-blue-900 p-2 rounded-lg">
-                    {answer}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {AssessmentDetails?.map((question) => {
+            const currentTemp = questionsData.find(q => q.question_id === question._id)?.temperature || 0;
+            return (
+              <div
+                key={question?._id}
+                className="p-4 border-l-4 border-blue-500 bg-white dark:bg-gray-800 shadow-md rounded-lg"
+              >
+                <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-400">
+                  {question?.question_number}: {question?.question}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 italic text-lg font-bold">
+                  {question?.question_instruction}
+                </p>
+                <h4 className="mt-2 font-semibold text-blue-700 dark:text-blue-300">Suggested Answers:</h4>
+
+                {/* Temperature slider */}
+                <div className="flex flex-col items-center space-y-4">
+                  <label htmlFor={`temperature-${question._id}`} className="text-xl font-medium">
+                    Temperature: {currentTemp.toFixed(2)}
+                  </label>
+
+                  {/* Slider with dynamic color based on temperature value */}
+                  <input
+                    id={`temperature-${question._id}`}
+                    type="range"
+                    min="0"
+                    max="2"
+                    step="0.01"
+                    value={currentTemp}
+                    onChange={(e) => handleTemperatureChange(question._id, parseFloat(e.target.value))}
+                    className="w-full h-2 rounded-full transition-all"
+                  />
+                </div>
+
+                <ul className="list-disc pl-6 mt-2 space-y-2 text-gray-700 dark:text-gray-300">
+                  {question?.suggested_answer?.map((answer, i) => (
+                    <li key={i} className="bg-blue-100 dark:bg-blue-900 p-2 rounded-lg">
+                      {answer}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
+
+        {/* Submit Button */}
+        <button
+          onClick={handleSubmit}
+          className="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg"
+        >
+          Save Changes
+        </button>
       </motion.div>
     </div>
   );

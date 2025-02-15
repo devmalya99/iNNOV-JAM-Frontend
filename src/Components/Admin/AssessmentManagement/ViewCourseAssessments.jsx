@@ -11,6 +11,7 @@ import {
   ClipboardList,
   Edit2,
   Eye,
+  SunIcon,
   Trash2,
   Users,
 } from "lucide-react";
@@ -47,6 +48,7 @@ export default function ViewCourseAssessments() {
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
 
   const [openViewLearnersModal, setOpenViewLearnersModal] = useState(false);
+  
 
   {
     /* Handle assign Learner */
@@ -191,7 +193,7 @@ export default function ViewCourseAssessments() {
                       </div>
                       <div
                         className="flex-1 min-w-0"
-                        onClick={() => handleOpenAssessment(assessment)}
+                        
                       >
                         <h3
                           className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 
@@ -208,6 +210,18 @@ export default function ViewCourseAssessments() {
                     </div>
 
                     <div className="flex items-center gap-2 sm:gap-3">
+
+                    <motion.button
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  onClick={() => handleOpenAssessment(assessment)}
+  className="button-style-rainbow"  >
+  <SunIcon className="h-4 w-4"/>
+  <span className="hidden sm:inline">Temperature</span>
+</motion.button>
+
+
+
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -217,7 +231,7 @@ export default function ViewCourseAssessments() {
                              hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors animate-pulse"
                       >
                         <Users className="h-4 w-4" />
-                        <span className="hidden sm:inline">Assign Learner</span>
+                        <span className="hidden sm:inline">Assign</span>
                       </motion.button>
 
                       {/* View Assigned Learners */}
