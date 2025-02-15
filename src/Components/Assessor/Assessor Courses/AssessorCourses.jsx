@@ -16,7 +16,7 @@ const AssessorCourses = () => {
 
   const { data: courses, isLoading, error } = FetchAllCoursesOfUser(userId);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -73,31 +73,24 @@ const AssessorCourses = () => {
                     </div>
 
                     <div className="flex items-center gap-2 bg-green-500 px-2 py-1 rounded-xl text-gray-700 dark:text-gray-300">
-  <FaClipboardList className="text-yellow-600 dark:text-yellow-400" />
-  <span className="font-semibold">{course?.course_code || "N/A"}</span>
-</div>
-
-
-
-
-
-
-
+                      <FaClipboardList className="text-yellow-600 dark:text-yellow-400" />
+                      <span className="font-semibold">
+                        {course?.course_code || "N/A"}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Course Details */}
                   <div className="space-y-3 mb-6">
-                    <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                      <FaClipboardList className="text-green-600 dark:text-green-400" />
-                      
-                    </div>
+                    
 
-                    <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-  <FaChalkboardTeacher className="text-purple-600 dark:text-purple-400" />
-  <span className="text-sm">Total Enrollment: </span>
-  <span className="font-semibold">{course?.total_enrollment || 0}</span>
-</div>
-
+                    {/* <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                      <FaChalkboardTeacher className="text-purple-600 dark:text-purple-400" />
+                      <span className="text-sm">Total Enrollment: </span>
+                      <span className="font-semibold">
+                        {course?.total_enrollment || 0}
+                      </span>
+                    </div> */}
 
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                       <FaCalendarAlt className="text-red-600 dark:text-red-400" />
@@ -113,7 +106,11 @@ const AssessorCourses = () => {
                   {/* Action Button */}
                   <div className="relative">
                     <button
-                    onClick={()=>navigate(`/home/assessment/view-course-result/${course?._id}`)}
+                      onClick={() =>
+                        navigate(
+                          `/home/assessment/view-course-result/${course?._id}`
+                        )
+                      }
                       className="w-full py-3 px-4 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 
                      dark:hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 
                      transform group-hover:scale-105 flex items-center justify-center gap-2"
