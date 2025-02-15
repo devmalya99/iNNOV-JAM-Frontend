@@ -145,12 +145,12 @@ const CoursesDashboard = () => {
               </p>
 
               {/* Total enrollments  */}
-              <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+              {/* <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <FaUsers className="text-lg text-gray-500 dark:text-gray-400" />
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {course?.total_enrollment} Students Enrolled
                 </p>
-              </div>
+              </div> */}
 
               
               <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">

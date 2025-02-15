@@ -12,6 +12,7 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
   const [questionsData, setQuestionsData] = useState([]);
   const navigate = useNavigate();
   const VITE_API_URL = import.meta.env.VITE_API_URL;
+  console.log("AssessmentDetails", AssessmentDetails);
 
   useEffect(() => {
     refetch();
@@ -22,7 +23,7 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
     if (AssessmentDetails) {
       const formattedQuestions = AssessmentDetails.map((question) => ({
         question_id: question._id,
-        temperature: question.temparature || 0, // Set to existing temperature or default 0
+        temperature: question.temperature || 0, // Set to existing temperature or default 0
       }));
       setQuestionsData(formattedQuestions);
     }
