@@ -3,8 +3,16 @@ import axios from "axios";
 import { handleSuccess, handleError } from "../../../utils/toast";
 import { useNavigate, useParams } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, X, FileText, CheckCircle, AlertCircle } from "lucide-react";
-import {FetchAiModelsApi} from  "../../../services/Admin/AiModels/FetchAiModelsApi"
+import {
+  Loader2,
+  X,
+  FileText,
+  CheckCircle,
+  AlertCircle,
+  RefreshCcw,
+} from "lucide-react";
+import { FetchAiModelsApi } from "../../../services/Admin/AiModels/FetchAiModelsApi";
+import { FetchAllGrade } from "../../../services/Admin/FetchAllGrade";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
@@ -12,15 +20,31 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const { courseid } = useParams();
+  const [selectedAiModel, setSelectedAiModel] = useState(null); // New state for selected AI model
 
-  const {data:all_aiModalCombo,isLoading,refetch} = FetchAiModelsApi()
-  
-  console.log("all_aiiModalCombo", all_aiModalCombo)
+  const [selectedGrade, setSelectedGrade] = useState(null);
+
+  console.log("passesd assessment", assessment);
+
+  const {
+    data: all_aiModalCombo,
+    isLoading: isLoadingAiModels,
+    refetch: refetchAiModels,
+  } = FetchAiModelsApi();
+  const {
+    data: all_fetched_grades,
+    isLoading: isLoadingGrades,
+    refetch: refetchGrades,
+  } = FetchAllGrade();
+
+  console.log("all_aiiModalCombo", all_aiModalCombo);
+  console.log("all_fetched_grades", all_fetched_grades);
+
   const navigate = useNavigate();
 
   const createExam = async (assessment) => {
     if (!assessment) return;
-    
+
     setProcessing(true);
     setError(null);
 
@@ -28,6 +52,8 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
       course_id: courseid,
       fileId: assessment?._id,
       assessment_name: assessment?.title,
+      grade_id: selectedGrade?._id,
+      ai_model_id: selectedAiModel?._id, // Send the selected AI model ID
     };
 
     console.log("newAssessmentFiles", newAssessmentFiles);
@@ -46,8 +72,6 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
 
       setSuccess(true);
       handleSuccess({ success: "Assessment Created Successfully!" });
-      
-    
     } catch (error) {
       setError(error.response?.data?.message || "Failed to create assessment");
       handleError({ error: "Failed to create assessment. Try again." });
@@ -64,6 +88,10 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
         exit={{ opacity: 0 }}
         className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-4"
       >
+
+        
+        
+
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -86,12 +114,68 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
               </div>
             </div>
             <button
-              onClick={()=>navigate(`/home/view/all-assessments/${courseid}`)}
+              onClick={() => navigate(`/home/view/all-assessments/${courseid}`)}
               className="p-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
+
+          {/* AI Model Selection */}
+          <div className="p-6">
+            <label className="block text-sm font-medium text-gray-700">
+              Select AI Model
+            </label>
+            <select
+              value={selectedAiModel?._id || ""}
+              onChange={(e) =>
+                setSelectedAiModel(
+                  all_aiModalCombo?.data.find(
+                    (model) => model._id === e.target.value
+                  )
+                )
+              }
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+            >
+              <option value="">{all_aiModalCombo?.data?.length === 0 ? "No AI Models Available please create one" : "Select an AI Model"}</option>
+              {all_aiModalCombo?.data.map((model) => (
+                <option key={model._id} value={model._id}>
+                  {`${model.llm_name[0]} & ${model.llm_name[1]} (${model.model_type[0]} / ${model.model_type[1]})`}
+                </option>
+              ))}
+            </select>
+          </div>
+
+
+          {/* Grade Selection */}
+<div className="p-6">
+  <label className="block text-sm font-medium text-gray-700">
+    Select Grade
+  </label>
+  <select
+    value={selectedGrade?._id || ""}
+    onChange={(e) => 
+      setSelectedGrade(
+        all_fetched_grades?.find((grade) => grade._id === e.target.value)
+      )
+    }
+    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+  >
+    <option value="">
+      {all_fetched_grades?.length === 0
+        ? "No grades available, please create one"
+        : "Select a Grade"}
+    </option>
+    {all_fetched_grades?.map((grade) => (
+      <option key={grade._id} value={grade._id}>
+        {grade.name} {/* Display grade name here */}
+      </option>
+    ))}
+  </select>
+</div>
+
+
+
 
           {/* Content */}
           <div className="p-6">
@@ -121,7 +205,9 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
                   className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/30 rounded-lg"
                 >
                   <AlertCircle className="h-5 w-5 text-red-500 dark:text-red-400" />
-                  <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                  <p className="text-sm text-red-600 dark:text-red-400">
+                    {error}
+                  </p>
                 </motion.div>
               )}
 
@@ -139,7 +225,8 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
                     Assessment Created Successfully! 🎉
                   </h2>
                   <p className="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">
-                    The assessment is now available to candidates. You can close this window.
+                    The assessment is now available to candidates. You can close
+                    this window.
                   </p>
                 </motion.div>
               )}
@@ -153,13 +240,8 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
               whileTap={{ scale: 0.98 }}
               onClick={() => {
                 navigate(`/home/view/all-assessments/${courseid}`);
-                
               }}
-              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-800 
-                         dark:hover:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 
-                         dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 
-                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
-                         dark:focus:ring-offset-gray-800 transition-colors"
+              className="button-style-close"
             >
               Close
             </motion.button>
@@ -176,7 +258,11 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
                              : "bg-blue-500 hover:bg-blue-600"
                          }`}
             >
-              {processing ? "Creating..." : success ? "Created!" : "Create Exam"}
+              {processing
+                ? "Creating..."
+                : success
+                ? "Created!"
+                : "Create Exam"}
             </motion.button>
           </div>
         </motion.div>

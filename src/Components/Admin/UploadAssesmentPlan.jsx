@@ -6,24 +6,24 @@ import {
   TbTrash,
 } from "react-icons/tb";
 import axios from "axios";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import DeleteModal from "./DeleteModal";
 import CreateExamModal from "../Admin/Assessment Creation/CreateExamModal";
 import { Download, Upload, Settings } from "lucide-react";
 import { FaSpinner } from "react-icons/fa";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-const socket = io(`${VITE_API_URL}`, {
-  transports: ["websocket"], // Force WebSocket transport
-});
+// const socket = io(`${VITE_API_URL}`, {
+//   transports: ["websocket"], // Force WebSocket transport
+// });
 
-socket.on("connect", () => {
-  console.log("Connected to WebSocket server");
-});
+// socket.on("connect", () => {
+//   console.log("Connected to WebSocket server");
+// });
 
-socket.on("disconnect", () => {
-  console.log("Disconnected from WebSocket server");
-});
+// socket.on("disconnect", () => {
+//   console.log("Disconnected from WebSocket server");
+// });
 
 const UploadAssessmentPlan = () => {
   const [title, setTitle] = useState(""); // File name
@@ -70,15 +70,15 @@ const UploadAssessmentPlan = () => {
     fetchFiles();
 
     // Listen for the fileUploaded event from the server
-    socket.on("fileUploaded", () => {
-      console.log("New File uploaded");
-      fetchFiles(); // Refetch files when a new one is uploaded
-    });
+    // socket.on("fileUploaded", () => {
+    //   console.log("New File uploaded");
+    //   fetchFiles(); // Refetch files when a new one is uploaded
+    // });
 
     // Cleanup when the component unmounts
-    return () => {
-      socket.off("fileUploaded");
-    };
+    // return () => {
+    //   socket.off("fileUploaded");
+    // };
   }, []); // Empty dependency array to ensure this only runs on mount and unmount
 
   // Handle file upload
@@ -88,19 +88,19 @@ const UploadAssessmentPlan = () => {
   };
 
   //file deletion
-  useEffect(() => {
-    // Listen for the 'fileDeleted' event from the backend
-    socket.on("fileDeleted", (deletedFile) => {
-      console.log("File deleted:", deletedFile);
-      // Refetch or update the state after deleting the file
-      fetchFiles();
-    });
+  // useEffect(() => {
+  //   // Listen for the 'fileDeleted' event from the backend
+  //   socket.on("fileDeleted", (deletedFile) => {
+  //     console.log("File deleted:", deletedFile);
+  //     // Refetch or update the state after deleting the file
+  //     fetchFiles();
+  //   });
 
-    // Cleanup on unmount
-    return () => {
-      socket.off("fileDeleted");
-    };
-  }, []);
+  //   // Cleanup on unmount
+  //   return () => {
+  //     socket.off("fileDeleted");
+  //   };
+  // }, []);
 
   // Handle submit files
   const submitFiles = async (e) => {
