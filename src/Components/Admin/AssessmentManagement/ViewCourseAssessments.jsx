@@ -20,7 +20,7 @@ import ViewAssessmentDetails from "../ViewAssessmentDetails/ViewAssessmentDetail
 
 import ViewAssignedLearnerModal from "./ViewAssignedLearnerModal"
 
-import AssignLearnerModal from "./AssignLearnerModal";
+import AssignLearnersModal from "../../Admin/AssessmentManagement/AssignLearnersModal";
 
 export default function ViewCourseAssessments() {
   const { courseid } = useParams();
@@ -114,7 +114,7 @@ export default function ViewCourseAssessments() {
 
       {/* Open modal to Assign Learners */}
       {openModalToAssignLearners && (
-        <AssignLearnerModal
+        <AssignLearnersModal
           selectedAssessmentId={selectedAssessmentId}
           setOpenModalToAssignLearners={setOpenModalToAssignLearners}
         />

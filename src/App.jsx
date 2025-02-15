@@ -36,7 +36,6 @@ import CreateCourse from './Components/Admin/CreateCourse'
 
 import AssignTrainersModal from './Components/Admin/AssignUser/AssignTrainersModal'
 import AssignAssessorsModal from './Components/Admin/AssignUser/AssignAssessorsModal'
-import AssignLearnersModal from './Components/Admin/AssignUser/AssignLearnersModal'
 import UserManagement from './Components/Admin/User Management'
 import AssessmentCreation from './Components/Admin/Assessment Creation/AssessmentCreation'
 import ViewCourseAssessments from './Components/Admin/AssessmentManagement/ViewCourseAssessments'
@@ -76,7 +75,7 @@ function App() {
           <Route path='create-course' element={<CreateCourse />}>
             <Route path='assign-trainers' element={<AssignTrainersModal />} />
             <Route path='assign-assessors' element={<AssignAssessorsModal />} />
-            <Route path='assign-learners' element={<AssignLearnersModal />} />
+            
             <Route path="courses/:courseid" element={<AssessmentCreation />} />
           </Route>
 
