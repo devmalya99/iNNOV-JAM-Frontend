@@ -6,10 +6,9 @@ import { useNavigate } from 'react-router';
 const AiModelSelector = () => {
   // Available LLMs and their models
   const llmData = {
-    GPT: ['gpt-4', 'gpt-3.5-turbo', 'gpt-4-turbo'],
-    gemini: ['gemini-pro', 'gemini-ultra', 'gemini-alpha-1'],
-    claude: ['claude-3-opus', 'claude-3-sonnet', 'claude-2.1'],
-    llama: ['llama-2-70b', 'llama-2-13b', 'llama-2-7b']
+    gpt: ['gpt-4', 'gpt-3.5-turbo', 'gpt-4-turbo'],
+    gemini: ['gemini-2.O-flash', 'gemini-1.5-pro'],
+    groq: ['mixtral-8x7b-32768']
   };
 
   const VITE_API_URL = import.meta.env.VITE_API_URL; 
@@ -96,7 +95,7 @@ const AiModelSelector = () => {
                     value={llm}
                     disabled={selectedLLMs.includes(llm) && selectedLLMs[index] !== llm}
                   >
-                    {llm.toUpperCase()}
+                    {llm}
                   </option>
                 ))}
               </select>
