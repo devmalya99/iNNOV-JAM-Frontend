@@ -4,28 +4,31 @@ import { IoMdBook } from "react-icons/io";
 import { motion } from "framer-motion";
 import { FetchAssessmentsDetails } from "../../../services/FetchAssessmentDetails";
 import axios from "axios";
+import { handleSuccess } from "../../../utils/toast";
+import { useNavigate } from "react-router";
 
 const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
   const { data: AssessmentDetails, isLoading, error, refetch } = FetchAssessmentsDetails(assessmentId);
   const [questionsData, setQuestionsData] = useState([]);
-
+  const navigate = useNavigate();
   const VITE_API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     refetch();
   }, [refetch]);
 
-  // Initialize question temperatures
+  // Initialize questionsData with existing temperatures
   useEffect(() => {
     if (AssessmentDetails) {
       const formattedQuestions = AssessmentDetails.map((question) => ({
         question_id: question._id,
-        temperature: 0, // Default value
+        temperature: question.temparature || 0, // Set to existing temperature or default 0
       }));
       setQuestionsData(formattedQuestions);
     }
   }, [AssessmentDetails]);
 
+  // Handle temperature change
   const handleTemperatureChange = (question_id, newTemperature) => {
     setQuestionsData((prevData) =>
       prevData.map((q) =>
@@ -34,10 +37,12 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
     );
   };
 
+  // Submit updated temperatures
   const handleSubmit = async () => {
     try {
       await axios.put(`${VITE_API_URL}/api/assessments/updatequestiontemperature`, questionsData);
-      alert("Temperature updated successfully!");
+      handleSuccess({ success: "Temperature updated successfully!" });
+      navigate(-1);
     } catch (error) {
       console.error("Error updating temperature:", error);
       alert("Failed to update temperature.");
@@ -97,7 +102,10 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
 
         <div className="mt-6 space-y-6">
           {AssessmentDetails?.map((question) => {
-            const currentTemp = questionsData.find(q => q.question_id === question._id)?.temperature || 0;
+            // Get the existing or updated temperature value
+            const existingTemp = question?.temparature || 0;
+            const updatedTemp = questionsData?.find(q => q.question_id === question._id)?.temperature ?? existingTemp;
+
             return (
               <div
                 key={question?._id}
@@ -114,7 +122,7 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
                 {/* Temperature slider */}
                 <div className="flex flex-col items-center space-y-4">
                   <label htmlFor={`temperature-${question._id}`} className="text-xl font-medium">
-                    Temperature: {currentTemp.toFixed(2)}
+                    Temperature: {updatedTemp.toFixed(2)}
                   </label>
 
                   {/* Slider with dynamic color based on temperature value */}
@@ -124,7 +132,7 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
                     min="0"
                     max="2"
                     step="0.01"
-                    value={currentTemp}
+                    value={updatedTemp}
                     onChange={(e) => handleTemperatureChange(question._id, parseFloat(e.target.value))}
                     className="w-full h-2 rounded-full transition-all"
                   />
