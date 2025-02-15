@@ -39,11 +39,14 @@ function AnswerWritingPage() {
     const enterFullScreen = () => {
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
-      } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+      } else if (document.documentElement.mozRequestFullScreen) {
+        // Firefox
         document.documentElement.mozRequestFullScreen();
-      } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        // Chrome, Safari, Opera
         document.documentElement.webkitRequestFullscreen();
-      } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+      } else if (document.documentElement.msRequestFullscreen) {
+        // IE/Edge
         document.documentElement.msRequestFullscreen();
       }
     };
@@ -51,7 +54,6 @@ function AnswerWritingPage() {
     enterFullScreen();
   }, []);
 
-  
   const getPlainText = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
@@ -352,7 +354,7 @@ function AnswerWritingPage() {
                   ${
                     activeQuestion === index
                       ? "bg-blue-500 text-white"
-                      : answeredQuestions[item._id]
+                      : item.status === 1
                       ? "bg-green-500 text-white" // Marked as answered
                       : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
                   }`}
@@ -364,19 +366,19 @@ function AnswerWritingPage() {
         </div>
 
         {/* Only show Save & Submit when all questions are answered */}
-{Object.values(answeredQuestions).filter(Boolean).length ===
-  data?.assessmentdata?.questions?.length && (
-  <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-    <button
-      onClick={() => handleSubmit(data?.assigned?._id)}
-      className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center space-x-2"
-    >
-      <FaSave /> <span>Save & Submit</span>
-    </button>
-  </div>
-)}
-
+        {
+          data?.assessmentdata?.questions?.every(question=>question.status===1) && (
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            <button
+              onClick={() => handleSubmit(data?.assigned?._id)}
+              className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center space-x-2"
+            >
+              <FaSave /> <span>Save & Submit</span>
+            </button>
+          </div>
+        )}
       </div>
+
     </div>
   );
 }
