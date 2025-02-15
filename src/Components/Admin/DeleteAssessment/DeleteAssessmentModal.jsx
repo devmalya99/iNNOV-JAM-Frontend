@@ -3,6 +3,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, AlertTriangle, Loader2, CheckCircle } from "lucide-react";
 import { handleSuccess, handleError } from "../../../utils/toast";
+import { useQueryClient } from "react-query";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,6 +11,7 @@ const DeleteAssessmentModal = ({ assessment, setShowDeleteModal, onDeleteSuccess
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  
 
   const handleDelete = async (assessment) => {
     setIsDeleting(true);

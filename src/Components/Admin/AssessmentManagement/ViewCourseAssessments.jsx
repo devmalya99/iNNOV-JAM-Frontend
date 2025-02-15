@@ -18,7 +18,7 @@ import {
 import DeleteAssessmentModal from "../DeleteAssessment/DeleteAssessmentModal";
 import ViewAssessmentDetails from "../ViewAssessmentDetails/ViewAssessmentDetails";
 
-import ViewAssignedLearnerModal from "./ViewAssignedLearnerModal"
+import ViewAssignedLearnerModal from "./ViewAssignedLearnerModal";
 
 import AssignLearnersModal from "../../Admin/AssessmentManagement/AssignLearnersModal";
 
@@ -28,13 +28,12 @@ export default function ViewCourseAssessments() {
     data: assessments,
     isLoading,
     error,
-    refetch
+    refetch,
   } = FetchAllAssessmentsByCourse(courseid);
 
   useEffect(() => {
-      refetch();
-    }, [refetch]);
-
+    refetch();
+  }, [refetch]);
 
   console.log("displaying assessments", assessments);
 
@@ -44,11 +43,11 @@ export default function ViewCourseAssessments() {
 
   const [openAssessmentModal, setOpenAssessmentModal] = useState(false);
 
-  const [openModalToAssignLearners, setOpenModalToAssignLearners] = useState(false);
+  const [openModalToAssignLearners, setOpenModalToAssignLearners] =
+    useState(false);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
 
   const [openViewLearnersModal, setOpenViewLearnersModal] = useState(false);
-  
 
   {
     /* Handle assign Learner */
@@ -98,9 +97,7 @@ export default function ViewCourseAssessments() {
         <DeleteAssessmentModal
           assessment={selectedAssessment}
           setShowDeleteModal={setShowDeleteModal}
-          onDeleteSuccess={() => {
-            // Refresh your assessments list or update UI
-          }}
+          onDeleteSuccess={() => refetch()}
         />
       )}
 
@@ -121,15 +118,12 @@ export default function ViewCourseAssessments() {
       )}
 
       {/* View Assigned Learners to a specific assessment */}
-      {
-      openViewLearnersModal && (
-    <ViewAssignedLearnerModal
-      selectedAssessmentId={selectedAssessmentId}
-      setOpenViewLearnersModal={setOpenViewLearnersModal} // Ensure the correct function is passed
-    />
-  )
-}
-
+      {openViewLearnersModal && (
+        <ViewAssignedLearnerModal
+          selectedAssessmentId={selectedAssessmentId}
+          setOpenViewLearnersModal={setOpenViewLearnersModal} // Ensure the correct function is passed
+        />
+      )}
 
       <div className="max-w-6xl mx-auto p-6 rounded-xl shadow-2xl bg-white dark:bg-gray-800 ">
         <h1 className="text-3xl font-extrabold text-blue-800 dark:text-blue-400 text-center mb-6">
@@ -191,10 +185,7 @@ export default function ViewCourseAssessments() {
                       <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
                         <ClipboardList className="h-5 w-5 text-blue-500 dark:text-blue-400" />
                       </div>
-                      <div
-                        className="flex-1 min-w-0"
-                        
-                      >
+                      <div className="flex-1 min-w-0">
                         <h3
                           className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 
                                  dark:group-hover:text-blue-400 transition-colors"
@@ -210,17 +201,15 @@ export default function ViewCourseAssessments() {
                     </div>
 
                     <div className="flex items-center gap-2 sm:gap-3">
-
-                    <motion.button
-  whileHover={{ scale: 1.05 }}
-  whileTap={{ scale: 0.95 }}
-  onClick={() => handleOpenAssessment(assessment)}
-  className="button-style-rainbow"  >
-  <SunIcon className="h-4 w-4"/>
-  <span className="hidden sm:inline">Temperature</span>
-</motion.button>
-
-
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleOpenAssessment(assessment)}
+                        className="button-style-rainbow"
+                      >
+                        <SunIcon className="h-4 w-4" />
+                        <span className="hidden sm:inline">Temperature</span>
+                      </motion.button>
 
                       <motion.button
                         whileHover={{ scale: 1.05 }}
