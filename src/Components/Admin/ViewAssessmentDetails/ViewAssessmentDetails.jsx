@@ -42,7 +42,7 @@ const ViewAssessmentDetails = ({ assessmentId, setOpenAssessmentModal }) => {
     try {
       await axios.put(`${VITE_API_URL}/api/assessments/updatequestiontemperature`, questionsData);
       handleSuccess({ success: "Temperature updated successfully!" });
-      navigate(-1);
+      setOpenAssessmentModal(false)
     } catch (error) {
       console.error("Error updating temperature:", error);
       alert("Failed to update temperature.");
