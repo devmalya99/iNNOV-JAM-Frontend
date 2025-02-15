@@ -75,13 +75,13 @@ const UserCourses = () => {
 
                   {/* Course Details */}
                   <div className="space-y-3 mb-6">
-                    <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                    {/* <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                       <FaClipboardList className="text-green-600 dark:text-green-400" />
-                      {/* <span className="text-sm">Total Marks: </span>
+                      <span className="text-sm">Total Marks: </span>
                       <span className="font-semibold">
                         {course?.total_marks || 0}
-                      </span> */}
-                    </div>
+                      </span>
+                    </div> */}
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                       <FaCalendarAlt className="text-red-600 dark:text-red-400" />
                       <span className="text-sm">End Date: </span>
