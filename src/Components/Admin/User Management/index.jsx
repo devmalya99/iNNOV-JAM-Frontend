@@ -49,7 +49,7 @@ const UserManagement = () => {
   const DeleteUserMutation = useMutation({
     mutationFn: (userId) => deleteUser(userId),
     onSuccess: (data, userId) => {
-      console.log("User deleted successfully", data);
+      
       // Invalidate the query to force a refetch.
       queryClient.invalidateQueries(["allUsers"]);
     },
@@ -59,7 +59,7 @@ const UserManagement = () => {
 
   const handleCourseUpdate=(user)=>{
     setEditUserCoursesModalStatus({ isOpen: true, user: user });
-    console.log("edit courses  for user",user);
+    // console.log("edit courses  for user",user);
   }
 
   const handleDelete = (user) => {
@@ -68,7 +68,7 @@ const UserManagement = () => {
 
   const handleEdit = (user) => {
     // Implement edit functionality
-    console.log("Edit user:", user);
+    // console.log("Edit user:", user);
     setEditUserModalStatus({ isOpen: true, user: user });
   };
 

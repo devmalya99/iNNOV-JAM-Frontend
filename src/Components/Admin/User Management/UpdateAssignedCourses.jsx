@@ -10,8 +10,8 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
       const updateUserCoursesMutation = UseUpdateUserCourses();
   
       const { data: all_Courses_List = [], isLoading, refetch } = useFetchAllCourses();
-      console.log("all_Courses_List", all_Courses_List);
-      console.log("selected course code",selectedCourses);
+      // console.log("all_Courses_List", all_Courses_List);
+      // console.log("selected course code",selectedCourses);
 
   
 

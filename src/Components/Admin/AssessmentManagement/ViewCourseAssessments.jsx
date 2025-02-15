@@ -35,7 +35,7 @@ export default function ViewCourseAssessments() {
     refetch();
   }, [refetch]);
 
-  console.log("displaying assessments", assessments);
+  // console.log("displaying assessments", assessments);
 
   const [selectedAssessment, setSelectedAssessment] = useState(null);
   // In your parent component

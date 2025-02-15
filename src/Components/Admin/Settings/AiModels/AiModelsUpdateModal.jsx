@@ -11,7 +11,7 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
     llama: ['llama-2-70b', 'llama-2-13b', 'llama-2-7b'],
   };
 
-  console.log('existing model data', existingModelData);
+  // console.log('existing model data', existingModelData);
 
   const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -61,7 +61,7 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
       weightage: [weightage, 100 - weightage],
     };
 
-    console.log('Submitting data:', data);
+    // console.log('Submitting data:', data);
 
     try {
       const response = await fetch(`${VITE_API_URL}/api/ai-models/update/${existingModelData._id}`, {
@@ -77,7 +77,7 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
       }
 
       setError('');
-      console.log('Configuration updated successfully');
+      // console.log('Configuration updated successfully');
       setOpenEdit(false)
       navigate('/settings/models-management');
     } catch (err) {

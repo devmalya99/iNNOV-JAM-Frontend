@@ -88,15 +88,15 @@ const handleCreateAssessment = (assessment) => {
 
 
   const handleEdit = (assessment) => {
-    console.log('Edit:', assessment);
+    // console.log('Edit:', assessment);
   };
 
   const handleDelete = (id) => {
-    console.log('Delete:', id);
+    // console.log('Delete:', id);
   };
 
   const handleReupload = (assessment) => {
-    console.log('Reupload:', assessment);
+    // console.log('Reupload:', assessment);
   };
 
   return (

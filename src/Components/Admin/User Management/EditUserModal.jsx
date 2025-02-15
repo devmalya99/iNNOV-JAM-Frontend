@@ -56,7 +56,7 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    // console.log('Form submitted:', formData);
 
       // Prepare the update data
       const updatedData = {

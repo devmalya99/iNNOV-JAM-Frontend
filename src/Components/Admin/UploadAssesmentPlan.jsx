@@ -118,7 +118,7 @@ const UploadAssessmentPlan = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log(result);
+      // console.log(result);
       setTitle(""); // Clear title after upload
       setFile(""); // Clear file after upload
       fetchFiles(); // Refetch files after upload

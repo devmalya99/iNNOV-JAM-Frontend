@@ -49,7 +49,7 @@ function CreateCourse() {
   };
 
   const handleSubmit = async () => {
-    console.log("course clicked");
+   
     if (
       !courseName.trim() ||
       !courseCode.trim() ||
@@ -75,7 +75,7 @@ function CreateCourse() {
       
     };
 
-    console.log("courseData", courseData);
+    // console.log("courseData", courseData);
 
     try {
       setLoading(true);
@@ -88,7 +88,7 @@ function CreateCourse() {
       );
 
       setSuccessMessage("Course created successfully!");
-      console.log("Course Created:", response?.data);
+      // console.log("Course Created:", response?.data);
 
       // Reset fields after successful submission
       setCourseName("");

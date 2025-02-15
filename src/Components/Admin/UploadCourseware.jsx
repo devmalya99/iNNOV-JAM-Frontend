@@ -30,7 +30,7 @@ function UploadCourseware() {
       try {
         setIsFetchingCourses(true);
         const response = await axios.get(`${VITE_API_URL}/api/courses`);
-        console.log("response", response);
+        // console.log("response", response);
         setCourses(response?.data || []); 
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -54,7 +54,7 @@ function UploadCourseware() {
 
   const handleCourseChange = (e) => {
     setSelectedCourseIndex(e.target.value);
-    console.log("Selected course:", e.target.value);
+    // console.log("Selected course:", e.target.value);
     setSelectedCourse(e.target.value);
     setSelectedAssessment("");
   };
@@ -86,14 +86,14 @@ function UploadCourseware() {
     formData.append("courseName", selectedCourseName); // Adding course name
     formData.append("assessmentName", selectedAssessmentName); // Adding assessment name
   
-    console.log(Object.fromEntries(formData.entries()));
+    
 
   
     try {
       const response = await axios.post(`${VITE_API_URL}/api/courseware/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log("File uploaded successfully:", response.data);
+      
       setFile(null);
       setFileName("");
       setSelectedCourse("");

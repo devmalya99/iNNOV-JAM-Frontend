@@ -8,7 +8,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 // API call for login
 const loginUser = async ({ email, password }) => {
-  console.log("first",VITE_API_URL)
+  // console.log("first",VITE_API_URL)
   const response = await axios.post(`${VITE_API_URL}/api/auth/login`, {
     email,
     password,

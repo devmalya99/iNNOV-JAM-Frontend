@@ -51,7 +51,7 @@ import { handleSuccess } from "../../../utils/toast";
   
     // Fetch learners' data using a custom hook
     const { data: LearnersData = [], isLoading, refetch } = FetchUsersByRole("learner");
-    console.log("users", LearnersData);
+    // console.log("users", LearnersData);
   
     // Zustand store for managing modal and selected learners
     const {
@@ -108,7 +108,7 @@ import { handleSuccess } from "../../../utils/toast";
           }
 
       
-      console.log(selectedLearners)
+      // console.log(selectedLearners)
     }
   
     return (

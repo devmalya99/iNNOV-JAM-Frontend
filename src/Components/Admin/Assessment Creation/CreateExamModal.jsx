@@ -24,7 +24,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
 
   const [selectedGrade, setSelectedGrade] = useState(null);
 
-  console.log("passesd assessment", assessment);
+  
 
   const {
     data: all_aiModalCombo,
@@ -37,8 +37,8 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
     refetch: refetchGrades,
   } = FetchAllGrade();
 
-  console.log("all_aiiModalCombo", all_aiModalCombo);
-  console.log("all_fetched_grades", all_fetched_grades);
+  // console.log("all_aiiModalCombo", all_aiModalCombo);
+  // console.log("all_fetched_grades", all_fetched_grades);
 
   const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
       ai_model_id: selectedAiModel?._id, // Send the selected AI model ID
     };
 
-    console.log("newAssessmentFiles", newAssessmentFiles);
+    // console.log("newAssessmentFiles", newAssessmentFiles);
 
     try {
       const response = await axios.post(
@@ -68,7 +68,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
           },
         }
       );
-      console.log("Response from AI API received:", response.data);
+      // console.log("Response from AI API received:", response.data);
 
       setSuccess(true);
       handleSuccess({ success: "Assessment Created Successfully!" });

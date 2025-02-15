@@ -21,7 +21,7 @@ const AssessmentCreation = () => {
     setAssessments([...assessments, { id: Date.now(), name: "" }]);
   };
 
-  console.log("assessment",assessments)
+  
 
   const updateAssessmentName = (id, name) => {
     setAssessments((prev) =>
@@ -38,7 +38,7 @@ const AssessmentCreation = () => {
   };
 
   const submitFiles = async (id, name) => {
-    console.log("name is",name)
+    
     if (!files[id]) return;
     setCreationState((prev) => ({ ...prev, [id]: "uploading" }));
 

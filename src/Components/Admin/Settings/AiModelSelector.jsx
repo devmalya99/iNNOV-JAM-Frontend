@@ -50,7 +50,7 @@ const AiModelSelector = () => {
       weightage: [weightage, 100 - weightage]
     };
 
-    console.log('Submitting data:', data);
+    // console.log('Submitting data:', data);
 
     try {
       const response = await fetch(`${VITE_API_URL}/api/ai-models/create`, {
@@ -66,7 +66,7 @@ const AiModelSelector = () => {
       }
 
       setError('');
-      console.log('Configuration saved successfully');
+      // console.log('Configuration saved successfully');
       navigate('/settings/models-management')
     } catch (err) {
       setError(err.message);

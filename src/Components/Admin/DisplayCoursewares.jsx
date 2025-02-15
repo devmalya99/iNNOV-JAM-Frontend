@@ -13,7 +13,7 @@ const CoursewareList = () => {
 
   const handleEdit = (id) => {
     // Implement edit functionality
-    console.log('Edit courseware:', id);
+    // console.log('Edit courseware:', id);
   };
 
   const handleDelete = (id) => {

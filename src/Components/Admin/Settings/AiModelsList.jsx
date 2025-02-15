@@ -42,7 +42,7 @@ const AiModelsList = () => {
     },
   });
 
-  console.log("AI models:", aiModels);
+  // console.log("AI models:", aiModels);
 
   // Loading State
   if (isLoading) {
