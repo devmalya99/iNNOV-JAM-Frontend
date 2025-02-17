@@ -52,22 +52,19 @@ const ViewCourseResultDetailed = () => {
     }
   };
 
-  // Handle View Previous Result
-  const handleViewPreviousResult=(userId)=>{
-    console.log("handleViewPreviousResult")
-    handleError({ error: "Coming Soon" });
-    alert("Feature Under Development");
-  }
+  
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           {/* Header */}
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               {assessmentResult?.assessment?.assessment_name} Results
             </h2>
+
+            <button className="button-style">View Previous Submissions</button>
           </div>
 
           {/* Table */}
@@ -94,9 +91,7 @@ const ViewCourseResultDetailed = () => {
                     View Result
                   </th>
 
-                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Archive
-                  </th>
+                  
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -117,6 +112,8 @@ const ViewCourseResultDetailed = () => {
                         {student?.status}
                       </span>
                     </td>
+
+                    
 
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
                       <button
@@ -141,15 +138,7 @@ const ViewCourseResultDetailed = () => {
                       </button>
                     </td>
 
-                    {/* -----View Previous result */}
-                    <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
-                      <button
-                        className="button-style"
-                        onClick={()=>handleViewPreviousResult(student?.user_id)}
-                      >
-                       Previous Submissions
-                      </button>
-                    </td>
+                   
 
 
                   </tr>
@@ -168,7 +157,7 @@ const ViewCourseResultDetailed = () => {
             {(!assessmentResult?.result ||
               assessmentResult.result.length === 0) && (
               <div className="text-center py-12">
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-gray-500  dark:text-gray-400">
                   No results found
                 </p>
               </div>
