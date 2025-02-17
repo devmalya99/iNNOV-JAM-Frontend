@@ -50,15 +50,16 @@ const LearnerWise = () => {
   }, [refetch]);
 
 
-  // const findFirstNotCompetent = (studentResponses) => {
-  //   return studentResponses?.find(response => response.status === 'not-competent');
-  // };
+  const findFirstNotCompetent = (studentResponses) => {
+    return studentResponses?.findIndex(response => response.status === 'not-competent');
+  };
 
-  // useEffect(() => {
-  //   const firstNotCompetent = findFirstNotCompetent(data?.studentResponses);
-  //   console.log("firstNotCompetent", firstNotCompetent);
+  useEffect(() => {
+    const firstNotCompetent = findFirstNotCompetent(data?.studentResponses);
+    setActiveNumber(firstNotCompetent);
+    console.log("firstNotCompetent", firstNotCompetent);
     
-  // }, [data]);
+  }, [data]);
 
   function handleOpenDetails() {
     setOpenScoreModal(true);
