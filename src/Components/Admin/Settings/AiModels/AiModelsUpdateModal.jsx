@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { AlertCircle } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import React, { useState, useEffect } from "react";
+import { AlertCircle } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
   // Available LLMs and their models
+  // const llmData = {
+  //   GPT: ['gpt-4', 'gpt-3.5-turbo', 'gpt-4-turbo'],
+  //   gemini: ['gemini-pro', 'gemini-ultra', 'gemini-alpha-1'],
+  //   claude: ['claude-3-opus', 'claude-3-sonnet', 'claude-2.1'],
+  //   llama: ['llama-2-70b', 'llama-2-13b', 'llama-2-7b'],
+  // };
+
   const llmData = {
-    GPT: ['gpt-4', 'gpt-3.5-turbo', 'gpt-4-turbo'],
-    gemini: ['gemini-pro', 'gemini-ultra', 'gemini-alpha-1'],
-    claude: ['claude-3-opus', 'claude-3-sonnet', 'claude-2.1'],
-    llama: ['llama-2-70b', 'llama-2-13b', 'llama-2-7b'],
+    gpt: ["gpt-4", "gpt-3.5-turbo", "gpt-4-turbo"],
+    gemini: ["gemini-2.O-flash", "gemini-1.5-pro"],
+    groq: ["mixtral-8x7b-32768"],
   };
 
   // console.log('existing model data', existingModelData);
@@ -16,10 +22,16 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
   const VITE_API_URL = import.meta.env.VITE_API_URL;
 
   // Initialize state with existing model data
-  const [selectedLLMs, setSelectedLLMs] = useState(existingModelData?.llm_name || ['', '']);
-  const [selectedModels, setSelectedModels] = useState(existingModelData?.model_type || ['', '']);
-  const [weightage, setWeightage] = useState(existingModelData?.weightage ? Number(existingModelData.weightage[0]) : 50);
-  const [error, setError] = useState('');
+  const [selectedLLMs, setSelectedLLMs] = useState(
+    existingModelData?.llm_name || ["", ""]
+  );
+  const [selectedModels, setSelectedModels] = useState(
+    existingModelData?.model_type || ["", ""]
+  );
+  const [weightage, setWeightage] = useState(
+    existingModelData?.weightage ? Number(existingModelData.weightage[0]) : 50
+  );
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -27,7 +39,11 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
     if (existingModelData) {
       setSelectedLLMs(existingModelData.llm_name);
       setSelectedModels(existingModelData.model_type);
-      setWeightage(existingModelData.weightage ? Number(existingModelData.weightage[0]) : 50);
+      setWeightage(
+        existingModelData.weightage
+          ? Number(existingModelData.weightage[0])
+          : 50
+      );
     }
   }, [existingModelData]);
 
@@ -38,7 +54,7 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
 
     // Reset the model selection for this index
     const newModels = [...selectedModels];
-    newModels[index] = '';
+    newModels[index] = "";
     setSelectedModels(newModels);
   };
 
@@ -49,9 +65,14 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
   };
 
   const handleSubmit = async () => {
-    if (!selectedLLMs[0] || !selectedLLMs[1] || !selectedModels[0] || !selectedModels[1]) {
-      setError('Please select both LLMs and their models');
-      
+    if (
+      !selectedLLMs[0] ||
+      !selectedLLMs[1] ||
+      !selectedModels[0] ||
+      !selectedModels[1]
+    ) {
+      setError("Please select both LLMs and their models");
+
       return;
     }
 
@@ -64,22 +85,25 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
     // console.log('Submitting data:', data);
 
     try {
-      const response = await fetch(`${VITE_API_URL}/api/ai-models/update/${existingModelData._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${VITE_API_URL}/api/ai-models/update/${existingModelData._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to update model configuration');
+        throw new Error("Failed to update model configuration");
       }
 
-      setError('');
+      setError("");
       // console.log('Configuration updated successfully');
-      setOpenEdit(false)
-      navigate('/settings/models-management');
+      setOpenEdit(false);
+      navigate("/settings/models-management");
     } catch (err) {
       setError(err.message);
     }
@@ -88,25 +112,32 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
   return (
     <div>
       <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-6">Edit LLM Model Configuration</h2>
+        <h2 className="text-xl font-semibold mb-6">
+          Edit LLM Model Configuration
+        </h2>
 
         {[0, 1].map((index) => (
           <div key={index} className="mb-6">
             <h3 className="text-lg font-medium mb-2">LLM {index + 1}</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Select LLM</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Select LLM
+                </label>
                 <select
                   value={selectedLLMs[index]}
                   onChange={(e) => handleLLMSelect(e.target.value, index)}
                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
                 >
                   <option value="">Select LLM</option>
-                  {Object.keys(llmData).map((llm) => (
+                  {Object.keys(llmData)?.map((llm) => (
                     <option
                       key={llm}
                       value={llm}
-                      disabled={selectedLLMs.includes(llm) && selectedLLMs[index] !== llm}
+                      disabled={
+                        selectedLLMs.includes(llm) &&
+                        selectedLLMs[index] !== llm
+                      }
                     >
                       {llm.toUpperCase()}
                     </option>
@@ -115,7 +146,9 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Select Model</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Select Model
+                </label>
                 <select
                   value={selectedModels[index]}
                   onChange={(e) => handleModelSelect(e.target.value, index)}
@@ -124,7 +157,7 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
                 >
                   <option value="">Select Model</option>
                   {selectedLLMs[index] &&
-                    llmData[selectedLLMs[index]].map((model) => (
+                    llmData[selectedLLMs[index]]?.map((model) => (
                       <option key={model} value={model}>
                         {model}
                       </option>
@@ -147,8 +180,10 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
               className="w-full"
             />
             <div className="flex justify-between text-sm text-gray-600">
-              <span>{`${selectedLLMs[0] || 'LLM 1'}: ${weightage}%`}</span>
-              <span>{`${selectedLLMs[1] || 'LLM 2'}: ${100 - weightage}%`}</span>
+              <span>{`${selectedLLMs[0] || "LLM 1"}: ${weightage}%`}</span>
+              <span>{`${selectedLLMs[1] || "LLM 2"}: ${
+                100 - weightage
+              }%`}</span>
             </div>
           </div>
         </div>
@@ -165,7 +200,12 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
         <button
           onClick={handleSubmit}
           className="w-full bg-blue-500 text-white py-2 rounded-md disabled:bg-gray-400"
-          disabled={!selectedLLMs[0] || !selectedLLMs[1] || !selectedModels[0] || !selectedModels[1]}
+          disabled={
+            !selectedLLMs[0] ||
+            !selectedLLMs[1] ||
+            !selectedModels[0] ||
+            !selectedModels[1]
+          }
         >
           Update Configuration
         </button>
