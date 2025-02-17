@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { ArrowBigLeftIcon, Loader2 } from "lucide-react";
 import { BsBack } from "react-icons/bs";
 import axios from "axios";
-import { handleSuccess } from "../../utils/toast";
+import { handleError, handleSuccess } from "../../utils/toast";
 const ViewCourseResultDetailed = () => {
   const VITE_API_URL = import.meta.env.VITE_API_URL;
   const { courseId, assessmentId } = useParams();
@@ -52,6 +52,13 @@ const ViewCourseResultDetailed = () => {
     }
   };
 
+  // Handle View Previous Result
+  const handleViewPreviousResult=(userId)=>{
+    console.log("handleViewPreviousResult")
+    handleError({ error: "Coming Soon" });
+    alert("Feature Under Development");
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -86,6 +93,10 @@ const ViewCourseResultDetailed = () => {
                   <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
                     View Result
                   </th>
+
+                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                    Archive
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -116,6 +127,7 @@ const ViewCourseResultDetailed = () => {
                       </button>
                     </td>
 
+
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
                       <button
                         className="button-style"
@@ -128,6 +140,18 @@ const ViewCourseResultDetailed = () => {
                         View
                       </button>
                     </td>
+
+                    {/* -----View Previous result */}
+                    <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
+                      <button
+                        className="button-style"
+                        onClick={()=>handleViewPreviousResult(student?.user_id)}
+                      >
+                       Previous Submissions
+                      </button>
+                    </td>
+
+
                   </tr>
                 ))}
               </tbody>
