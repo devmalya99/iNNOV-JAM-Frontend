@@ -11,15 +11,27 @@ import LearnerWiseSkeleton from "../LearnerWiseResult/LearnerWiseSkeleton";
 
 
 import { FaPenNib } from "react-icons/fa";
-import { ChevronDown, MessageCircle } from "lucide-react";
+import { ChevronDown, MessageCircle, RefreshCcw } from "lucide-react";
 import FeedbackBox from "./FeedbackBox";
 import { FetchAssessmentResultDataByLearner } from "../../../services/Assessor/FetchAssessmentResultDataByLearner";
 const LearnerWise = () => {
   const [activeNumber, setActiveNumber] = useState(0);
+  const [openScoreModal, setOpenScoreModal] = useState(false);
+  const [openCaseStudy, setOpenCaseStudy] = useState(false);
+
+  const [competency, setCompetency] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [openFeedbackBox, setOpenFeedbackBox] = useState(false);
+
+  
+
+  const navigate = useNavigate();
 
   const [openOverview, setOpenOverview] = useState(true);
 
   const { assessmentId,userId } = useParams();
+
+ 
 
   
 
@@ -37,20 +49,16 @@ const LearnerWise = () => {
     refetch();
   }, [refetch]);
 
-  const [openScoreModal, setOpenScoreModal] = useState(false);
-  const [openCaseStudy, setOpenCaseStudy] = useState(false);
 
-  const [competency, setCompetency] = useState("");
-  const [feedback, setFeedback] = useState("");
-  const [openFeedbackBox, setOpenFeedbackBox] = useState(false);
+  // const findFirstNotCompetent = (studentResponses) => {
+  //   return studentResponses?.find(response => response.status === 'not-competent');
+  // };
 
-  
-
-  const navigate = useNavigate();
-
-  
-
-  
+  // useEffect(() => {
+  //   const firstNotCompetent = findFirstNotCompetent(data?.studentResponses);
+  //   console.log("firstNotCompetent", firstNotCompetent);
+    
+  // }, [data]);
 
   function handleOpenDetails() {
     setOpenScoreModal(true);
@@ -68,13 +76,23 @@ const LearnerWise = () => {
         <LearnerWiseSkeleton />
       ) : (
         <div className="w-full  p-4 h-[calc(100vh-90px)] bg-gray-100 dark:bg-gray-900 ">
-          <h2 className="text-xl font-semibold mb-4 dark:text-gray-400">
+          <div className="flex justify-between">
+            <h2 className="text-xl font-semibold mb-4 dark:text-gray-400">
             {`${data?.student_name} – ${
               isLoading
                 ? "loading"
                 : data?.assessment?.assessment_name?.replace("_", " ").toUpperCase()
             } `}
           </h2>
+
+          <button className="button-style"
+          onClick={()=>refetch()}
+          >
+            <RefreshCcw/>
+            <p>Refetch Data</p>
+          </button>
+          </div>
+          
           <div>
             <div className="bg-blue-50 p-4 mb-4 rounded-md font-semibold tracking-wide h-[80px]">
               {data?.studentResponses[activeNumber]?.question_number}{" "}

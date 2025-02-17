@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FetchAssessmentResultInDetails } from "../../services/Assessor/FetchAssessmentResultInDetails";
 import { useNavigate, useParams } from "react-router";
-import { ArrowBigLeftIcon, Loader2 } from "lucide-react";
+import { ArrowBigLeftIcon, Loader2, RefreshCcw } from "lucide-react";
 import { BsBack } from "react-icons/bs";
 import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/toast";
@@ -64,7 +64,20 @@ const ViewCourseResultDetailed = () => {
               {assessmentResult?.assessment?.assessment_name} Results
             </h2>
 
-            <button className="button-style">View Previous Submissions</button>
+            <div className="flex space-x-4">
+              <button className="button-style">View Previous Submissions</button>
+            
+              <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-md flex items-center space-x-2"
+             onClick={()=>refetch()}
+          >
+            <RefreshCcw />
+            <p>Refetch </p>
+          </button>
+
+            </div>
+
+            
+         
           </div>
 
           {/* Table */}
