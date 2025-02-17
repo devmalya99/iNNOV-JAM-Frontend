@@ -80,6 +80,12 @@ const LearnerWise = () => {
               {data?.studentResponses[activeNumber]?.question_number}{" "}
               {data?.studentResponses[activeNumber]?.question}
             </div>
+            <div className=" mb-4 bg-blue-50 text-center rounded-md font-semibold tracking-wide h-[20px]">
+              {data?.studentResponses[activeNumber]?.
+comparison_instruction}
+            </div>
+
+
 
             
 
