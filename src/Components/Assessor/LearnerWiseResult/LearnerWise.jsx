@@ -179,7 +179,7 @@ const LearnerWise = () => {
                     <div className="flex p-2 m-1 cursor-pointer rounded-lg hover:font-bold transition duration-300">
                       <strong className="mr-2">AI Grade: </strong>
                       <p className="font-semibold hover:scale-105 transition-transform duration-300">
-                        ai grade
+                       {data?.studentResponses[activeNumber]?.status}
                       </p>
                     </div>
 

@@ -74,11 +74,9 @@ const ViewCourseResultDetailed = () => {
                   <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
                     Student Name
                   </th>
+                 
                   <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Total Marks
-                  </th>
-                  <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Grade
+                    Grade Status
                   </th>
 
                   <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
@@ -102,14 +100,10 @@ const ViewCourseResultDetailed = () => {
                     <td className="py-4 px-6 text-sm font-medium text-gray-800 dark:text-gray-200">
                       {student.student_name}
                     </td>
-                    <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
-                      <span className="font-medium">
-                        {student.course_total_marks}
-                      </span>
-                    </td>
+                    
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                        {student?.grade_label}
+                        {student?.status}
                       </span>
                     </td>
 
