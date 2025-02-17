@@ -99,16 +99,17 @@ import { handleSuccess } from "../../../utils/toast";
               handleSuccess({ success: "Learners successfully assigned!" });
               setSelectedLearners([]);
               setOpenModalToAssignLearners(false);
-            } else {
-              alert("Failed to assign learners. Please try again.");
-            }
+            } 
+            
+
           } catch (error) {
             console.error("Error assigning learners:", error);
             alert("An error occurred while assigning learners.");
           }
 
-      
       // console.log(selectedLearners)
+
+      
     }
   
     return (

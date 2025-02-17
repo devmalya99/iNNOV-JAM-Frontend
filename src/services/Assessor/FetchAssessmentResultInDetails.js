@@ -12,10 +12,13 @@ const fetchAssessmentResultDetails = async (assessmentId) => {
 
 export const FetchAssessmentResultInDetails = (assessmentId) => {
   return useQuery({
-    queryKey: ["all_assessments_result_details", assessmentId], // Unique query key per course
+    queryKey: ["all_assessments_result_details"], // Unique query key per course
     queryFn: () => fetchAssessmentResultDetails(assessmentId),
-    enabled: !!assessmentId, // Only run query if courseId exists
     retry: 2,
     refetchOnWindowFocus: true,
+    staleTime:0,
+    refetchInterval:0,
+    
+
   });
 };
