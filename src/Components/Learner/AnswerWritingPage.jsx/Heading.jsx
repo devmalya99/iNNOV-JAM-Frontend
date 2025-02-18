@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
 import { LuClock3 } from "react-icons/lu";
 
-function Heading({ subject, duration = 60 * 60 }) {
+function Heading({ subject, duration }) {
+  console.log("duration", duration); // Check the value of duration
+
+  // Convert duration to number and fall back to 60 if invalid
+  const parsedDuration = isNaN(Number(duration)) ? 3600 : Number(duration)*60;
+
   const capitalizeWords = (str) =>
     str
       .toLowerCase()
       .replace(/_/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
 
-  const [timeLeft, setTimeLeft] = useState(duration);
+  const [timeLeft, setTimeLeft] = useState(parsedDuration);
 
   useEffect(() => {
     if (timeLeft <= 0) return;
