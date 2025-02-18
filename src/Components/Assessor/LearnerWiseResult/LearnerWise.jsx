@@ -76,7 +76,7 @@ const LearnerWise = () => {
       {isLoading ? (
         <LearnerWiseSkeleton />
       ) : (
-        <div className="w-full  p-4 h-[calc(100vh-90px)] bg-gray-100 dark:bg-gray-900 ">
+        <div className="w-full  p-4 h-[calc(100vh-80px)] bg-gray-100 dark:bg-gray-900 overflow-y-auto">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold mb-4 dark:text-gray-400">
             {`${data?.student_name} – ${
@@ -113,7 +113,7 @@ comparison_instruction}
               <CaseStudyModal
                 Open={openCaseStudy}
                 onClose={() => setOpenCaseStudy(false)}
-                context={data?.case_study_context}
+                context={data?.assessment?.case_study_context}
               />
             )}
 
@@ -217,7 +217,10 @@ comparison_instruction}
                     </p>
                   </div>
 
-                  {data?.assessment_type === "case_study" && (
+                  
+                </div>
+
+                {data?.assessment?.assessment_type === "case_study" && (
                     <button
                       onClick={handleOpenCaseStudy}
                       className="bg-blue-500 text-white rounded-lg px-6 py-2 hover:bg-blue-600 transition duration-300 shadow-lg hover:shadow-xl hover:translate-y-[-2px]"
@@ -225,7 +228,6 @@ comparison_instruction}
                       Read Case Study
                     </button>
                   )}
-                </div>
 
                 {/* Pagination controller */}
 

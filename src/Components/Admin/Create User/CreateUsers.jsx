@@ -75,7 +75,7 @@ const CreateUsers = () => {
  
 
   return (
-    <div className="p-6 min-h-screen bg-gradient-to-r from-blue-100 to-blue-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
+    <div className="p-6 h-[calc(100vh-80px)] bg-gradient-to-r from-blue-100 to-blue-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
       <h1 className="text-3xl font-bold text-blue-700 dark:text-white mb-6">Create Users</h1>
       <div className="flex justify-center items-center">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
