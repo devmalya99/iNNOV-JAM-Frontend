@@ -14,6 +14,7 @@ import {
   FaExclamationCircle,
   FaSave,
   FaSpinner,
+  FaSync,
 } from "react-icons/fa";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -111,6 +112,7 @@ function AnswerWritingPage() {
 
       if (response.data && response.data.student_answer) {
         setContent(response.data.student_answer);
+        console.log("fetched latest answer", response.data.student_answer);
       } else {
         setContent(""); // Reset if no answer is found
       }
@@ -183,6 +185,13 @@ function AnswerWritingPage() {
       return nextQuestionIndex;
     });
   };
+
+  // Handle Save and sync
+  const handleSync = (activeQuestionId) => {
+    console.log(activeQuestionId)
+    saveAndUpdateData(user_id, activeQuestionId);
+    fetchLatestAnswer(user_id, activeQuestionId)
+  }
 
   const handleSubmit = (id) => {
     // Save the last answer before submitting
@@ -295,15 +304,28 @@ function AnswerWritingPage() {
 
             {/* Navigation */}
             <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700">
+             
               <button
                 onClick={() =>
                   handlePrevious(
                     data?.assessmentdata?.questions?.[activeQuestion]?._id
                   )
                 }
-                className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                className="button-style px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
-                <FaArrowLeft /> <span>Previous</span>
+                <FaArrowLeft /> <span>Previous !</span>
+              </button>
+
+              {/* Check for submission */}
+              <button 
+              onClick={() =>
+                handleSync(
+                  data?.assessmentdata?.questions?.[activeQuestion]?._id
+                )
+              }
+              className="flex gap-2 items-center bg-green-300 px-3 py-1 rounded-xl">
+                <span>Save and Sync Data</span>
+                <FaSync/>
               </button>
 
               <button
@@ -312,9 +334,9 @@ function AnswerWritingPage() {
                     data?.assessmentdata?.questions?.[activeQuestion]?._id
                   )
                 }
-                className="px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                className="px-4 py-2 flex button-style items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
-                <span>Next</span> <FaArrowRight />
+                <span>Next !</span> <FaArrowRight />
               </button>
             </div>
           </div>
