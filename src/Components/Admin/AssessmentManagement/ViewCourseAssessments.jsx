@@ -236,7 +236,9 @@ export default function ViewCourseAssessments() {
                         <span className="hidden sm:inline">View</span>
                       </motion.button>
 
-                      <motion.button
+                      
+
+                      {/* <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-600 
@@ -245,7 +247,7 @@ export default function ViewCourseAssessments() {
                       >
                         <Edit2 className="h-4 w-4" />
                         <span className="hidden sm:inline">Edit</span>
-                      </motion.button>
+                      </motion.button> */}
 
                       <motion.button
                         whileHover={{ scale: 1.05 }}

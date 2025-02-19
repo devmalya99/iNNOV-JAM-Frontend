@@ -163,7 +163,7 @@ const handleCreateAssessment = (assessment) => {
                 </motion.button>
 
 
-                <motion.button
+                {/* <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleEdit(assessment)}
@@ -176,7 +176,7 @@ const handleCreateAssessment = (assessment) => {
                 </motion.button>
 
 
-                {/* Handle Delete */}
+                
                 
                 <motion.button
                   whileHover={{ scale: 1.1 }}
@@ -200,7 +200,10 @@ const handleCreateAssessment = (assessment) => {
                   title="Reupload"
                 >
                   <Upload className="h-4 w-4" />
-                </motion.button>
+                </motion.button> */}
+
+
+
               </div>
             </div>
             
