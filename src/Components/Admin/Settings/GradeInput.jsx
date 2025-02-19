@@ -245,9 +245,9 @@ export default function GradeComponent() {
                     className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
                     Remove
                   </button>
-                  <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
+                  {/* <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
                     Edit
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => openRangeFormHander(grade._id)}
                     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"

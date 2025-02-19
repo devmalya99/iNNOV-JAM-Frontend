@@ -175,16 +175,17 @@ const CoursesDashboard = () => {
               </div>
 
               {/* Footer action buttons */}
-              <div className="action-button-footer flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer mt-4">
+              <div className="action-button-footer flex items-center justify-end gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer mt-4">
+
                 <button
                   className="bg-red-700 px-4 py-2 rounded-lg"
                   onClick={() => handleDelete(course)}
                 >
                   <FaTrash className="text-md text-gray-100 dark:text-gray-400" />
                 </button>
-                <button className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
+                {/* <button className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
                   <FaEdit className="text-md text-gray-100 dark:text-gray-400" />
-                </button>
+                </button> */}
               </div>
             </motion.div>
           ))}
