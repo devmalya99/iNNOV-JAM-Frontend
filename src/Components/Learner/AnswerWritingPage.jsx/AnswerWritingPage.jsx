@@ -16,6 +16,7 @@ import {
   FaSpinner,
   FaSync,
 } from "react-icons/fa";
+import {handleSuccess} from "../../../utils/toast"
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 function AnswerWritingPage() {
@@ -25,14 +26,16 @@ function AnswerWritingPage() {
 
   const [answeredQuestions, setAnsweredQuestions] = useState({});
 
+  const [answeredQuestionsCount, setAnsweredQuestionsCount] = useState(0);
+
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
   const user_id = user?.id;
 
   const { assessmentId } = useParams();
-  console.log("assessment assessmentId is", assessmentId);
-  console.log("userId is", user_id);
+  // console.log("assessment assessmentId is", assessmentId);
+  // console.log("userId is", user_id);
 
   // On screen Load make it full screen
   useEffect(() => {
@@ -68,13 +71,13 @@ function AnswerWritingPage() {
     user_id
   );
 
-  console.log("fetched assessment data", data);
-
-  console.log("Assessment Data:", data?.assessmentdata);
-  console.log("Assigned Data:", data?.assigned);
+  
+  
 
   useEffect(() => {
     refetch();
+    // console.log("fetched assessment data", data);
+
   }, [refetch]);
 
   const saveAnswer = async (user_id, question_id, studentAnswer) => {
@@ -112,7 +115,7 @@ function AnswerWritingPage() {
 
       if (response.data && response.data.student_answer) {
         setContent(response.data.student_answer);
-        console.log("fetched latest answer", response.data.student_answer);
+        // console.log("fetched latest answer", response.data.student_answer);
       } else {
         setContent(""); // Reset if no answer is found
       }
@@ -121,7 +124,7 @@ function AnswerWritingPage() {
     }
   };
 
-  const saveAndUpdateData = (user_id, question_id) => {
+  const saveAndUpdateData = (question_id) => {
     setContent((prevContent) => {
       const studentAnswer = getPlainText(prevContent);
       console.log("Saving data:", { user_id, question_id, studentAnswer });
@@ -134,9 +137,56 @@ function AnswerWritingPage() {
     });
   };
 
+  // Check if the current question is the last question
+const answerCountTracker = () => {
+  const answeredQuestions = data?.assessmentdata?.questions?.filter(
+    (q) => q.status !== 1 // Filter answered questions
+  );
+  return answeredQuestions?.length
+}
+
+const latestAnswerCount  = answerCountTracker()
+console.log("Answered count",latestAnswerCount)
+
+
+ 
+
+  
+
+  // Check if the current question is the last question
+const checkIfLastQuestion = () => {
+  
+  // ensure that we got the questions array before performing this actions
+  const questions= data?.assessmentdata?.questions || [] ;
+
+  if(questions.length===0 || activeQuestion>=questions.length) {
+    return false
+  }
+
+
+  const unansweredQuestions = data?.assessmentdata?.questions?.filter(
+    (q) => q.status !== 1 // Filter unanswered questions
+  );
+
+  // Check if the active question is the last one in the list of unanswered questions
+  return unansweredQuestions[unansweredQuestions?.length - 1]?._id === 
+         data?.assessmentdata?.questions[activeQuestion]?._id;
+};
+
+const isLastQuestion = checkIfLastQuestion();
+console.log("Is this the last question?", isLastQuestion);
+
+
+
+
+
+  
+
+
+
+
   const handlePrevious = () => {
     saveAndUpdateData(
-      user_id,
       data?.assessmentdata?.questions?.[activeQuestion]?._id
     );
     setActiveQuestion((prev) => {
@@ -150,6 +200,8 @@ function AnswerWritingPage() {
 
       return prevQuestionIndex;
     });
+    
+    
   };
 
   // Function to handle question click and fetch new data
@@ -165,11 +217,16 @@ function AnswerWritingPage() {
     if (questionId) {
       fetchLatestAnswer(user_id, questionId);
     }
+    
+    
+    
   };
+
+
 
   const handleNext = () => {
     const question_id = data?.assessmentdata?.questions?.[activeQuestion]?._id;
-    saveAndUpdateData(user_id, question_id);
+    saveAndUpdateData(question_id);
     setActiveQuestion((prev) => {
       const nextQuestionIndex = Math.min(
         prev + 1,
@@ -182,27 +239,31 @@ function AnswerWritingPage() {
         fetchLatestAnswer(user_id, nextQuestionId);
       }
 
+      
+
       return nextQuestionIndex;
     });
+    
+    
   };
 
-  // Handle Save and sync
-  const handleSync = (activeQuestionId) => {
-    console.log(activeQuestionId)
-    saveAndUpdateData(user_id, activeQuestionId);
-    fetchLatestAnswer(user_id, activeQuestionId)
-  }
+  
 
   const handleSubmit = (id) => {
+    
     // Save the last answer before submitting
     saveAndUpdateData(
       user_id,
       data?.assessmentdata?.questions?.[activeQuestion]?._id
     );
 
+
     // Navigate to the confirmation page
     navigate(`/home/learner/assessment-submission/confirm/${id}`);
   };
+
+
+  console.log("text content is",content)
 
   return (
     <div className="parent-container fixed inset-0 z-50 grid grid-cols-12 dark:bg-gray-900 gap-4 p-4">
@@ -291,13 +352,20 @@ function AnswerWritingPage() {
                 value={content}
                 tabIndex={1}
                 onBlur={(newContent) => {
+
                   setContent(newContent);
+                 
+                  
+
                   const textContent = getPlainText(newContent);
                   setAnsweredQuestions((prev) => ({
                     ...prev,
                     [data?.assessmentdata?.questions?.[activeQuestion]?._id]:
                       textContent.trim().length > 0,
                   }));
+
+                  
+                
                 }}
               />
             </div>
@@ -311,22 +379,16 @@ function AnswerWritingPage() {
                     data?.assessmentdata?.questions?.[activeQuestion]?._id
                   )
                 }
-                className="button-style px-4 py-2 flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              >
+                className={`${activeQuestion ===0? "opacity-50 cursor-not-allowed border border-gray-500 rounded-xl px-4 py-2 flex " : "px-4 py-2 flex button-style items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-blue-700  hover:text-white rounded-lg transition-colors "} `}
+                
+                disabled={activeQuestion === 0}
+              
+             
+             >
                 <FaArrowLeft /> <span>Previous !</span>
               </button>
 
-              {/* Check for submission */}
-              <button 
-              onClick={() =>
-                handleSync(
-                  data?.assessmentdata?.questions?.[activeQuestion]?._id
-                )
-              }
-              className="flex gap-2 items-center bg-green-300 px-3 py-1 rounded-xl">
-                <span>Save and Sync Data</span>
-                <FaSync/>
-              </button>
+              
 
               <button
                 onClick={() =>
@@ -334,9 +396,12 @@ function AnswerWritingPage() {
                     data?.assessmentdata?.questions?.[activeQuestion]?._id
                   )
                 }
-                className="px-4 py-2 flex button-style items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                className={`${activeQuestion+1 === data?.assessmentdata?.questions?.length? "opacity-50 cursor-not-allowed border border-gray-500 rounded-xl px-4 py-2 flex " : "px-4 py-2 flex button-style items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-blue-700  hover:text-white rounded-lg transition-colors "} `}
+                
+                disabled={activeQuestion+1 === data?.assessmentdata?.questions?.length}
+              
               >
-                <span>Next !</span> <FaArrowRight />
+                <span>Save & Next !</span> <FaArrowRight />
               </button>
             </div>
           </div>
@@ -353,12 +418,11 @@ function AnswerWritingPage() {
 
         <div className="p-4 flex justify-between text-sm font-medium">
           <span className="text-green-600">
-            Answered: {Object.values(answeredQuestions).filter(Boolean).length}
+            Answered: {latestAnswerCount}
           </span>
           <span className="text-red-600">
             Not Answered:{" "}
-            {data?.assessmentdata?.questions?.length -
-              Object.values(answeredQuestions).filter(Boolean).length}
+            {data?.assessmentdata?.questions?.length- latestAnswerCount}
           </span>
         </div>
 
@@ -369,8 +433,9 @@ function AnswerWritingPage() {
                 key={item._id}
                 onClick={() => {
                   setActiveQuestion(Number(index));
-                  saveAndUpdateData();
+                  saveAndUpdateData( data?.assessmentdata?.questions?.[activeQuestion]?._id);
                   handleQuestionClick(index);
+                  
                 }}
                 className={`h-10 flex items-center justify-center rounded-lg font-medium transition-all
                   ${
@@ -389,7 +454,7 @@ function AnswerWritingPage() {
 
         {/* Only show Save & Submit when all questions are answered */}
         {
-          data?.assessmentdata?.questions?.every(question=>question.status===1) && (
+          (isLastQuestion && content.length>0) && (
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <button
               onClick={() => handleSubmit(data?.assigned?._id)}
@@ -399,10 +464,13 @@ function AnswerWritingPage() {
             </button>
           </div>
         )}
+
+
       </div>
 
     </div>
   );
+
 }
 
 export default AnswerWritingPage;
