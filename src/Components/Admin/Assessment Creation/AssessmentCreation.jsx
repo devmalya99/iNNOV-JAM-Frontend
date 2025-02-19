@@ -21,6 +21,8 @@ const AssessmentCreation = () => {
     setAssessments([...assessments, { id: Date.now(), name: "" }]);
   };
 
+  console.log(assessments)
+
   
 
   const updateAssessmentName = (id, name) => {
@@ -38,6 +40,13 @@ const AssessmentCreation = () => {
   };
 
   const submitFiles = async (id, name) => {
+
+    
+    if(!name)
+    {
+      alert("Please provide a name")
+      return
+    }
     
     if (!files[id]) return;
     setCreationState((prev) => ({ ...prev, [id]: "uploading" }));
@@ -47,12 +56,6 @@ const AssessmentCreation = () => {
     formData.append("file", files[id]);
     formData.append("courseId", courseid);
 
-    // Debugging: Log the FormData values
-for (let pair of formData.entries()) {
-  console.log(pair[0] + ": " + pair[1]); // This will show if "title" is correctly set
-}
-
-    
 
     try {
       
