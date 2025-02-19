@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { LuClock3 } from "react-icons/lu";
 
 function Heading({ subject, duration }) {
-  console.log("duration", duration); // Check the value of duration
+  // console.log("duration", duration); // Check the value of duration
 
   const [currDuration,setDuration] = useState(3600)
 

@@ -95,13 +95,14 @@ const InstructionsPage = () => {
               </p>
             )}
 
-
             <div className="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
               <div className="flex-shrink-0">
                 <FaCheckCircle className="mt-1 text-green-500" />
               </div>
               <p className="">In any case do not press back or hit refresh</p>
             </div>
+
+            
           </div>
         </div>
 

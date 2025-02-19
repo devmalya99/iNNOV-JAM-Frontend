@@ -140,7 +140,7 @@ function AnswerWritingPage() {
   // Check if the current question is the last question
 const answerCountTracker = () => {
   const answeredQuestions = data?.assessmentdata?.questions?.filter(
-    (q) => q.status !== 1 // Filter answered questions
+    (q) => q.status !== 0 // Filter answered questions
   );
   return answeredQuestions?.length
 }
@@ -149,9 +149,6 @@ const latestAnswerCount  = answerCountTracker()
 console.log("Answered count",latestAnswerCount)
 
 
- 
-
-  
 
   // Check if the current question is the last question
 const checkIfLastQuestion = () => {
@@ -175,14 +172,6 @@ const checkIfLastQuestion = () => {
 
 const isLastQuestion = checkIfLastQuestion();
 console.log("Is this the last question?", isLastQuestion);
-
-
-
-
-
-  
-
-
 
 
   const handlePrevious = () => {
@@ -263,7 +252,7 @@ console.log("Is this the last question?", isLastQuestion);
   };
 
 
-  console.log("text content is",content)
+  console.log("text content is",getPlainText(content).length)
 
   return (
     <div className="parent-container fixed inset-0 z-50 grid grid-cols-12 dark:bg-gray-900 gap-4 p-4">
@@ -351,6 +340,9 @@ console.log("Is this the last question?", isLastQuestion);
                 ref={editor}
                 value={content}
                 tabIndex={1}
+                onChange={(newContent) => {
+                  setContent(newContent);  // Update content state immediately
+                }}
                 onBlur={(newContent) => {
 
                   setContent(newContent);
@@ -387,6 +379,8 @@ console.log("Is this the last question?", isLastQuestion);
              >
                 <FaArrowLeft /> <span>Previous !</span>
               </button>
+
+              
 
               
 
@@ -454,7 +448,7 @@ console.log("Is this the last question?", isLastQuestion);
 
         {/* Only show Save & Submit when all questions are answered */}
         {
-          (isLastQuestion && content.length>0) && (
+          (isLastQuestion && getPlainText(content)?.length>0 || latestAnswerCount===data?.assessmentdata?.questions?.length ) && (
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <button
               onClick={() => handleSubmit(data?.assigned?._id)}
