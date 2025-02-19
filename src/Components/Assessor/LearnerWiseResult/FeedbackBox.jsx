@@ -15,8 +15,8 @@ const FeedbackBox = ({
 
     const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-    console.log("questionId is ",questionId);
-    console.log("userId is ",userId);
+    // console.log("questionId is ",questionId);
+    // console.log("userId is ",userId);
 
     const handleUpdateFeedback = async (questionId, userId) => {
       try {
@@ -34,7 +34,7 @@ const FeedbackBox = ({
           }
         );
 
-        console.log("Feedback updated successfully:", response.data.message);
+        // console.log("Feedback updated successfully:", response.data.message);
         handleSuccess({ success: "Feedback updated successfully!" });
         setOpenFeedbackBox(false);
         setFeedback("");  

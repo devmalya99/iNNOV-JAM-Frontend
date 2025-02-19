@@ -5,7 +5,7 @@ const API_URL = `${VITE_API_URL}/api/assessments`
 
 export const updateAssessmentData = async (id, updatedData) => {
     try {
-        console.log("callling database", id, updatedData);
+        // console.log("callling database", id, updatedData);
         const response = await axios.put(`${API_URL}/update-assessment`, {
             assessmentId: id,
             newData: updatedData

@@ -19,7 +19,7 @@ const ViewCourseResultDetailed = () => {
 
   const queryClient = useQueryClient();  // Access query client
 
-  console.log("assessment result fetched", assessmentResult);
+  // console.log("assessment result fetched", assessmentResult);
 
   useEffect(() => {
     // Invalidate the query to refetch data after resubmit
@@ -62,7 +62,7 @@ const ViewCourseResultDetailed = () => {
       alert("Resubmitted successfully! Please refresh.");
       handleSuccess({ success: "Resubmitted successfully!" });
 
-      console.log(resubmitResponse);
+      // console.log(resubmitResponse);
     } catch (error) {
       console.log(error);
     }

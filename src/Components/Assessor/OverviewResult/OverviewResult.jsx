@@ -3,7 +3,7 @@ import calculatePredeterminedGrade, { getBackgroundGradient } from '../../../uti
 import OverviewResultSkeleton from './OverviewResultSkeleton';
 const OverviewResult = ({examData,avgScore, onClose,aiGrade,isLoading}) => {
 
-    console.log("Exam Data",examData)
+    // console.log("Exam Data",examData)
 
      // Calculate average score for each question
   const calculateAvgScore = (question) => {

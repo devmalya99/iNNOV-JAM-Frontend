@@ -14,7 +14,7 @@ const createUsers = async (users ) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Users created:', data);
+        // console.log('Users created:', data);
         // alert('Users created successfully');
       } else {
         console.error('Error creating users:', response.statusText);
@@ -34,7 +34,7 @@ const createUsers = async (users ) => {
 
       // on success will be triggered after the mutation is complete
       onSuccess: (data)=>{
-        console.log("Users created successfully", data);
+        // console.log("Users created successfully", data);
         // Invalidate and refetch
         queryClient.invalidateQueries(['allUsers']);
       },

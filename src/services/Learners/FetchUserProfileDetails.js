@@ -10,7 +10,7 @@ const fetchUserProfileDetails = async (userId) => {
     const { data } = await axios.get(
       `${VITE_API_URL}/api/users/getuserdetails/${userId}`
     );
-    console.log("Assessment instruction",data);
+    // console.log("Assessment instruction",data);
     
     return data;
   };

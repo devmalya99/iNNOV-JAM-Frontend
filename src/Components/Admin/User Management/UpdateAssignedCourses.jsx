@@ -42,7 +42,7 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
   };
 
   const handleUpdateAssignedCourses = () => {
-    console.log("Selected courses:", selectedCourses);
+    // console.log("Selected courses:", selectedCourses);
     // Add your update logic here
     updateUserCoursesMutation.mutate({userId: user?._id ,selectedCourses});
     onClose();

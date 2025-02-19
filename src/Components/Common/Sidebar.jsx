@@ -45,7 +45,7 @@ const Sidebar = () => {
 
    const {isSmallScreen} = UseScreensizeStore();
    
-   console.log("isSmallScreen",isSmallScreen)
+  //  console.log("isSmallScreen",isSmallScreen)
 
 
   // Wait for user object to be available

@@ -5,14 +5,14 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 // Fetch files from the backend
 const fetchAssessmentResultData = async (assessmentId,userId) => {
-  console.log("assessmentId is ",assessmentId);
+  // console.log("assessmentId is ",assessmentId);
 
   // http://192.168.1.40:7000/api/assessors/getstudentanswerresponse?assessment_id=67a9e49fdffac4a7187c10c0&user_Id=67a9e45edffac4a7187c10b0
 
   const { data } = await axios.get(
     `${VITE_API_URL}/api/assessors/getstudentanswerresponse?assessment_id=${assessmentId}&user_Id=${userId}`
   );
-  console.log("FetchAssessmentResultDataByLearner data is ",data);
+  // console.log("FetchAssessmentResultDataByLearner data is ",data);
   return data;
 };
 

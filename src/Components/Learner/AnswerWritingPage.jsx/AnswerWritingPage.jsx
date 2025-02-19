@@ -120,7 +120,7 @@ function AnswerWritingPage() {
   const saveAndUpdateData = (question_id) => {
     setContent((prevContent) => {
       const studentAnswer = getPlainText(prevContent);
-      console.log("Saving data:", { user_id, question_id, studentAnswer });
+      // console.log("Saving data:", { user_id, question_id, studentAnswer });
 
       if (user_id && question_id && studentAnswer) {
         saveAnswer(user_id, question_id, studentAnswer);
@@ -139,7 +139,7 @@ function AnswerWritingPage() {
   };
 
   const latestAnswerCount = answerCountTracker();
-  console.log("Answered count", latestAnswerCount);
+  // console.log("Answered count", latestAnswerCount);
 
   // Check if the current question is the last question
   const checkIfLastQuestion = () => {

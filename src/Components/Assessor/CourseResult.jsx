@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 const CourseResult = () => {
     const { courseId } = useParams();
     const { data: resultData, isLoading, error } = FetchCourseResultData(courseId);
-    console.log("resultData", resultData);
+    // console.log("resultData", resultData);
 
     const navigate = useNavigate()
 

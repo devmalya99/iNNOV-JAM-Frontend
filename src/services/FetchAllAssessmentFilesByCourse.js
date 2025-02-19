@@ -7,7 +7,7 @@ const fetchAllAssessmentFilesByCourse = async (courseid) => {
     const { data } = await axios.get(
       `${VITE_API_URL}/api/files/getfiles/${courseid}`
     );
-    console.log("All assessment files",data);
+    // console.log("All assessment files",data);
     
     return data;
   };

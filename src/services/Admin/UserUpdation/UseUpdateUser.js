@@ -6,7 +6,7 @@ import axios from "axios";
 const updateUserDetails = async (userData) => {
 
  
-  console.log("useruserDataId is",userData);
+  // console.log("useruserDataId is",userData);
    
       const response = await axios.put(`${VITE_API_URL}/api/users/update/${userData?.userId}`, userData?.updatedData );
 
@@ -21,7 +21,7 @@ const updateUserDetails = async (userData) => {
 
       // on success will be triggered after the mutation is complete
       onSuccess: (data)=>{
-        console.log("Users updated successfully", data);
+        // console.log("Users updated successfully", data);
         // Invalidate and refetch
         queryClient.invalidateQueries(['allUsers']);
       },

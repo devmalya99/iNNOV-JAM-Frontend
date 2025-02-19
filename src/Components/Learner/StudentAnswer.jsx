@@ -23,7 +23,7 @@ const StudentAnswer = () => {
   const handleSave = () => {
     // Handle save functionality here
     alert('Answer saved successfully!');
-    console.log(answer)
+    // console.log(answer)
   };
 
   return (

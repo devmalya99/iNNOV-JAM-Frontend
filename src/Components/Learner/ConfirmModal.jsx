@@ -39,7 +39,7 @@ const ConfirmModal = () => {
         }
       );
 
-      console.log("Response received:", response);
+      // console.log("Response received:", response);
       setSubmissionStatus("Assessment submitted successfully! Redirecting in 5 seconds...");
     } catch (error) {
       console.error("Error updating assessment status:", error);

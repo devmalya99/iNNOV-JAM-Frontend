@@ -7,7 +7,7 @@ const fetchAllAssessments = async () => {
     const { data } = await axios.get(
       `${VITE_API_URL}/api/assessments`
     );
-    console.log("All assessments",data);
+    // console.log("All assessments",data);
     
     return data;
   };

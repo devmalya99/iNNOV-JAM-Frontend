@@ -6,7 +6,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 const fetchAiScoresOfQuestion = async (questionId,userId) => {
   const response = await axios.get(`${VITE_API_URL}/api/assessors/getaiscorereport?question_id=${questionId}&user_id=${userId}`);
 
-  console.log("FetchAiScoreOfQuestion data is ",response.data);
+  // console.log("FetchAiScoreOfQuestion data is ",response.data);
 
   
   return response.data || [];

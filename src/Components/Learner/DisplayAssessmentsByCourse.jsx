@@ -20,7 +20,7 @@ const DisplayAssessmentsByCourse = () => {
     refetch,
   } = FetchAssessmentsWithinCourseOfLearner(userId, courseId);
 
-  console.log("fetched assessments", assessments);
+  // console.log("fetched assessments", assessments);
 
   useEffect(() => {
     refetch?.();

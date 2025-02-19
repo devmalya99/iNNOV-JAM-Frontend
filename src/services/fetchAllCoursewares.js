@@ -7,7 +7,7 @@ const fetchAllCoursewares = async () => {
     const { data } = await axios.get(
       `${VITE_API_URL}/api/courseware`
     );
-    console.log("All uploaded coursewares",data);
+    // console.log("All uploaded coursewares",data);
     
     return data;
   };

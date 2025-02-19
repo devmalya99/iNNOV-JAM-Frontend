@@ -38,11 +38,11 @@ const LearnerWise = () => {
   
 
 
-   console.log("assessmentId" ,assessmentId);
-   console.log("userId", userId);
+  //  console.log("assessmentId" ,assessmentId);
+  //  console.log("userId", userId);
   const { data, isLoading,refetch } = FetchAssessmentResultDataByLearner(assessmentId,userId);
 
-  console.log("fetched assessment result data by learner is", data)
+  // console.log("fetched assessment result data by learner is", data)
 
   // use refetch on screen load
   useEffect(() => {
@@ -57,7 +57,7 @@ const LearnerWise = () => {
   useEffect(() => {
     const firstNotCompetent = findFirstNotCompetent(data?.studentResponses);
     setActiveNumber(firstNotCompetent);
-    console.log("firstNotCompetent", firstNotCompetent);
+    // console.log("firstNotCompetent", firstNotCompetent);
     
   }, [data]);
 
@@ -69,7 +69,7 @@ const LearnerWise = () => {
     setOpenCaseStudy(true);
   }
 
-  console.log(competency);
+  // console.log(competency);
 
   return (
     <>

@@ -10,7 +10,7 @@ const fetchAssessmentInstructions = async (assessmentId) => {
     const { data } = await axios.get(
       `${VITE_API_URL}/api/assessments/getassessment/${assessmentId}`
     );
-    console.log("Assessment instruction",data);
+    // console.log("Assessment instruction",data);
     
     return data;
   };
