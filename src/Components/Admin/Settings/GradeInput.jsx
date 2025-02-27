@@ -55,7 +55,7 @@
 
 //   const openRangeFormHandler = async (id) => {
 //     try {
-      
+
 //       setOpenForm(true);
 //       setGradeId(id);
 //       const rangeResponse = await getAllRanges(id);
@@ -136,40 +136,50 @@
 // -=-------------------------------------
 
 import { useEffect, useState } from "react";
-import { createGrading, getAllGradings, createRange, getAllRanges, removeGrading } from "../../../services/gradingApis/gradingApi";
+import {
+  createGrading,
+  getAllGradings,
+  createRange,
+  getAllRanges,
+  removeGrading,
+} from "../../../services/gradingApis/gradingApi";
 import { toast } from "react-toastify";
+import usreGradeStore from "../../../store/gradeStore";
 
 export default function GradeComponent() {
   const [openForm, setOpenForm] = useState(false);
   const [gradeName, setGradeName] = useState("");
   const [ranges, setRanges] = useState([]);
-  const [grageId, setGradeId] = useState('')
+  const [grageId, setGradeId] = useState("");
   const [rangeStart, setRangeStart] = useState("");
   const [rangeEnd, setRangeEnd] = useState("");
-  const [label, setLabel] = useState('');
-  const [grades, setGrades] = useState([]);
+  const [label, setLabel] = useState("");
 
+  const { grades, setGrades } = usreGradeStore();
 
   useEffect(() => {
     (async () => {
       const response = await getAllGradings();
-
       setGrades(response);
     })();
-  }, [])
+  }, []);
 
+  console.log("all grades are", grades);
 
   const onCreateGradeHandler = async () => {
     if (!gradeName) {
       toast.warning("Please enter a grade name");
       return;
     }
-    const gradeData = await createGrading({ name: gradeName, status: false })
+    const gradeData = await createGrading({ name: gradeName, status: false });
     if (gradeData) {
-      setGrades([...grades, { _id: gradeData._id, name: gradeName, status: false }])
+      setGrades([
+        ...grades,
+        { _id: gradeData._id, name: gradeName, status: false },
+      ]);
     }
-    setGradeName('')
-  }
+    setGradeName("");
+  };
 
   const createRangeHandler = async () => {
     if (!label) {
@@ -182,24 +192,37 @@ export default function GradeComponent() {
       return;
     }
     if (+rangeStart <= +rangeEnd) {
-      const rangeData = await createRange({ grade_id: grageId, label, startRange: rangeStart, endRange: rangeEnd })
-      console.log(rangeData)
+      const rangeData = await createRange({
+        grade_id: grageId,
+        label,
+        startRange: rangeStart,
+        endRange: rangeEnd,
+      });
+      console.log(rangeData);
       if (rangeData) {
-        setRanges([...ranges, { _id: rangeData.range._id, label, startRange: rangeStart, endRange: rangeEnd }])
+        setRanges([
+          ...ranges,
+          {
+            _id: rangeData.range._id,
+            label,
+            startRange: rangeStart,
+            endRange: rangeEnd,
+          },
+        ]);
       }
-      setRangeStart('')
-      setRangeEnd('')
-      setLabel('')
+      setRangeStart("");
+      setRangeEnd("");
+      setLabel("");
     }
-  }
+  };
 
   const openRangeFormHander = async (id) => {
     setOpenForm(true);
     setGradeId(id);
     const rangeResponse = await getAllRanges(id);
-    console.log(rangeResponse)
+    console.log(rangeResponse);
     setRanges(rangeResponse || []);
-  }
+  };
 
   return (
     <div className="flex justify-center h-[calc(100vh-80px)] py-8 bg-gray-100 dark:bg-gray-900">
@@ -215,7 +238,8 @@ export default function GradeComponent() {
             />
             <button
               onClick={onCreateGradeHandler}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+            >
               Create Grade
             </button>
           </div>
@@ -238,13 +262,22 @@ export default function GradeComponent() {
                 {/* Buttons */}
                 <div className="flex space-x-3">
                   <button
-                    onClick={() => {
-                      removeGrading(grade._id)
-                      setGrades(grades.filter((g) => g._id !== grade._id))
+                    onClick={async () => {
+                      try {
+                        const response = await removeGrading(grade._id); // await the result of removeGrading
+                        if (response) {
+                          // Only remove the grade from the UI if the API call was successful
+                          setGrades(grades.filter((g) => g._id !== grade._id));
+                        }
+                      } catch (error) {
+                        console.error("Error during grade removal:", error);
+                      }
                     }}
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"
+                  >
                     Remove
                   </button>
+
                   {/* <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
                     Edit
                   </button> */}
@@ -258,17 +291,16 @@ export default function GradeComponent() {
               </li>
             ))}
           </ul>
-
         </div>
       ) : (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 w-full max-w-4xl">
           <button
             onClick={() => {
-              setOpenForm(false)
-              setGradeName('')
-              setRangeStart('')
-              setRangeEnd('')
-              setLabel('')
+              setOpenForm(false);
+              setGradeName("");
+              setRangeStart("");
+              setRangeEnd("");
+              setLabel("");
             }}
             className="text-xl float-right text-gray-600 dark:text-gray-300"
           >

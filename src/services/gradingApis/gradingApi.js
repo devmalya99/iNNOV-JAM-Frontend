@@ -36,7 +36,7 @@ export const removeGrading = async (id) => {
         return response.data;
     } catch (error) {
         console.error("Error deleting grading:", error);
-        toast.error("Error deleting grading");
+        toast.error("This grade is allready assigned to assessments.");
     }
 };
 
