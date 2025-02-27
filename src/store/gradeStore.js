@@ -1,16 +1,28 @@
+import { create } from "zustand";
 
+// Create a store to manage grades and other properties
+const userGradeStore = create((set) => ({
+  gradeName: "",
+  gradeId: "",
+  rangeStart: "",
+  rangeEnd: "",
+  label: "",
 
-import {create} from "zustand"
+  // Setters to update the state
+  setGradeName: (newGradeName) => set({ gradeName: newGradeName }),
+  setGradeId: (newGradeId) => set({ gradeId: newGradeId }),
+  setRangeStart: (newRangeStart) => set({ rangeStart: newRangeStart }),
+  setRangeEnd: (newRangeEnd) => set({ rangeEnd: newRangeEnd }),
+  setLabel: (newLabel) => set({ label: newLabel }),
 
+  // Other state related to grades
+  grades: [],
+  ranges: [],
+  openForm: false,
 
-//create a store to manage grades
-const usreGradeStore = create ((set)=>(
-    {
-        grades:[],
+  setGrades: (fetchedGrades) => set({ grades: fetchedGrades }),
+  setRanges: (fetchedRanges) => set({ ranges: fetchedRanges }),
+  setOpenForm: (newState) => set({ openForm: newState }),
+}));
 
-        setGrades: (fetchedGrades)=>set({grades:fetchedGrades})
-    }
-));
-
-
-export  default usreGradeStore;
+export default userGradeStore;
