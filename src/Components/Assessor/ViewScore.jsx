@@ -69,7 +69,7 @@ const ViewScore = () => {
     {
       label: scoreData?.first_ai_name?.toUpperCase()
       ,
-      value: scoreData?.first_score,
+      value: scoreData?.first_score || "First ai score",
       description: "First AI evaluation score.",
       icon: <ClipboardCheck className="text-orange-500 h-6 w-6" />,
     },

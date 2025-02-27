@@ -214,11 +214,9 @@ function AnswerWritingPage() {
   };
 
   const handleSubmit = (id) => {
-    // Save the last answer before submitting
-    saveAndUpdateData(
-      user_id,
-      data?.assessmentdata?.questions?.[activeQuestion]?._id
-    );
+
+    const question_id = data?.assessmentdata?.questions?.[activeQuestion]?._id;
+    saveAndUpdateData(question_id);
 
     // Navigate to the confirmation page
     navigate(`/home/learner/assessment-submission/confirm/${id}`);

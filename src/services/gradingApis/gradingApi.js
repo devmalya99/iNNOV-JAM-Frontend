@@ -31,11 +31,12 @@ export const removeGrading = async (id) => {
         const response = await axios.delete(
             `${VITE_API_URL}/api/grades/remove/${id}`
         );
+        console.log("grade delete response",response)
         toast.success("Grading deleted successfully");
         return response.data;
     } catch (error) {
-        console.error("Error creating grading:", error);
-        toast.error("Error creating grading");
+        console.error("Error deleting grading:", error);
+        toast.error("Error deleting grading");
     }
 };
 

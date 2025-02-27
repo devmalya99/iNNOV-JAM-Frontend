@@ -140,7 +140,7 @@ comparison_instruction}
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                   Suggested Answers
                 </h2>
-                <div className="overflow-y-auto h-[calc(100vh-420px)]">
+                <div className="overflow-y-auto h-[calc(100vh-520px)]">
                   {data?.studentResponses[activeNumber]?.suggested_answer.map(
                     (item, index) => {
                       const colonIndex = item?.indexOf(":");
@@ -193,7 +193,7 @@ comparison_instruction}
               </div>
             </div>
 
-            <div className="bg-white/75 dark:bg-gray-800
+            <div className="bg-white/75 dark:bg-gray-700 mt-2
              dark:text-gray-900 rounded-md p-2 mb-2 ">
               <div className="flex gap-2 justify-between mb-2 ">
                 {/* gen ai remark */}
@@ -201,20 +201,18 @@ comparison_instruction}
                   <div
                     className={`rounded-xl shadow-lg `}
                   >
-                    <div className="flex p-2 m-1 cursor-pointer rounded-lg hover:font-bold transition duration-300">
+                    <div className={`flex p-2 m-1 cursor-pointer rounded-lg hover:font-bold transition duration-300  ${data?.studentResponses[activeNumber]?.status==="competent" ? "text-green-600 bg-green-400 " : "text-red-500 bg-red-100 "}`}>
                       <strong className="mr-2">AI Grade: </strong>
                       <p className="font-semibold hover:scale-105 transition-transform duration-300">
                        {data?.studentResponses[activeNumber]?.status}
                       </p>
                     </div>
 
-                    <p
-                      className="p-2 inline-block 
-        bg-gradient-to-br from-blue-500 to-purple-600 
-        cursor-pointer rounded-lg shadow-lg hover:shadow-xl hover:translate-y-[-2px] text-transparent bg-clip-text "
+                    <div
+                      className=" button-style-rainbow text-white cursor-pointer hover:text-blue-500 font-semibold"
                     >
                       Click here to see details
-                    </p>
+                    </div>
                   </div>
 
                   
@@ -240,7 +238,7 @@ comparison_instruction}
                     «
                   </button>
 
-                  <button className="px-6 py-2 text-lg font-medium bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl backdrop-blur-sm">
+                  <button className="px-6 py-2 text-black font-serif text-lg font-medium bg-gradient-to-tr from-blue-300 via-white to-purple-300 rounded-xl backdrop-blur-sm dark:">
                     Question {activeNumber + 1}
                   </button>
 
@@ -256,10 +254,10 @@ comparison_instruction}
                 {/* Human Assessor Remark */}
                 <div className="space-y-4">
                   {/* Human Assessor Remark */}
-                  <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600/10 to-blue-400/10 p-4 rounded-xl backdrop-blur-sm shadow-lg">
+                  <div className="flex items-center gap-4  p-4 rounded-xl ">
                     
                     {/* Button to Open Feedback Box */}
-      <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600/10 to-blue-400/10 p-4 rounded-xl shadow-lg">
+      <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600 to-blue-400 p-4 rounded-xl ">
         <strong className="text-gray-700 dark:text-gray-200">Human Assessor Remark:</strong>
         <button
           onClick={() => setOpenFeedbackBox(!openFeedbackBox)}

@@ -63,6 +63,7 @@ const UserManagement = () => {
   }
 
   const handleDelete = (user) => {
+    console.log("Deleting user:", user);
     setDeleteModal({ isOpen: true, user: user });
   };
 
@@ -78,6 +79,8 @@ const UserManagement = () => {
       setDeleteModal({ isOpen: false, user: null });
       return;
     }
+
+
 
     // Call mutate and let onSuccess handle refetch/invalidation
   DeleteUserMutation.mutate(user._id);
