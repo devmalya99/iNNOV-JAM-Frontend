@@ -21,6 +21,7 @@ import { deleteUser } from "../../../services/Admin/UseDeleteUser";
 import { FaUserAstronaut } from "react-icons/fa";
 import {  useMutation, useQueryClient } from "react-query";
 import UpdateAssignedCourses from "./UpdateAssignedCourses";
+import { handleError } from "../../../utils/toast";
 
 const UserManagement = () => {
 
@@ -51,7 +52,12 @@ const UserManagement = () => {
     onSuccess: (data, userId) => {
       
       // Invalidate the query to force a refetch.
-      queryClient.invalidateQueries(["allUsers"]);
+      queryClient.invalidateQueries(["allUsers"]);     
+    },
+    onError: (error) => {
+      // Use the error message returned from the `deleteUser` function
+    handleError({ errors: error.message || "Assigned learners can't be deleted" });
+      console.error("Error deleting user:", error.message);
     },
   });
 
