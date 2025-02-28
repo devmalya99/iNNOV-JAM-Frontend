@@ -16,6 +16,7 @@ const ViewAssessmentFiles = () => {
    
   useEffect(() => {
       refetch();
+      console.log(data)
     }, [refetch]);
   
   const [showCreateAssessmentModal, setShowCreateAssessmentModal] = useState(false);

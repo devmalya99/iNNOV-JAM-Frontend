@@ -104,6 +104,7 @@ export default function ViewCourseAssessments() {
       {/* Open Assessment question and answers Modal */}
       {openAssessmentModal && (
         <ViewAssessmentDetails
+        AssessmentMainData={selectedAssessment}
           assessmentId={selectedAssessment?._id}
           setOpenAssessmentModal={setOpenAssessmentModal}
         />
@@ -172,7 +173,7 @@ export default function ViewCourseAssessments() {
                 </p>
               </div>
             ) : (
-              assessments?.map((assessment) => (
+              assessments?.map((assessment,index) => (
                 <motion.div
                   key={assessment?._id}
                   variants={item}
@@ -204,7 +205,7 @@ export default function ViewCourseAssessments() {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => handleOpenAssessment(assessment)}
+                        onClick={() => handleOpenAssessment(assessment,index)}
                         className="button-style-rainbow"
                       >
                         <SunIcon className="h-4 w-4" />
