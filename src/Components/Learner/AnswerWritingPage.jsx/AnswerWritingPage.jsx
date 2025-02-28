@@ -56,7 +56,9 @@ function AnswerWritingPage() {
   }, []);
 
   const getPlainText = (html) => {
+    console.log("html content", html);
     const doc = new DOMParser().parseFromString(html, "text/html");
+    console.log("parsed content",doc.body.textContent )
     return doc.body.textContent || "";
   };
 
