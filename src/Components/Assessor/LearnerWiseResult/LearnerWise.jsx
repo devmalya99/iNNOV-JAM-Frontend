@@ -9,7 +9,6 @@ import OverviewResult from "../OverviewResult/OverviewResult";
 import OverviewResultSkeleton from "../OverviewResult/OverviewResultSkeleton";
 import LearnerWiseSkeleton from "../LearnerWiseResult/LearnerWiseSkeleton";
 
-
 import { FaPenNib } from "react-icons/fa";
 import { ChevronDown, MessageCircle, RefreshCcw } from "lucide-react";
 import FeedbackBox from "./FeedbackBox";
@@ -23,24 +22,18 @@ const LearnerWise = () => {
   const [feedback, setFeedback] = useState("");
   const [openFeedbackBox, setOpenFeedbackBox] = useState(false);
 
-  
-
   const navigate = useNavigate();
 
   const [openOverview, setOpenOverview] = useState(true);
 
-  const { assessmentId,userId } = useParams();
-
- 
-
-  
-
-  
-
+  const { assessmentId, userId } = useParams();
 
   //  console.log("assessmentId" ,assessmentId);
   //  console.log("userId", userId);
-  const { data, isLoading,refetch } = FetchAssessmentResultDataByLearner(assessmentId,userId);
+  const { data, isLoading, refetch } = FetchAssessmentResultDataByLearner(
+    assessmentId,
+    userId
+  );
 
   // console.log("fetched assessment result data by learner is", data)
 
@@ -49,16 +42,16 @@ const LearnerWise = () => {
     refetch();
   }, [refetch]);
 
-
   const findFirstNotCompetent = (studentResponses) => {
-    return studentResponses?.findIndex(response => response.status === 'not-competent');
+    return studentResponses?.findIndex(
+      (response) => response.status === "not-competent"
+    );
   };
 
   useEffect(() => {
     const firstNotCompetent = findFirstNotCompetent(data?.studentResponses);
     setActiveNumber(firstNotCompetent);
     // console.log("firstNotCompetent", firstNotCompetent);
-    
   }, [data]);
 
   function handleOpenDetails() {
@@ -76,37 +69,35 @@ const LearnerWise = () => {
       {isLoading ? (
         <LearnerWiseSkeleton />
       ) : (
-        <div className="w-full  p-4 h-[calc(100vh-80px)] bg-gray-100 dark:bg-gray-900 overflow-y-auto">
+        <div className="w-full  p-4 h-[calc(100vh-70px)] bg-gray-100 dark:bg-gray-900 overflow-y-auto">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold mb-4 dark:text-gray-400">
-            {`${data?.student_name} – ${
-              isLoading
-                ? "loading"
-                : data?.assessment?.assessment_name?.replace("_", " ").toUpperCase()
-            } `}
-          </h2>
+              {`${data?.student_name} – ${
+                isLoading
+                  ? "loading"
+                  : data?.assessment?.assessment_name
+                      ?.replace("_", " ")
+                      .toUpperCase()
+              } `}
+            </h2>
 
-          <button className="button-style"
-          onClick={()=>refetch()}
-          >
-            <RefreshCcw/>
-            <p>Refetch Data</p>
-          </button>
+            <button className="button-style" onClick={() => refetch()}>
+              <RefreshCcw />
+              <p>Refetch Data</p>
+            </button>
           </div>
-          
+
           <div>
-            <div className="bg-blue-50 p-4 mb-4 rounded-md font-semibold tracking-wide h-[80px]">
+            <div className="bg-gray-300 px-2 py-1 my-2 rounded-md font-semibold tracking-wide h-[70px]">
               {data?.studentResponses[activeNumber]?.question_number}{" "}
               {data?.studentResponses[activeNumber]?.question}
             </div>
-            <div className=" mb-4 bg-blue-50 text-center rounded-md font-semibold tracking-wide h-[20px]">
-              {data?.studentResponses[activeNumber]?.
-comparison_instruction}
-            </div>
 
-
-
-            
+            {data?.studentResponses[activeNumber]?.comparison_instruction && (
+              <div className=" mb-4 bg-blue-500 text-center rounded-md font-semibold tracking-wide h-[20px]">
+                {data?.studentResponses[activeNumber]?.comparison_instruction}
+              </div>
+            )}
 
             {/* Case Study Modal */}
             {openCaseStudy && (
@@ -117,18 +108,15 @@ comparison_instruction}
               />
             )}
 
-            
-
             {/* Human assessor feedback box */}
             {openFeedbackBox && (
               <FeedbackBox
-              questionId={data?.studentResponses[activeNumber]?.question_id}
-              userId={userId}
+                questionId={data?.studentResponses[activeNumber]?.question_id}
+                userId={userId}
                 feedback={feedback}
                 setFeedback={setFeedback}
                 openFeedbackBox={openFeedbackBox}
                 setOpenFeedbackBox={setOpenFeedbackBox}
-                
               />
             )}
 
@@ -140,7 +128,7 @@ comparison_instruction}
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                   Suggested Answers
                 </h2>
-                <div className="overflow-y-auto h-[calc(100vh-520px)]">
+                <div className="overflow-y-auto h-[calc(100vh-500px)]">
                   {data?.studentResponses[activeNumber]?.suggested_answer.map(
                     (item, index) => {
                       const colonIndex = item?.indexOf(":");
@@ -174,9 +162,6 @@ comparison_instruction}
                 </div>
               </div>
 
-
-
-
               {/* Learner Response Section */}
               <div className="w-1/2 bg-white/80 dark:bg-gray-800 rounded-lg shadow-md p-4">
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
@@ -193,39 +178,52 @@ comparison_instruction}
               </div>
             </div>
 
-            <div className="bg-white/75 dark:bg-gray-700 mt-2
-             dark:text-gray-900 rounded-md p-2 mb-2 ">
+            <div
+              className="bg-white dark:bg-gray-700 mt-2
+             dark:text-gray-900 rounded-md p-2 mb-2 "
+            >
               <div className="flex gap-2 justify-between mb-2 ">
                 {/* gen ai remark */}
-                <div className="flex gap-2" onClick={()=>navigate(`/home/assessment/view-learner-aiScore/${data?.studentResponses[activeNumber]?.question_id}/${userId}`)}>
-                  <div
-                    className={`rounded-xl shadow-lg `}
-                  >
-                    <div className={`flex p-2 m-1 cursor-pointer rounded-lg hover:font-bold transition duration-300  ${data?.studentResponses[activeNumber]?.status==="competent" ? "text-green-600 bg-green-400 " : "text-red-500 bg-red-100 "}`}>
+                <div
+                  className="flex gap-2"
+                  onClick={() =>
+                    navigate(
+                      `/home/assessment/view-learner-aiScore/${data?.studentResponses[activeNumber]?.question_id}/${userId}`
+                    )
+                  }
+                >
+                  <div className={`rounded-xl shadow-lg `}>
+                    <div
+                      className={`flex p-2 m-1 cursor-pointer rounded-lg hover:font-bold transition duration-300  ${
+                        data?.studentResponses[activeNumber]?.status ===
+                        "competent"
+                          ? "text-green-600 bg-green-400 "
+                          : "text-red-500 bg-red-100 "
+                      }`}
+                    >
                       <strong className="mr-2">AI Grade: </strong>
                       <p className="font-semibold hover:scale-105 transition-transform duration-300">
-                       {data?.studentResponses[activeNumber]?.status}
+                        {data?.studentResponses[activeNumber]?.status}
                       </p>
                     </div>
 
-                    <div
-                      className=" button-style-rainbow text-white cursor-pointer hover:text-blue-500 font-semibold"
-                    >
+                    <div className=" button-style-rainbow text-white cursor-pointer hover:text-blue-500 font-semibold">
                       Click here to see details
                     </div>
                   </div>
-
-                  
                 </div>
 
                 {data?.assessment?.assessment_type === "case_study" && (
+                  <div>
                     <button
-                      onClick={handleOpenCaseStudy}
-                      className="bg-blue-500 text-white rounded-lg px-6 py-2 hover:bg-blue-600 transition duration-300 shadow-lg hover:shadow-xl hover:translate-y-[-2px]"
-                    >
-                      Read Case Study
-                    </button>
-                  )}
+                    onClick={handleOpenCaseStudy}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200 cursor-pointer mt-4"
+                  >
+                    Read Case Study
+                  </button>
+                  </div>
+                  
+                )}
 
                 {/* Pagination controller */}
 
@@ -245,7 +243,9 @@ comparison_instruction}
                   <button
                     className="relative h-12 w-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
                     onClick={() => setActiveNumber(activeNumber + 1)}
-                    disabled={activeNumber === data?.studentResponses?.length - 1}
+                    disabled={
+                      activeNumber === data?.studentResponses?.length - 1
+                    }
                   >
                     »
                   </button>
@@ -255,22 +255,21 @@ comparison_instruction}
                 <div className="space-y-4">
                   {/* Human Assessor Remark */}
                   <div className="flex items-center gap-4  p-4 rounded-xl ">
-                    
                     {/* Button to Open Feedback Box */}
-      <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600 to-blue-400 p-4 rounded-xl ">
-        <strong className="text-gray-700 dark:text-gray-200">Human Assessor Remark:</strong>
-        <button
-          onClick={() => setOpenFeedbackBox(!openFeedbackBox)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200"
-        >
-          {openFeedbackBox ? "Close Feedback" : "Add Feedback"}
-        </button>
-      </div>
+                    <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600 to-blue-400 p-4 rounded-xl ">
+                      <strong className="text-gray-200 dark:text-gray-200">
+                        Human Assessor Remark:
+                      </strong>
+                      <button
+                        onClick={() => setOpenFeedbackBox(!openFeedbackBox)}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200"
+                      >
+                        {openFeedbackBox ? "Close Feedback" : "Add Feedback"}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-
-                
               </div>
             </div>
           </div>

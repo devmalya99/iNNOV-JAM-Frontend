@@ -305,7 +305,11 @@ function AnswerWritingPage() {
             </div>
 
             {/* Editor */}
-            <div className="flex-grow">
+            <div className="flex-grow
+             
+            h-[calc(100vh-500px)]  overflow-y-auto
+            mb-4
+            ">
               <JoditEditor
                 ref={editor}
                 value={content}
@@ -320,7 +324,7 @@ function AnswerWritingPage() {
                   setAnsweredQuestions((prev) => ({
                     ...prev,
                     [data?.assessmentdata?.questions?.[activeQuestion]?._id]:
-                      textContent.trim().length > 0,
+                      textContent.length > 0,
                   }));
                 }}
               />
