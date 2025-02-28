@@ -33,6 +33,13 @@ const CoursesDashboard = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState(null);
 
+  // to handle delete course
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+
+
+
   useEffect(() => {
     refetch();
   }, [refetch]);
@@ -50,6 +57,8 @@ const CoursesDashboard = () => {
 
   const confirmDelete = async () => {
     if (!courseToDelete) return;
+    setIsDeleting(true);
+    setDeleteError(null);
 
     try {
       const response = await axios.delete(
@@ -64,7 +73,7 @@ const CoursesDashboard = () => {
       }
     } catch (error) {
       console.error("Error deleting course:", error);
-      handleError({ error: "Failed to delete course." });
+      handleError({ errors: "Cannot delete a course with assigned assessments" });
     } finally {
       setIsDeleteModalOpen(false);
       setCourseToDelete(null);

@@ -41,7 +41,7 @@ const MainHeadbar = () => {
       </div>
 
       {/* Hamburger menu that will be displayed on smaller screen */}
-      <div className="md:hidden flex px-1  ">
+      <div className="md:hidden flex px-1 dark:text-white ">
            <div className=""/>
            <div
            onClick={()=>setViewSidebar(!viewSidebar)}

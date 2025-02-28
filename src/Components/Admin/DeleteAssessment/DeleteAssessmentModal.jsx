@@ -29,7 +29,7 @@ const DeleteAssessmentModal = ({ assessment, setShowDeleteModal, onDeleteSuccess
       }, 2000);
     } catch (error) {
       setError(error.response?.data?.message || "Failed to delete assessment");
-      handleError({ error: "Failed to delete assessment. Please try again." });
+      handleError({ errors: "Failed to delete assessment. Please try again." });
     } finally {
       setIsDeleting(false);
     }
