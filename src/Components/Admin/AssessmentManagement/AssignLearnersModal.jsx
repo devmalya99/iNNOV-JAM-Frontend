@@ -114,6 +114,7 @@ import { handleSuccess } from "../../../utils/toast";
   
     return (
       <>
+
         {/* Render modal only if it is open */}
         (
           <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
@@ -228,6 +229,7 @@ import { handleSuccess } from "../../../utils/toast";
             </motion.div>
           </div>
         )
+        
       </>
     );
   };
