@@ -91,11 +91,13 @@ import { handleSuccess } from "../../../utils/toast";
     };
 
     const handleAssignLearners =async ()=>{
+
       try {
+
             const apiUrl = `${VITE_API_URL}/api/assigned-assessments/assignassessment?assessmentId=${selectedAssessmentId}`;
             const response = await axios.post(apiUrl,selectedLearners);
-        
-            if (response.status === 200) {
+            
+            if (response.status) {
               handleSuccess({ success: "Learners successfully assigned!" });
               setSelectedLearners([]);
               setOpenModalToAssignLearners(false);
@@ -108,8 +110,6 @@ import { handleSuccess } from "../../../utils/toast";
           }
 
       // console.log(selectedLearners)
-
-      
     }
   
     return (
@@ -162,6 +162,7 @@ import { handleSuccess } from "../../../utils/toast";
                 </label>
               </div>
   
+
               {/* Learners List */}
               <div className="h-[24rem] overflow-y-auto pr-2">
                 {isLoading ? (
@@ -204,6 +205,7 @@ import { handleSuccess } from "../../../utils/toast";
                   </motion.ul>
                 )}
               </div>
+
   
               {/* Modal Footer - Action Buttons */}
               <div className="flex justify-end gap-3 mt-6">
@@ -221,6 +223,8 @@ import { handleSuccess } from "../../../utils/toast";
                   Assign Selected
                 </button>
               </div>
+
+
             </motion.div>
           </div>
         )
