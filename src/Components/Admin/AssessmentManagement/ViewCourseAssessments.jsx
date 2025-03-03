@@ -208,8 +208,8 @@ export default function ViewCourseAssessments() {
                         onClick={() => handleOpenAssessment(assessment,index)}
                         className="button-style-rainbow"
                       >
-                        <SunIcon className="h-4 w-4" />
-                        <span className="hidden sm:inline">Temperature</span>
+                        <SunIcon className="h-5 w-5" />
+                        <span className="hidden sm:inline">1.Set Temperature</span>
                       </motion.button>
 
                       <motion.button
@@ -221,7 +221,8 @@ export default function ViewCourseAssessments() {
                              hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors animate-pulse"
                       >
                         <Users className="h-4 w-4" />
-                        <span className="hidden sm:inline">Assign</span>
+                        <span className="hidden sm:inline">Step 2. Assign</span>
+                       
                       </motion.button>
 
                       {/* View Assigned Learners */}
@@ -234,7 +235,7 @@ export default function ViewCourseAssessments() {
                              hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors "
                       >
                         <Eye className="h-4 w-4" />
-                        <span className="hidden sm:inline">View</span>
+                        
                       </motion.button>
 
                       
@@ -259,7 +260,7 @@ export default function ViewCourseAssessments() {
                              hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
                       >
                         <Trash2 className="h-4 w-4" />
-                        <span className="hidden sm:inline">Delete</span>
+                        
                       </motion.button>
                     </div>
                   </div>

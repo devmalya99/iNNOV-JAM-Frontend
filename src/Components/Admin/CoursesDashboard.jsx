@@ -162,13 +162,14 @@ const CoursesDashboard = () => {
               </div> */}
 
               
-              <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+              <div className="flex items-center gap-3 p-2 mb-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <FaCalendarAlt className="text-lg text-gray-500 dark:text-gray-400" />
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {new Date(course?.startDate).toLocaleDateString()} -{" "}
                   {new Date(course?.endDate).toLocaleDateString()}
                 </p>
               </div>
+
               <div
                 onClick={() =>
                   navigate(`/home/view/all-assessments/${course?._id}`)
@@ -178,7 +179,7 @@ const CoursesDashboard = () => {
                 <div className="flex items-center gap-3">
                   <FaFileContract className="text-lg text-gray-500 dark:text-gray-400" />
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:underline transition duration-200">
-                    View Assessments
+                    Manage Assessments
                   </p>
                 </div>
               </div>

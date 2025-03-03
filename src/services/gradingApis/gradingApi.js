@@ -64,3 +64,17 @@ export const getAllRanges = async (id) => {
         // toast.error("Error creating grading");
     }
 };
+
+export const removeGradeRanges = async (id) => {
+    try {
+        const response = await axios.delete(
+            `${VITE_API_URL}/api/grade-ranges/remove/${id}`
+        );
+        console.log("grade range delete response",response)
+        toast.success("Grade range deleted successfully");
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting grading:", error);
+        toast.error("This grade is allready assigned to assessments.");
+    }
+};

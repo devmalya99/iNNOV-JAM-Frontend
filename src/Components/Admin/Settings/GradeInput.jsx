@@ -116,6 +116,7 @@ export default function GradeComponent() {
                     Create Range
                   </button>
                 </div>
+                
               </li>
             ))}
           </ul>
