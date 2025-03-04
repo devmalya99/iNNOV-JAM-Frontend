@@ -48,6 +48,7 @@ import CourseResult from './Components/Assessor/CourseResult'
 import ViewCourseResultDetailed from './Components/Assessor/ViewCourseResultDetailed'
 import ViewScore from './Components/Assessor/ViewScore'
 import AiModelsList from './Components/Admin/Settings/AiModelsList'
+import { Toaster } from 'react-hot-toast'
 
 
 function App() {
@@ -131,7 +132,8 @@ function App() {
 
 
       </Routes>
-      <ToastContainer />
+      <Toaster />
+      
     </div>
 
   )

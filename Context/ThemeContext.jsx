@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
+import { handleDarkness, handleLightMode } from "../src/utils/toast";
 
 
 //create context for theme
@@ -28,6 +29,12 @@ export const ThemeProvider = ({children}) => {
     //Toggle theme between 'light' and 'dark'
     const toggleTheme = ()=>{
         const newTheme = theme === 'light' ? 'dark' : 'light';
+        {
+            newTheme==='dark' ? 
+            handleDarkness({msg:`Say hello to dark mode`}) 
+            : handleLightMode({msg:`Say hello to light mode`})
+        }
+        
         setTheme(newTheme)
         localStorage.setItem('theme',newTheme);//to persist them in local storage
     };
