@@ -108,7 +108,11 @@ const CoursesDashboard = () => {
   }
 
   return (
-    <div className="p-8 h-[calc(100vh-72px)] overflow-y-auto bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+    <div
+      className="p-8 h-[calc(100vh-72px)]
+
+     overflow-y-auto bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800"
+    >
       {/* Display delete course modal */}
       {isDeleteModalOpen && (
         <DeleteConfirmationModal
@@ -123,79 +127,85 @@ const CoursesDashboard = () => {
         Explore All Courses
       </h1>
       {filteredCourses?.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
           {filteredCourses.map((course) => (
             <motion.div
               key={course?._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-xl hover:scale-102 transform transition-all duration-300"
+              className="bg-white dark:bg-gray-800 border border-gray-100 
+              dark:border-gray-700 rounded-xl 
+              pt-1  shadow-lg hover:shadow-xl hover:scale-102 transform transition-all duration-300"
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-                    <FaBook className="text-xl text-blue-600 dark:text-blue-400" />
+              <div className=" bg-white dark:bg-gray-700 rounded-lg px-4 py-2 hover:bg-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                      <FaBook className="text-xl text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                      {course?.course_name}
+                    </h2>
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                    {course?.course_name}
-                  </h2>
                 </div>
-                <div className="px-3 py-1 text-sm bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
-                  {course?.course_code}
-                </div>
-                <div className="px-3 py-1 text-sm bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
-                  {course?.visibility}
-                </div>
-              </div>
 
-              {/* Total enrollments  */}
-              {/* <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <div className="flex gap-4">
+                <div className="px-3 py-1 text-sm bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
+                    {course?.course_code}
+                  </div>
+                  <div className="px-3 py-1 text-sm bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
+                    {course?.visibility}
+                  </div>
+                </div>
+
+                {/* Total enrollments  */}
+                {/* <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <FaUsers className="text-lg text-gray-500 dark:text-gray-400" />
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {course?.total_enrollment} Students Enrolled
                 </p>
               </div> */}
 
-              {/*  action buttons */}
-              <div className="action-button-footer flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer mb-4  mt-4">
-                <div className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-2 ">
-                  <p>
-                    {course?.description}
-                  </p>
-                  
+                {/*  action buttons */}
+                <div className="action-button-footer flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer mb-4  mt-4">
+                  <div className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-2 ">
+                    <p>{course?.description}</p>
+                  </div>
                 </div>
 
-                <button
-                  className="bg-red-700 px-4 py-2 rounded-lg"
-                  onClick={() => handleDelete(course)}
+                <div className="flex items-center gap-3 p-2 mb-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                  <FaCalendarAlt className="text-lg text-gray-500 dark:text-gray-400" />
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {new Date(course?.startDate).toLocaleDateString()} -{" "}
+                    {new Date(course?.endDate).toLocaleDateString()}
+                  </p>
+                </div>
+
+                <div
+                  onClick={() =>
+                    navigate(`/home/view/all-assessments/${course?._id}`)
+                  }
+                  className="flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer"
                 >
-                  <FaTrash className="text-md text-gray-100 dark:text-gray-400" />
-                </button>
-                {/* <button className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <FaFileContract className="text-lg text-gray-500 dark:text-gray-400" />
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:underline transition duration-200">
+                      Manage Assessments
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-center my-2">
+                  <button
+                    className="bg-red-700 px-4 py-2 rounded-lg"
+                    onClick={() => handleDelete(course)}
+                  >
+                    <FaTrash className="text-md text-gray-100 dark:text-gray-400" />
+                  </button>
+                  {/* <button className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
     <FaEdit className="text-md text-gray-100 dark:text-gray-400" />
   </button> */}
-              </div>
-
-              <div className="flex items-center gap-3 p-2 mb-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <FaCalendarAlt className="text-lg text-gray-500 dark:text-gray-400" />
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {new Date(course?.startDate).toLocaleDateString()} -{" "}
-                  {new Date(course?.endDate).toLocaleDateString()}
-                </p>
-              </div>
-
-              <div
-                onClick={() =>
-                  navigate(`/home/view/all-assessments/${course?._id}`)
-                }
-                className="flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer"
-              >
-                <div className="flex items-center gap-3">
-                  <FaFileContract className="text-lg text-gray-500 dark:text-gray-400" />
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:underline transition duration-200">
-                    Manage Assessments
-                  </p>
                 </div>
               </div>
             </motion.div>
