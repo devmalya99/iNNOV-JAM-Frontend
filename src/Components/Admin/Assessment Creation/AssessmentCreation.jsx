@@ -16,6 +16,7 @@ const AssessmentCreation = () => {
   const [assessments, setAssessments] = useState([]);
   const [files, setFiles] = useState({});
   const [creationState, setCreationState] = useState({});
+  const [isUploaded,setIsUploaded] = useState(false)
 
   const addAssessment = () => {
     setAssessments([...assessments, { id: Date.now(), name: "" }]);
@@ -37,6 +38,7 @@ const AssessmentCreation = () => {
     const uploadedFile = event.target.files[0];
     setFiles((prev) => ({ ...prev, [id]: uploadedFile }));
     setCreationState((prev) => ({ ...prev, [id]: "file-selected" }));
+    
   };
 
   const submitFiles = async (id, name) => {
@@ -64,6 +66,7 @@ const AssessmentCreation = () => {
       });
 
       setCreationState((prev) => ({ ...prev, [id]: "file-upload-success" }));
+      setIsUploaded(true)
     } catch (error) {
       console.error("Error uploading file:", error);
       handleError({ errors: "File upload failed. Try again." });
@@ -167,8 +170,7 @@ const AssessmentCreation = () => {
           </button>
 
 
-          
-          <button
+          {isUploaded && (<button
             onClick={() => {
               navigate(`/home/view-assessment-files/${courseid}`);
               handleSuccess({ success: "Assessments saved successfully" });
@@ -176,8 +178,11 @@ const AssessmentCreation = () => {
             className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
           >
             <Check className="w-4 h-4 inline mr-2" />
+           
+            
             Save and View Assessment Files
-          </button>
+          </button>) }
+          
         </div>
       </motion.div>
     </div>

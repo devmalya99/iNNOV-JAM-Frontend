@@ -26,7 +26,6 @@ const CoursesDashboard = () => {
     refetch,
   } = useFetchAllCourses();
 
-  
   const [filteredCourses, setFilteredCourses] = useState([]);
   const navigate = useNavigate();
 
@@ -37,8 +36,6 @@ const CoursesDashboard = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState(null);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-
-
 
   useEffect(() => {
     refetch();
@@ -73,7 +70,9 @@ const CoursesDashboard = () => {
       }
     } catch (error) {
       console.error("Error deleting course:", error);
-      handleError({ errors: "Cannot delete a course with assigned assessments" });
+      handleError({
+        errors: "Cannot delete a course with assigned assessments",
+      });
     } finally {
       setIsDeleteModalOpen(false);
       setCourseToDelete(null);
@@ -149,9 +148,6 @@ const CoursesDashboard = () => {
                   {course?.visibility}
                 </div>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-2 min-h-12">
-                {course?.description}
-              </p>
 
               {/* Total enrollments  */}
               {/* <div className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
@@ -161,7 +157,26 @@ const CoursesDashboard = () => {
                 </p>
               </div> */}
 
-              
+              {/*  action buttons */}
+              <div className="action-button-footer flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer mb-4  mt-4">
+                <div className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-2 ">
+                  <p>
+                    {course?.description}
+                  </p>
+                  
+                </div>
+
+                <button
+                  className="bg-red-700 px-4 py-2 rounded-lg"
+                  onClick={() => handleDelete(course)}
+                >
+                  <FaTrash className="text-md text-gray-100 dark:text-gray-400" />
+                </button>
+                {/* <button className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
+    <FaEdit className="text-md text-gray-100 dark:text-gray-400" />
+  </button> */}
+              </div>
+
               <div className="flex items-center gap-3 p-2 mb-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <FaCalendarAlt className="text-lg text-gray-500 dark:text-gray-400" />
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -182,20 +197,6 @@ const CoursesDashboard = () => {
                     Manage Assessments
                   </p>
                 </div>
-              </div>
-
-              {/* Footer action buttons */}
-              <div className="action-button-footer flex items-center justify-end gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer mt-4">
-
-                <button
-                  className="bg-red-700 px-4 py-2 rounded-lg"
-                  onClick={() => handleDelete(course)}
-                >
-                  <FaTrash className="text-md text-gray-100 dark:text-gray-400" />
-                </button>
-                {/* <button className="flex items-center justify-center bg-green-700 px-4 py-2 rounded-lg">
-                  <FaEdit className="text-md text-gray-100 dark:text-gray-400" />
-                </button> */}
               </div>
             </motion.div>
           ))}

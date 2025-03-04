@@ -241,9 +241,10 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
               onClick={() => {
                 navigate(`/home/view/all-assessments/${courseid}`);
               }}
-              className="button-style-close"
+              className={`button-style-close -pointer  `}
+              disabled={processing}
             >
-              Close
+              {processing ? "please wait" : "Close"}
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -258,7 +259,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
                              : "bg-blue-500 hover:bg-blue-600"
                          }`}
             >
-              {processing
+              { processing
                 ? "Creating..."
                 : success
                 ? "Created!"
