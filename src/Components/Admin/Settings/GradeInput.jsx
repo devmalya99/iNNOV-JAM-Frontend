@@ -10,6 +10,7 @@ import {
 import { toast } from "react-toastify";
 import usreGradeStore from "../../../store/gradeStore";
 import RangeCreationForm from "./Grade System/RangeCreationForm";
+import { handleError, handleSuccess } from "../../../utils/toast";
 
 export default function GradeComponent() {
   
@@ -94,10 +95,15 @@ export default function GradeComponent() {
                       try {
                         const response = await removeGrading(grade._id); // await the result of removeGrading
                         if (response) {
+                          handleSuccess({success:"Grade removed successfully"});
                           // Only remove the grade from the UI if the API call was successful
                           setGrades(grades.filter((g) => g._id !== grade._id));
                         }
+                        else{
+                          handleError({errors:"Cannot remove grade with assigned assessments"});
+                        }
                       } catch (error) {
+                        handleError({errors:"Error removing grade"});
                         console.error("Error during grade removal:", error);
                       }
                     }}

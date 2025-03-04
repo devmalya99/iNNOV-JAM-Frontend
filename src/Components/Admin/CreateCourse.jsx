@@ -6,6 +6,7 @@ import AssignSection from "./AssignSection";
 import { Outlet, useNavigate } from "react-router";
 import useCourseStore from "../../Zustand/useCourseStore";
 import { FetchAllGrade } from "../../services/Admin/FetchAllGrade";
+import { handleError, handleSuccess } from "../../utils/toast";
 const VITE_API_URL = import.meta.env.VITE_API_URL; // Replace with your backend URL if needed
 
 function CreateCourse() {
@@ -99,6 +100,7 @@ function CreateCourse() {
       setEndDate("");
       
       setVisibility("");
+      handleSuccess({success:"Course created successfully"});
      
 
       // Navigate to the newly created course page
@@ -106,6 +108,7 @@ function CreateCourse() {
     } catch (error) {
       console.error("Failed to create course:", error);
       setError("Failed to create course. Please try again.");
+      handleError({ errors: "Failed to create course. Please try again." });
     } finally {
       setLoading(false);
     }

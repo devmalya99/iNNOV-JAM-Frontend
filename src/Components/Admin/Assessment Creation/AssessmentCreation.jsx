@@ -67,6 +67,7 @@ const AssessmentCreation = () => {
 
       setCreationState((prev) => ({ ...prev, [id]: "file-upload-success" }));
       setIsUploaded(true)
+      handleSuccess({success:"File uploaded successfully"});
     } catch (error) {
       console.error("Error uploading file:", error);
       handleError({ errors: "File upload failed. Try again." });

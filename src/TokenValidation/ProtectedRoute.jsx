@@ -72,7 +72,7 @@ const ProtectedRoute = ({ children }) => {
       try {
         // Checking stage
         setStage('checking');
-        await new Promise(resolve => setTimeout(resolve, 700));
+        await new Promise(resolve => setTimeout(resolve, 100));
 
         const token = localStorage.getItem('token');
         if (!token) {
@@ -81,13 +81,13 @@ const ProtectedRoute = ({ children }) => {
           setIsAuthenticated(false);
           setTimeout(() => {
             setLoading(false);
-          }, 500);
+          }, 100);
           return;
         }
 
         // Validating stage
         setStage('validating');
-        await new Promise(resolve => setTimeout(resolve, 900));
+        await new Promise(resolve => setTimeout(resolve, 300));
 
         // Validate token
         const { isValid, message } = await validateToken(token);
@@ -104,7 +104,7 @@ const ProtectedRoute = ({ children }) => {
         // Show final stage
         setTimeout(() => {
           setLoading(false);
-        }, 700);
+        }, 300);
 
       } catch (error) {
         console.error("Authentication check failed:", error);
@@ -113,7 +113,7 @@ const ProtectedRoute = ({ children }) => {
         setIsAuthenticated(false);
         setTimeout(() => {
           setLoading(false);
-        }, 200);
+        }, 100);
       }
     };
 
