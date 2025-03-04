@@ -111,11 +111,11 @@ body {
     }
 
     .button-style-rainbow{
-    @apply flex items-center gap-2 px-3 py-2 text-sm font-medium text-white dark:text-green-400 
+    @apply flex items-center gap-2 px-3 py-2 text-sm font-medium text-white 
     bg-gradient-to-r from-blue-500 via-green-400 to-red-500
-    dark:from-blue-900 dark:via-green-900 dark:to-red-900 
+    
     rounded-lg hover:bg-gradient-to-r hover:from-blue-600 hover:via-green-500 hover:to-red-600 
-    dark:hover:from-blue-800 dark:hover:via-green-800 dark:hover:to-red-800 transition-colors animate-pulse
+     transition-colors 
       
 
     }
