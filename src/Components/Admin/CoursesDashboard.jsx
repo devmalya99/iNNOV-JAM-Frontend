@@ -134,11 +134,11 @@ const CoursesDashboard = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white dark:bg-gray-800 border border-gray-100 
+              className="bg-blue-700   border border-gray-100 
               dark:border-gray-700 rounded-xl 
-              pt-1  shadow-lg hover:shadow-xl hover:scale-102 transform transition-all duration-300"
+              pl-1  shadow-lg hover:shadow-xl hover:scale-102 transform transition-all duration-300"
             >
-              <div className=" bg-white dark:bg-gray-700 rounded-lg px-4 py-2 hover:bg-gray-100">
+              <div className=" bg-white h-full dark:bg-gray-700 rounded-lg px-4 py-2 hover:bg-gray-00">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
