@@ -69,7 +69,7 @@ const LearnerWise = () => {
       {isLoading ? (
         <LearnerWiseSkeleton />
       ) : (
-        <div className="w-full  p-4 h-[calc(100vh-70px)] bg-gray-100 dark:bg-gray-900 overflow-y-auto">
+        <div className=" max-w-xl lg:max-w-4xl xl:max-w-full mx-auto  p-4 h-[calc(100vh-70px)] text-xs sm:text-xs md:text-sm lg:text-sm xl:text-lg bg-gray-100 dark:bg-gray-900 overflow-y-auto">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold mb-4 dark:text-gray-400">
               {`${data?.student_name} – ${
@@ -83,7 +83,7 @@ const LearnerWise = () => {
 
             <button className="button-style" onClick={() => refetch()}>
               <RefreshCcw />
-              <p>Refetch Data</p>
+              
             </button>
           </div>
 
@@ -94,7 +94,7 @@ const LearnerWise = () => {
             </div>
 
             {data?.studentResponses[activeNumber]?.comparison_instruction && (
-              <div className=" mb-4 bg-blue-500 text-center rounded-md font-semibold tracking-wide h-[20px]">
+              <div className=" mb-4 bg-blue-500 text-center rounded-md font-semibold tracking-wide h-[30px]">
                 {data?.studentResponses[activeNumber]?.comparison_instruction}
               </div>
             )}
@@ -182,17 +182,18 @@ const LearnerWise = () => {
               className="bg-white dark:bg-gray-700 mt-2
              dark:text-gray-900 rounded-md p-2 mb-2 "
             >
-              <div className="flex gap-2 justify-between mb-2 ">
-                {/* gen ai remark */}
+              <div className="flex gap-2 justify-between mb-2 flex-col lg:flex-row">
+
+                {/* gen ai remark and view score button*/}
                 <div
-                  className="flex gap-2"
+                  className="flex gap-2 "
                   onClick={() =>
                     navigate(
                       `/home/assessment/view-learner-aiScore/${data?.studentResponses[activeNumber]?.question_id}/${userId}`
                     )
                   }
                 >
-                  <div className={`rounded-xl shadow-lg `}>
+                  <div className="rounded-xl shadow-lg flex md:flex-col" >
                     <div
                       className={`flex p-2 m-1 cursor-pointer rounded-lg hover:font-bold transition duration-300  ${
                         data?.studentResponses[activeNumber]?.status ===
@@ -211,8 +212,11 @@ const LearnerWise = () => {
                       Click here to see details
                     </div>
                   </div>
-                </div>
 
+
+                </div>
+                
+                {/* Is it case study */}
                 {data?.assessment?.assessment_type === "case_study" && (
                   <div>
                     <button
@@ -222,26 +226,28 @@ const LearnerWise = () => {
                     Read Case Study
                   </button>
                   </div>
-                  
                 )}
 
                 {/* Pagination controller */}
 
                 <div className="flex justify-center items-center text-black dark:text-white font-bold p-2 rounded-md gap-4">
                   <button
-                    className="relative h-12 w-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
+                    className="relative h-6 w-8  flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-700 text-white text-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
                     onClick={() => setActiveNumber(activeNumber - 1)}
                     disabled={activeNumber === 0}
                   >
                     «
                   </button>
 
-                  <button className="px-6 py-2 text-black font-serif text-lg font-medium bg-gradient-to-tr from-blue-300 via-white to-purple-300 rounded-xl backdrop-blur-sm dark:">
-                    Question {activeNumber + 1}
+                  <button className="px-6 py-2 text-black font-serif text-lg font-medium bg-gradient-to-tr from-blue-300 via-white to-purple-300 rounded-xl backdrop-blur-sm ">
+                  <span className="hidden lg:block">Question</span>
+                     
+                    <span className="">{activeNumber + 1}</span>
+                    
                   </button>
 
                   <button
-                    className="relative h-12 w-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
+                    className="relative h-6 w-8  flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-700 text-white text-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
                     onClick={() => setActiveNumber(activeNumber + 1)}
                     disabled={
                       activeNumber === data?.studentResponses?.length - 1
@@ -252,22 +258,24 @@ const LearnerWise = () => {
                 </div>
 
                 {/* Human Assessor Remark */}
-                <div className="space-y-4">
+                <div className="space-y-4 bg-blue-gray-300 justify-center">
                   {/* Human Assessor Remark */}
-                  <div className="flex items-center gap-4  p-4 rounded-xl ">
+                  <div className="flex items-center gap-2  p-4 rounded-xl ">
                     {/* Button to Open Feedback Box */}
-                    <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600 to-blue-400 p-4 rounded-xl ">
-                      <strong className="text-gray-200 dark:text-gray-200">
+                    <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600 to-blue-400 p-2 rounded-xl ">
+                      <strong className="text-gray-200 dark:text-gray-200 hidden lg:block">
                         Human Assessor Remark:
                       </strong>
-                      <button
+                      <div
                         onClick={() => setOpenFeedbackBox(!openFeedbackBox)}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200"
                       >
                         {openFeedbackBox ? "Close Feedback" : "Add Feedback"}
-                      </button>
+                      </div>
                     </div>
                   </div>
+
+                  
                 </div>
 
               </div>
