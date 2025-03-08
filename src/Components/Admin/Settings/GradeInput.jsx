@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import usreGradeStore from "../../../store/gradeStore";
 import RangeCreationForm from "./Grade System/RangeCreationForm";
 import { handleError, handleSuccess } from "../../../utils/toast";
+import { FaPen, FaTrash } from "react-icons/fa";
 
 export default function GradeComponent() {
   
@@ -54,9 +55,9 @@ export default function GradeComponent() {
   };
 
   return (
-    <div className="flex justify-center h-[calc(100vh-80px)] py-8 bg-gray-100 dark:bg-gray-900">
+    <div className="flex justify-center h-[calc(100vh-70px)] py-8 bg-gray-100 dark:bg-gray-900">
       {!openForm ? (
-        <div className="max-w-4xl w-full px-6 sm:px-8 lg:px-12">
+        <div className="max-w-3xl w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center space-x-4 mb-4">
             <input
               type="text"
@@ -69,10 +70,10 @@ export default function GradeComponent() {
               onClick={onCreateGradeHandler}
               className="button-style"
             >
-              Create Grade
+              Create
             </button>
           </div>
-          <ul className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
+          <ul className="bg-gray-100 dark:bg-gray-700 p-1 rounded-lg shadow-md">
             {grades?.map((grade) => (
               <li
                 key={grade.id}
@@ -109,7 +110,7 @@ export default function GradeComponent() {
                     }}
                     className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"
                   >
-                    Remove
+                    <FaTrash/>
                   </button>
 
                   {/* <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
@@ -119,7 +120,7 @@ export default function GradeComponent() {
                     onClick={() => openRangeFormHander(grade._id)}
                     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"
                   >
-                    Create Range
+                    <FaPen/>
                   </button>
                 </div>
                 

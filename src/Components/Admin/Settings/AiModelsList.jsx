@@ -15,6 +15,7 @@ const deleteAiModel = async (id) => {
 };
 
 const AiModelsList = () => {
+
   const [error, setError] = useState("");
   const queryClient = useQueryClient();
 
@@ -115,12 +116,12 @@ const AiModelsList = () => {
               key={index}
               whileHover={{ scale: 1.03 }}
               transition={{ duration: 0.3 }}
-              className="p-6 border border-gray-300 rounded-lg shadow-lg bg-white"
+              className="p-6 border border-gray-300 rounded-lg shadow-lg bg-white dark:bg-gray-600 dark:text-white"
             >
-              <h3 className="text-xl font-semibold text-blue-600">
+              <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-900">
                 {model.llm_name.join(" / ")}
               </h3>
-              <p className="text-gray-600 mt-1">
+              <p className="text-gray-600 dark:text-gray-400 mt-1">
                 <span className="font-medium">Model Type:</span>{" "}
                 {model.model_type.join(" / ")}
               </p>
@@ -130,7 +131,7 @@ const AiModelsList = () => {
                   {model.weightage.map((weight, idx) => (
                     <li key={idx} className="flex items-center gap-2">
                       <CheckCircle size={16} className="text-green-500" />
-                      <span className="font-medium text-gray-700">
+                      <span className="font-medium text-gray-400">
                         {model.llm_name[idx]}:
                       </span>{" "}
                       <span className="text-gray-800 font-semibold">
@@ -160,8 +161,12 @@ const AiModelsList = () => {
                   <FaEdit className="text-md text-gray-100 dark:text-gray-400" />
                 </button>
               </div>
+
+
             </motion.div>
           ))}
+
+
         </motion.div>
       )}
     </div>

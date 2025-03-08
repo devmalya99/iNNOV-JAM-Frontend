@@ -10,15 +10,13 @@ import MainHeadbar from '../../Common/MainHeadbar';
 const SettingsLayout = () => {
   return (
 
-    
-
-
     <div>
+
       <div className='first-hoome-row flex-flex-col'>
         <MainHeadbar/>
       </div>
 
-      <div className='second-home-row flex w-full h-full'>
+      <div className='second-home-row flex w-full h-full '>
         <Sidebar/>
         <SettingsSidebar/>
 

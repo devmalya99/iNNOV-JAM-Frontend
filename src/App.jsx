@@ -19,17 +19,13 @@ import AssessorLayout from './Components/Assessor/AssessorLayout'
 import LearnerWise from './Components/Assessor/LearnerWiseResult/LearnerWise'
 import BookConsultationPage from './Components/BookConsultationPage'
 import ProtectedRoute from './TokenValidation/ProtectedRoute'
-import StudentAnswer from './Components/Learner/StudentAnswer'
 import LearnerLayout from './Components/Learner/LearnerLayout'
 import SettingsLayout from './Components/Admin/Settings/SettingsLayout'
 import AiModelSelector from './Components/Admin/Settings/AiModelSelector'
 import GradeInput from './Components/Admin/Settings/GradeInput'
 import AnswerWritingPage from './Components/Learner/AnswerWritingPage.jsx/AnswerWritingPage'
-
-import Help from './Components/Help'
 import InstructionsPage from './Components/Learner/InstructionsPage'
 import ConfirmModal from './Components/Learner/ConfirmModal'
-import { ToastContainer } from 'react-toastify';
 
 import CoursesDashboard from './Components/Admin/CoursesDashboard'
 import CreateCourse from './Components/Admin/CreateCourse'
@@ -64,7 +60,7 @@ function App() {
           <Route path='login' element={<Login />} />
           <Route path='signup' element={<Signup />} />
           <Route path='book-consultation' element={<BookConsultationPage />} />
-          <Route path='help' element={<Help />} />
+         
           <Route path='forgot-password' element={<ForgotPassword />} />
         </Route>
 

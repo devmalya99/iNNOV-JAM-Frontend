@@ -375,21 +375,21 @@ function AnswerWritingPage() {
       {/* Answer Tracker */}
       <div className="col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-          <h3 className="font-semibold text-gray-800 dark:text-gray-100">
+          <h3 className="hidden md:block text-lg font-semibold text-gray-800 dark:text-gray-100">
             Question Navigator
           </h3>
         </div>
 
-        <div className="p-4 flex justify-between text-sm font-medium">
-          <span className="text-green-600">Answered: {latestAnswerCount}</span>
-          <span className="text-red-600">
+        <div className="p-4 grid grid-cols-1 gap-2 lg:grid-cols-2  font-medium text-xs sm:text-xs md:text-sm lg:text-sm xl:text-lg ">
+          <span className="text-green-600 bg-green-200 rounded-lg py-1 px-1">Answered: {latestAnswerCount}</span>
+          <span className="text-red-600  bg-red-200 rounded-lg py-1 px-1">
             Not Answered:{" "}
             {data?.assessmentdata?.questions?.length - latestAnswerCount}
           </span>
         </div>
 
         <div className="p-4 flex-grow">
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 text-xs sm:text-xs md:text-sm lg:text-sm xl:text-lg ">
             {data?.assessmentdata?.questions?.map((item, index) => (
               <button
                 key={item._id}
@@ -400,7 +400,7 @@ function AnswerWritingPage() {
                   );
                   handleQuestionClick(index);
                 }}
-                className={`h-10 flex items-center justify-center rounded-lg font-medium transition-all
+                className={`h-10 flex items-center justify-center rounded-lg font-medium transition-all 
                   ${
                     activeQuestion === index
                       ? "bg-blue-500 text-white"
@@ -421,9 +421,11 @@ function AnswerWritingPage() {
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <button
               onClick={() => handleSubmit(data?.assigned?._id)}
-              className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center space-x-2"
+              className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center  text-xs sm:text-xs md:text-sm lg:text-sm xl:text-lg flex-col justify-center "
             >
-              <FaSave /> <span>Save & Submit</span>
+              <FaSave className="hidden md:block"/> 
+             
+              <span >Submit</span>
             </button>
           </div>
         )}

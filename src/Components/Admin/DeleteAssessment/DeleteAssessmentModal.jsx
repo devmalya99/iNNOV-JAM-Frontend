@@ -8,6 +8,7 @@ import { useQueryClient } from "react-query";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const DeleteAssessmentModal = ({ assessment, setShowDeleteModal, onDeleteSuccess }) => {
+  
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -36,6 +37,7 @@ const DeleteAssessmentModal = ({ assessment, setShowDeleteModal, onDeleteSuccess
   };
 
   return (
+
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
@@ -155,6 +157,7 @@ const DeleteAssessmentModal = ({ assessment, setShowDeleteModal, onDeleteSuccess
         </motion.div>
       </motion.div>
     </AnimatePresence>
+    
   );
 };
 

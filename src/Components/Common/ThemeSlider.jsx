@@ -7,7 +7,7 @@ const ThemeSlider = () => {
   return (
     <div
       onClick={toggleTheme}
-      className="relative w-20 h-6 flex items-center
+      className="relative w-20 h-8 flex items-center
        bg-gray-300 dark:bg-gray-500 
        rounded-full p-1 cursor-pointer 
        transition-all duration-300 ease-in-out"

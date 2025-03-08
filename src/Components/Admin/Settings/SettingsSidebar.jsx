@@ -30,7 +30,7 @@ const SettingsSidebar = () => {
 
      <SidebarItem
         to="./models-management"
-        text="Models Management"
+        text="Models Setting"
         icon={<Cog className="w-5 h-5" />}
         
         onClick={()=>setActiveItem('models-management')}
