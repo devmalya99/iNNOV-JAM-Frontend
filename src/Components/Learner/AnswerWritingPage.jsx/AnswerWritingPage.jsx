@@ -227,6 +227,8 @@ function AnswerWritingPage() {
   console.log("text content is", getPlainText(content).length);
 
   return (
+
+
     <div className="parent-container fixed inset-0 z-50 grid grid-cols-12 dark:bg-gray-900 gap-4 p-4">
       {isError && (
         <div className="col-span-12 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center text-red-700 dark:text-red-400">
@@ -328,6 +330,8 @@ function AnswerWritingPage() {
                     [data?.assessmentdata?.questions?.[activeQuestion]?._id]:
                       textContent.length > 0,
                   }));
+
+
                 }}
               />
             </div>
@@ -368,6 +372,8 @@ function AnswerWritingPage() {
                 <span>Save & Next !</span> <FaArrowRight />
               </button>
             </div>
+
+
           </div>
         </div>
       </div>
@@ -431,6 +437,8 @@ function AnswerWritingPage() {
         )}
       </div>
     </div>
+
+    
   );
 }
 
