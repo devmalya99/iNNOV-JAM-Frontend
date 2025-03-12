@@ -267,7 +267,7 @@ const UploadAssessmentPlan = () => {
                           }}
                         >
                           <TbFlagPlus /> {/* Create Exam Icon */}
-                          Create Exam
+                          Create assessment
                         </button>
 
                         <button

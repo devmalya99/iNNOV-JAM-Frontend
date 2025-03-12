@@ -108,13 +108,13 @@ const InstructionsPage = () => {
 
         {/* Footer Actions */}
         <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 flex justify-between items-center">
-          <Link
+          {/* <Link
             to="/home"
             className="flex items-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
           >
             <FaArrowLeft className="mr-2" />
             Back to Home
-          </Link>
+          </Link> */}
           <div className="space-x-4">
             <button
               onClick={() => navigate(-1)}

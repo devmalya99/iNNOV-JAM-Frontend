@@ -15,7 +15,7 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
     role: "",
   });
 
-  const roles = ["admin", "learner", "assessor"];
+  const roles = ["super_admin","admin", "learner", "assessor"];
 
   const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -52,6 +52,9 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
     // console.log('Form submitted:', formData);
 
     //validations
+   if(formData.password || formData.confirmPassword)
+   {
+
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       handleError({ errors: "Passwords do not match" });
@@ -64,6 +67,10 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
       });
       return;
     }
+
+   }
+
+    
 
     // Prepare the update data
     const updatedData = {

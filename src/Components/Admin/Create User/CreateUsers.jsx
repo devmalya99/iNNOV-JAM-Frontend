@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 
 const CreateUsers = () => {
   const [userRole, setUserRole] = useState("");
-  const roles = ["admin", "learner", "assessor"];
+  const roles = ["super_admin","admin", "learner", "assessor"];
   const { data: courses, refetch } = useFetchAllCourses();
   const navigate = useNavigate();
 
@@ -66,7 +66,8 @@ const CreateUsers = () => {
     const newUser = { name, email, course_code, password, role };
 
     // Use the mutation to create the user (expects an array of users)
-    createUserMutation.mutate([newUser]);
+   const response= createUserMutation.mutate([newUser]);
+   console.log("response",response)
 
     // Reset form and state
     form.reset();
@@ -75,6 +76,7 @@ const CreateUsers = () => {
 
     handleSuccess({ success: "User has been created successfully!" });
     navigate("/home/user-management");
+
   };
 
  

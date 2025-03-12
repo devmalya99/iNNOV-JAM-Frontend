@@ -66,7 +66,7 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
   
      // Sync assigned learners when modal opens
   useEffect(() => {
-    if (assignedLearners.length > 0) {
+    if (assignedLearners?.length > 0) {
       const assignedIds = assignedLearners.map((learner) => learner.userId._id);
       setSelectedLearners(assignedIds);
       setIsAllSelected(assignedIds.length === LearnersData.length);

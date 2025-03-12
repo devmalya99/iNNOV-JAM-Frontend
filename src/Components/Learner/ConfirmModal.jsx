@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 import {TbLoader} from 'react-icons/tb'
+import { handleSuccess } from "../../utils/toast";
 const ConfirmModal = () => {
   const navigate = useNavigate(); // Initialize useNavigate
   const { id } = useParams(); // Fetch the id from the URL
   const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const user_id = user?.id;
   
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -17,7 +22,8 @@ const ConfirmModal = () => {
         setRedirectCountdown((prev) => {
           if (prev === 1) {
             clearInterval(countdownInterval);
-            navigate("/home");
+            navigate("/home/learner/view-all-courses");
+            handleSuccess({success:"Your assessment is now completed"})
           }
           return prev - 1;
         });
