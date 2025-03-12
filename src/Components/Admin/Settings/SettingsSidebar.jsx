@@ -35,9 +35,19 @@ const SettingsSidebar = () => {
     <div className="flex flex-col w-64 h-[calc(100vh-80px)] ml-1 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     {/* Sidebar Items Container */}
     <div className="flex flex-col space-y-1 p-4">
+    <SidebarItem
+        to="./grade-creation"
+        
+        icon={<PenBox className="w-5 h-5" />}
+        text="Create Grade"
+        onClick={()=>setActiveItem('grading')}
+        active={lastParam==='grade-creation'}
+      />
+
+
       <SidebarItem
         to="./models-selector"
-        text="Model Creation"
+        text="Model Selector"
         icon={<Cog className="w-5 h-5" />}
         
         onClick={()=>setActiveItem('models')}
@@ -53,14 +63,7 @@ const SettingsSidebar = () => {
         active={lastParam==='models-management'}
       />
 
-      <SidebarItem
-        to="./grade-creation"
-        
-        icon={<PenBox className="w-5 h-5" />}
-        text="Grading"
-        onClick={()=>setActiveItem('grading')}
-        active={lastParam==='grade-creation'}
-      />
+      
 
     </div>
   </div>

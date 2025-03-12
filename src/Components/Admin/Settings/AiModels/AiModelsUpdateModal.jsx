@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router";
+import { handleSuccess } from "../../../../utils/toast";
 
 const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
   // Available LLMs and their models
@@ -98,8 +99,14 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
         }
       );
 
+
+
       if (!response.ok) {
         throw new Error("Failed to update model configuration");
+      }
+
+      if(response.ok){
+        handleSuccess({success:"Ai models updated successfully"})
       }
 
       setError("");
