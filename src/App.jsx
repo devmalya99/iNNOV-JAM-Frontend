@@ -94,8 +94,9 @@ function App() {
 
         {/* Routes for settings */}
         <Route path='/settings' element={<ProtectedRoute> <SettingsLayout /></ProtectedRoute>}>
-          <Route index element={<GradeInput />} />
-          <Route path='models' element={<AiModelSelector />} />
+         
+          <Route path='grade-creation' element={<GradeInput />} />
+          <Route path='models-selector' element={<AiModelSelector />} />
           <Route path='models-management' element={<AiModelsList/>}/>
         </Route>
 

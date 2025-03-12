@@ -4,14 +4,30 @@ import { FaHome } from 'react-icons/fa'
 
 import Logo from '../../../assets/Logo.png';
 
-import { Link } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router';
 import { Cog, LucideSheet, PenBox, PenLineIcon, PowerOffIcon } from 'lucide-react';
 import { MdSystemUpdate } from 'react-icons/md';
 
 
 const SettingsSidebar = () => {
 
+  
+ 
+
     const [activeItem,setActiveItem] = useState(null)
+
+    const location = useLocation(); // Get the latest URL
+
+    const [param, setParam] = useState('');
+
+    
+      // Get the last part of the URL (assuming "/settings/something")
+      const pathParts = location.pathname.split('/');
+      const lastParam = pathParts[pathParts.length - 1]; // Get last segment
+      
+    
+
+    console.log("location",lastParam)
   
 
 
@@ -20,30 +36,30 @@ const SettingsSidebar = () => {
     {/* Sidebar Items Container */}
     <div className="flex flex-col space-y-1 p-4">
       <SidebarItem
-        to="./models"
+        to="./models-selector"
         text="Model Creation"
         icon={<Cog className="w-5 h-5" />}
         
         onClick={()=>setActiveItem('models')}
-        active={activeItem==='models'}
+        active={lastParam==='models-selector'}
       />
 
      <SidebarItem
         to="./models-management"
-        text="Models Setting"
+        text="Models Management"
         icon={<Cog className="w-5 h-5" />}
         
         onClick={()=>setActiveItem('models-management')}
-        active={activeItem==='models-management'}
+        active={lastParam==='models-management'}
       />
 
       <SidebarItem
-        to="./"
+        to="./grade-creation"
         
         icon={<PenBox className="w-5 h-5" />}
         text="Grading"
         onClick={()=>setActiveItem('grading')}
-        active={activeItem==='grading'}
+        active={lastParam==='grade-creation'}
       />
 
     </div>

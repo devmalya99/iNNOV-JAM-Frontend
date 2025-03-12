@@ -125,7 +125,7 @@ const Sidebar = () => {
     {
       name: "Settings",
       icon: <MdOutlineSettingsSuggest className="text-2xl text-green-600" />,
-      link: "/settings",
+      link: "/settings/grade-creation",
       roles: ["super_admin"],
     },
 
