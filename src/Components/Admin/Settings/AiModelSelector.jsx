@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AlertCircle } from "lucide-react";
 import AiModelsList from "./AiModelsList";
 import { useNavigate } from "react-router";
+import { handleSuccess } from "../../../utils/toast";
 
 const AiModelSelector = () => {
   // Available LLMs and their models
@@ -76,6 +77,10 @@ const AiModelSelector = () => {
         },
         body: JSON.stringify(data),
       });
+
+      if(response.ok){
+        handleSuccess({success:"New Ai Models Selected"})
+      }
 
       if (!response.ok) {
         throw new Error("Failed to save model configuration");
