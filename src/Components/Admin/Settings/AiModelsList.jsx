@@ -5,7 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { FetchAiModelsApi } from "../../../services/Admin/AiModels/FetchAiModelsApi";
-import {handleError} from "../../../utils/toast"
+import {handleError, handleSuccess} from "../../../utils/toast"
 import AiModelsUpdateModal from "./AiModels/AiModelsUpdateModal"
 // React Query Delete Mutation
 const deleteAiModel = async (id) => {
@@ -37,7 +37,11 @@ const AiModelsList = () => {
       // Invalidate and refetch the AI models list after delete
       
       queryClient.invalidateQueries(["allAiModelsCreated"]);
+      handleSuccess({success:"Ai model deleted successfully"})
     },
+    
+  
+
     onError: (err) => {
       setError(err.message);
       handleError({ errors: "You cannot delete a model with assigned assessments" });
@@ -67,6 +71,7 @@ const AiModelsList = () => {
     if (window.confirm("Are you sure you want to delete this model?")) {
       deleteModel(id);
     }
+
   };
 
 
