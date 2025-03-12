@@ -242,7 +242,7 @@ const LearnerWise = () => {
                     «
                   </button>
 
-                  <button className="px-6 py-2 text-black font-serif text-lg font-medium bg-gradient-to-tr from-blue-300 via-white to-purple-300 rounded-xl backdrop-blur-sm ">
+                  <button className="px-6 py-2 text-black font-serif text-lg font-medium bg-blue-300 rounded-xl backdrop-blur-sm ">
                   <span className="hidden lg:block">Question</span>
                      
                     <span className="">{activeNumber + 1}</span>
