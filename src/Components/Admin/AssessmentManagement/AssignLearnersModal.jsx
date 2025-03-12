@@ -7,7 +7,8 @@ import axios from "axios";
   import { Check, RefreshCcwIcon, Users, X } from "lucide-react";
   import { FetchUsersByRole } from "../../../services/fetchUsersByRole";
   import useCourseStore from "../../../Zustand/useCourseStore";
-import { handleSuccess } from "../../../utils/toast";
+import { handleError, handleSuccess } from "../../../utils/toast";
+import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssignedLearnersByAssessment";
 
   
 
@@ -57,38 +58,50 @@ import { handleSuccess } from "../../../utils/toast";
     const {
       selectedLearners,
       setSelectedLearners,
-      isOpenAssignModal,
-      setOpenAssignModal,
     } = useCourseStore();
+
+
+    const { data: assignedLearners} = FetchAssignedLearnersByAssessments(selectedAssessmentId);
+
   
-    // Fetch latest learners' data when the component mounts
-    useEffect(() => {
-      refetch();
-    }, [refetch]);
+     // Sync assigned learners when modal opens
+  useEffect(() => {
+    if (assignedLearners.length > 0) {
+      const assignedIds = assignedLearners.map((learner) => learner.userId._id);
+      setSelectedLearners(assignedIds);
+      setIsAllSelected(assignedIds.length === LearnersData.length);
+    }
+  }, [assignedLearners, LearnersData.length, setSelectedLearners]);
+
+
+    console.log("assignedLearners",assignedLearners)
+
+
   
     // Function to handle "Select All" functionality
     const handleSelectAll = () => {
       if (isAllSelected) {
         setSelectedLearners([]); // Unselect all learners 
       } else {
-        setSelectedLearners(LearnersData?.map((learner) => learner._id) || []); // Select all learners
+        setSelectedLearners(LearnersData?.map((learner) => learner._id) ); // Select all learners
       }
       setIsAllSelected(!isAllSelected);
     };
   
     // Function to handle individual learner selection
     const handleSelect = (id) => {
-      if (selectedLearners.includes(id)) {
-        // If already selected, remove from selection
-        setSelectedLearners(selectedLearners.filter((item) => item !== id));
-        setIsAllSelected(false); // Deselect "Select All" checkbox
-      } else {
-        // Otherwise, add to the selection
-        const newSelected = [...selectedLearners, id];
-        setSelectedLearners(newSelected);
-        setIsAllSelected(newSelected.length === LearnersData?.length); // Check if all learners are selected
-      }
+      const updatedSelection=selectedLearners.includes(id) ? selectedLearners.filter((learnerId)=>learnerId!==id) : [...selectedLearners,id]
+
+      setSelectedLearners(updatedSelection)
+      setIsAllSelected(updatedSelection.length===LearnersData.length)
+
+      
     };
+
+
+    console.log("selected learners",selectedLearners)
+
+
 
     const handleAssignLearners =async ()=>{
 
@@ -106,10 +119,11 @@ import { handleSuccess } from "../../../utils/toast";
 
           } catch (error) {
             console.error("Error assigning learners:", error);
+            handleError({errors:"Failed to assign learners"})
             alert("An error occurred while assigning learners.");
           }
 
-      // console.log(selectedLearners)
+       
     }
   
     return (
@@ -132,12 +146,12 @@ import { handleSuccess } from "../../../utils/toast";
                 </h2>
   
                 {/* Refresh Button */}
-                <button
+                {/* <button
                   className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
                   onClick={() => refetch()}
                 >
                   <RefreshCcwIcon size={24} />
-                </button>
+                </button> */}
   
                 {/* Close Modal Button */}
                 <button
