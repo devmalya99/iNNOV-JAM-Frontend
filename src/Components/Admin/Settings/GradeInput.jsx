@@ -41,6 +41,7 @@ export default function GradeComponent() {
         { _id: gradeData._id, name: gradeName, status: false },
       ]);
     }
+     handleSuccess({success:"New grade created"})
     setGradeName("");
   };
 
