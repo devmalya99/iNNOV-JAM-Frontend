@@ -106,7 +106,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                  Create New Exam
+                  Create New Assessment
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   From: {assessment?.title || "Untitled Assessment"}
@@ -263,7 +263,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
                 ? "Creating..."
                 : success
                 ? "Created!"
-                : "Create Exam"}
+                : "Create Assessment"}
             </motion.button>
           </div>
         </motion.div>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { handleSuccess } from "../../../utils/toast";
+import { handleError, handleSuccess } from "../../../utils/toast";
 import { UseCreateUser } from "../../../services/Admin/User Creation/UseCreateUser";
 import { useFetchAllCourses } from "../../../services/FetchAllCourses";
 import { useNavigate } from "react-router";
 
 const CreateUsers = () => {
   const [userRole, setUserRole] = useState("");
-  const roles = ["admin", "learner", "assessor", "trainer"];
+  const roles = ["admin", "learner", "assessor"];
   const { data: courses, refetch } = useFetchAllCourses();
   const navigate = useNavigate();
 
@@ -50,12 +50,17 @@ const CreateUsers = () => {
     const course_code = selectedCourses;
 
     if (!name || !email || !password || !confirmPassword || !role ) {
-      alert("Please fill in all required fields");
+      handleError({errors:"Please fill in all required fields"})
       return;
     }
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      handleError({errors:"Passwords do not match"});
       return;
+    }
+
+    if(password.length<8 || confirmPassword.length<8){
+      handleError({errors:"password length should be atleast 8 character long"})
+      return
     }
 
     const newUser = { name, email, course_code, password, role };

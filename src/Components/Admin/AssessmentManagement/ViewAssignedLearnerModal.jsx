@@ -6,7 +6,11 @@ import axios from "axios";
 import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssignedLearnersByAssessment";
 
 
-const ViewAssignedLearnerModal = ( {selectedAssessmentId, setOpenViewLearnersModal} ) => {
+const ViewAssignedLearnerModal = ( {
+  selectedAssessmentId, 
+  setOpenViewLearnersModal
+
+} ) => {
 
   
   const { data: users, isLoading,refetch } = FetchAssignedLearnersByAssessments(selectedAssessmentId);
@@ -31,7 +35,7 @@ const ViewAssignedLearnerModal = ( {selectedAssessmentId, setOpenViewLearnersMod
         {/* Modal Header */}
         <div className="flex justify-between items-center border-b pb-3">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
-            Assigned Users for Assessment
+            Assigned Learners for Assessment
           </h2>
           <button onClick={() => setOpenViewLearnersModal(false)} className="text-gray-500 hover:text-red-600">
             <FaTimes size={20} />

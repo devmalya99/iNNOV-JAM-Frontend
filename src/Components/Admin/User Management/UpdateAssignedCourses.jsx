@@ -8,11 +8,29 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
   const [isAllSelected, setIsAllSelected] = useState(false);
   // Initialize our mutation hook
       const updateUserCoursesMutation = UseUpdateUserCourses();
+
+      //check for user
+      console.log("user",user);
   
       const { data: all_Courses_List = [], isLoading, refetch } = useFetchAllCourses();
       // console.log("all_Courses_List", all_Courses_List);
       // console.log("selected course code",selectedCourses);
 
+
+      // ensure that the courses already assigned to the user (from user.course_code) are pre-selected when the component mounts
+      useEffect(() => {
+        if (user?.course_code && all_Courses_List.length > 0) {
+          setSelectedCourses(user.course_code);
+          const allCourseCodes = all_Courses_List.map(course => course.course_code);
+          
+          // Check if all courses are selected
+          const isAllSelectedNow = allCourseCodes.length > 0 && 
+                                   allCourseCodes.every(course => user.course_code.includes(course));
+      
+          setIsAllSelected(isAllSelectedNow);
+        }
+      }, [user, all_Courses_List]); // Depend on `user` and `all_Courses_List`
+      
   
 
   // Function to handle "Select All" functionality
@@ -30,7 +48,7 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
   const handleSelect = (courseCode) => {
     setSelectedCourses(prev => {
       if (prev.includes(courseCode)) {
-        const newSelection = prev.filter(code => code !== course_code);
+        const newSelection = prev.filter(code => code !== courseCode);
         setIsAllSelected(false);
         return newSelection;
       } else {
@@ -45,6 +63,8 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
     // console.log("Selected courses:", selectedCourses);
     // Add your update logic here
     updateUserCoursesMutation.mutate({userId: user?._id ,selectedCourses});
+    setSelectedCourses([]);
+    setIsAllSelected(false);
     onClose();
   };
 

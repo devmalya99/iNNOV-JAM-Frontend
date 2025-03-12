@@ -215,6 +215,7 @@ function CreateCourse() {
             onChange={(e) => setVisibility(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-gray-100"
           >
+            <option className="bg-gray-200">Select Visibility</option>
             <option value="Public">Public</option>
             <option value="Private">Private</option>
           </select>

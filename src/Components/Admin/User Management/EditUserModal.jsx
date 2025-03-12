@@ -1,56 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
-import { 
-  X, 
-  User, 
-  Mail, 
-  Lock, 
-  CheckCircle, 
-  UserCircle 
-} from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import axios from "axios";
+import { X, User, Mail, Lock, CheckCircle, UserCircle } from "lucide-react";
 import { handleError, handleSuccess } from "../../../utils/toast";
-import { UseUpdateUser } from '../../../services/Admin/UserUpdation/UseUpdateUser';
+import { UseUpdateUser } from "../../../services/Admin/UserUpdation/UseUpdateUser";
 
 const EditUserModal = ({ isOpen, onClose, user }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
     course_code: [],
-    role: ''
+    role: "",
   });
 
-  const roles = ["admin", "learner", "assessor", "trainer"];
+  const roles = ["admin", "learner", "assessor"];
 
   const VITE_API_URL = import.meta.env.VITE_API_URL;
 
   // Initialize our mutation hook
-    const updateUserMutation = UseUpdateUser();
+  const updateUserMutation = UseUpdateUser();
 
   // Update form data whenever the user prop changes
   useEffect(() => {
     if (user) {
       setFormData({
-        name: user.name || '',
-        email: user.email || '',
-        password: '',
-        confirmPassword: '',
+        name: user.name || "",
+        email: user.email || "",
+        password: "",
+        confirmPassword: "",
         course_code: user.course_code || [],
-        role: user.role || ''
+        role: user.role || "",
       });
     }
   }, [user]);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -58,29 +51,47 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
     e.preventDefault();
     // console.log('Form submitted:', formData);
 
-      // Prepare the update data
-      const updatedData = {
-        name: formData.name,
-        email: formData.email,
-        role: formData.role,
-        course_code: formData.course_code,
-        password: formData.password || user.password
-      };
+    //validations
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      handleError({ errors: "Passwords do not match" });
+      return;
+    }
 
-      // Validate passwords match if either is provided
-      if (formData.password || formData.confirmPassword) {
-        if (formData.password !== formData.confirmPassword) {
-          setError('Passwords do not match');
-          handleError({ error: 'Passwords do not match' });
+    if (formData.password.length < 8 || formData.confirmPassword.length < 8) {
+      handleError({
+        errors: "password length should be atleast 8 character long",
+      });
+      return;
+    }
+
+    // Prepare the update data
+    const updatedData = {
+      name: formData.name,
+      email: formData.email,
+      role: formData.role,
+      course_code: formData.course_code,
+      password: formData.password || user.password,
+    };
+
+    // Use the mutation by passing both userId and updatedData
+    updateUserMutation.mutate(
+      { userId: user?._id, updatedData },
+      {
+        onSuccess: () => {
+          handleSuccess({ success: "User Updated successfully" });
+          onClose();
+        },
+
+        onError: (error) => {
+          setError(error?.message || "Failed to update the user");
+          handleError({
+            errors: error?.message || "Failed to update the user",
+          });
           return;
-        }
-        updatedData.password = formData.password;
+        },
       }
-
-      // Use the mutation by passing both userId and updatedData
-  updateUserMutation.mutate({ userId: user?._id, updatedData });
-    
-    onClose();
+    );
   };
 
   return (
@@ -99,11 +110,13 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="bg-white rounded-lg w-full max-w-md shadow-xl overflow-hidden"
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="p-6 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-800">Edit User Details</h2>
+              <h2 className="text-xl font-semibold text-gray-800">
+                Edit User Details
+              </h2>
               <button
                 onClick={onClose}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -115,7 +128,9 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
             {/* Form */}
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Name
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <User className="h-5 w-5 text-gray-400" />
@@ -132,7 +147,9 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
               </div>
 
               <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Mail className="h-5 w-5 text-gray-400" />
@@ -149,7 +166,9 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
               </div>
 
               <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Lock className="h-5 w-5 text-gray-400" />
@@ -166,7 +185,9 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
               </div>
 
               <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Confirm Password
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <CheckCircle className="h-5 w-5 text-gray-400" />
@@ -183,7 +204,9 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
               </div>
 
               <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Role
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <UserCircle className="h-5 w-5 text-gray-400" />
@@ -194,11 +217,11 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
                     onChange={handleInputChange}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                     {roles.map((roleOption) => (
-                  <option key={roleOption} value={roleOption}>
-                    {roleOption}
-                  </option>
-                ))}
+                    {roles.map((roleOption) => (
+                      <option key={roleOption} value={roleOption}>
+                        {roleOption}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>

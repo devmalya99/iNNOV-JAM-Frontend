@@ -214,10 +214,14 @@ const UserManagement = () => {
             onClick={() => refetch()}
             className="p-2 mx-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
           >
-            <RefreshCw
+            <div  className="flex gap-2 button-style">
+              <span>Get Latest data</span>
+              <RefreshCw
               className={`w-5 h-5 text-gray-500  
             `}
             />
+            </div>
+            
           </button>
         </div>
       </div>
