@@ -10,7 +10,7 @@ import OverviewResultSkeleton from "../OverviewResult/OverviewResultSkeleton";
 import LearnerWiseSkeleton from "../LearnerWiseResult/LearnerWiseSkeleton";
 
 import { FaPenNib } from "react-icons/fa";
-import { ChevronDown, MessageCircle, RefreshCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronDown, MessageCircle, RefreshCcw } from "lucide-react";
 import FeedbackBox from "./FeedbackBox";
 import { FetchAssessmentResultDataByLearner } from "../../../services/Assessor/FetchAssessmentResultDataByLearner";
 const LearnerWise = () => {
@@ -208,9 +208,12 @@ const LearnerWise = () => {
                       </p>
                     </div>
 
-                    <div className=" button-style-rainbow text-white cursor-pointer hover:text-blue-500 font-semibold">
-                      Click here to see details
-                    </div>
+                    <button
+                    onClick={()=>navigate(-1)}
+                    className=" button-style rainbow text-white cursor-pointer hover:text-blue-500 font-semibold">
+                      <ArrowLeft/>
+                      Go back
+                    </button>
                   </div>
 
 
