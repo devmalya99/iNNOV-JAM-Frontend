@@ -134,3 +134,31 @@ body {
         pl-1 rounded;
       }
 }
+
+
+.jodit-workplace {
+  ul {
+    list-style-type: disc; /* Bullet points */
+    margin-left: 1.5rem;
+    padding-left: 1rem;
+  }
+
+  ul li {
+    list-style-type: disc; /* Ensures bullet points for unordered lists */
+  }
+
+  ul li p,
+  ol li p {
+    margin: 0; /* Removes unnecessary space between list items */
+  }
+
+  ol {
+    list-style-type: decimal; /* Uses numbers for ordered lists */
+    margin-left: 1.5rem;
+    padding-left: 1rem;
+  }
+
+  ol li {
+    margin: 0;
+  }
+}
