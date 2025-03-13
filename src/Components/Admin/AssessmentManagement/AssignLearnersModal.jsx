@@ -1,7 +1,7 @@
   import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaTimes, FaUser } from "react-icons/fa";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import axios from "axios";
 
   import { Check, RefreshCcwIcon, Users, X } from "lucide-react";
@@ -74,7 +74,7 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
   }, [assignedLearners, LearnersData.length, setSelectedLearners]);
 
 
-    console.log("assignedLearners",assignedLearners)
+    console.log("LearnersData",LearnersData)
 
 
   
@@ -144,6 +144,8 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
                   <Users size={24} />
                   Assign Learners
                 </h2>
+
+                
   
                 {/* Refresh Button */}
                 {/* <button
@@ -161,6 +163,17 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
                   <X className="w-5 h-5 dark:text-gray-400" />
                 </button>
               </div>
+
+              { LearnersData?.length===0  && (
+                <div className="flex gap-2 my-2 text-gray-200 bg-red-300 p-1 rounded-md">
+                  First create learner to assign them
+                  <Link to="/home/create-users" className="text-blue-600 underline">
+                  Click here to create
+                  </Link>
+                </div>)
+                }
+
+
   
               {/* Select All Checkbox */}
               <div className="mb-4">

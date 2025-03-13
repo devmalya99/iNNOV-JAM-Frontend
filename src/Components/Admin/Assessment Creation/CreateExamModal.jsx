@@ -214,7 +214,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
                 >
                   <Loader2 className="h-12 w-12 text-blue-500 animate-spin" />
                   <h2 className="mt-4 text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Processing Exam Data
+                    Processing assessment Data
                   </h2>
                   <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                     Please wait while we create your assessment...
