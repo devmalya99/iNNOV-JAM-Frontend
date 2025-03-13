@@ -2,27 +2,16 @@ import { useState, useEffect } from "react";
 import { LuClock3 } from "react-icons/lu";
 
 function Heading({ subject, duration }) {
-  // console.log("duration", duration); // Check the value of duration
+  console.log("Received duration:", duration); // Debugging log
 
-  const [currDuration,setDuration] = useState(3600)
+  // Ensure duration is a valid number (fallback to 3600 if invalid)
+  const initialDuration = Number(duration) || 3600;
 
-  useEffect(()=>{
-    if (duration !== undefined) {
-      const parsedDuration = (Number(duration)) ? 3600 : Number(duration) * 60;
-      setDuration(parsedDuration);
-    }
-  },[duration])
+  const [timeLeft, setTimeLeft] = useState(initialDuration);
 
-  // Convert duration to number and fall back to 60 if invalid
- 
-
-  const capitalizeWords = (str) =>
-    str
-      .toLowerCase()
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-
-  const [timeLeft, setTimeLeft] = useState(currDuration);
+  useEffect(() => {
+    setTimeLeft(initialDuration); // Update when duration changes
+  }, [duration]);
 
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -34,7 +23,6 @@ function Heading({ subject, duration }) {
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  // Format time as MM:SS
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60)
       .toString()
@@ -42,6 +30,12 @@ function Heading({ subject, duration }) {
     const secs = (seconds % 60).toString().padStart(2, "0");
     return `${mins}:${secs}`;
   };
+
+  const capitalizeWords = (str) =>
+    str
+      .toLowerCase()
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
 
   return (
     <div className="flex justify-between text-white">

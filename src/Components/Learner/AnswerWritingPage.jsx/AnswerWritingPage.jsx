@@ -25,6 +25,8 @@ function AnswerWritingPage() {
   const [content, setContent] = useState("");
 
   const [answeredQuestions, setAnsweredQuestions] = useState({});
+  const [timeLeft, setTimeLeft] = useState(0);
+
 
   const navigate = useNavigate();
 
@@ -74,6 +76,38 @@ function AnswerWritingPage() {
     refetch();
     // console.log("fetched assessment data", data);
   }, [refetch]);
+
+  // timer sync 
+  useEffect(() => {
+    if (data?.assessmentdata?.duration) {
+      const storedTime = localStorage.getItem("timer");
+  
+      if (storedTime) {
+        setTimeLeft(parseInt(storedTime, 10));
+      } else {
+        const durationInSeconds = data.assessmentdata.duration * 60; // Convert minutes to seconds
+        setTimeLeft(durationInSeconds);
+        localStorage.setItem("timer", durationInSeconds);
+      }
+    }
+  }, [data]);
+  
+  useEffect(() => {
+    
+  
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        const newTime = prevTime - 1;
+        localStorage.setItem("timer", newTime);
+        return newTime;
+      });
+    }, 1000);
+  
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+
+
 
   const saveAnswer = async (user_id, question_id, studentAnswer) => {
     try {
@@ -272,7 +306,7 @@ function AnswerWritingPage() {
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
             <Heading
               subject={data?.assessmentdata?.assessment_type}
-              duration={data?.assessmentdata?.duration}
+              duration={timeLeft} // Passing only the minutes
             />
           </div>
 
