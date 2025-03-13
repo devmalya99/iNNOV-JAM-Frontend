@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { handleSuccess, handleError } from "../../../utils/toast";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Loader2,
@@ -31,19 +31,28 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
     isLoading: isLoadingAiModels,
     refetch: refetchAiModels,
   } = FetchAiModelsApi();
+
   const {
     data: all_fetched_grades,
     isLoading: isLoadingGrades,
     refetch: refetchGrades,
   } = FetchAllGrade();
 
-  // console.log("all_aiiModalCombo", all_aiModalCombo);
-  // console.log("all_fetched_grades", all_fetched_grades);
+  console.log("all_aiiModalCombo", selectedAiModel);
+  console.log("all_fetched_grades", selectedGrade);
+
+  
 
   const navigate = useNavigate();
 
   const createExam = async (assessment) => {
+
     if (!assessment) return;
+
+    if(!selectedAiModel || !selectedGrade){
+      handleError({ errors: "Please select AI model and grade" });
+      return
+    }
 
     setProcessing(true);
     setError(null);
@@ -144,6 +153,14 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
                 </option>
               ))}
             </select>
+
+            {all_aiModalCombo?.data?.length === 0 && (
+    <div className="mt-2">
+      <Link to="/settings/models-selector" className="text-sm p-1 rounded-md bg-green-400 text-gray-600 hover:text-blue-700">
+        Click here to select ai model combination
+      </Link>
+    </div>
+  )}
           </div>
 
 
@@ -163,7 +180,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
   >
     <option value="">
       {all_fetched_grades?.length === 0
-        ? "No grades available, please create one"
+        ? <p>No grades available, please create one</p> 
         : "Select a Grade"}
     </option>
     {all_fetched_grades?.map((grade) => (
@@ -172,6 +189,14 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
       </option>
     ))}
   </select>
+
+  {all_fetched_grades?.length === 0 && (
+    <div className="mt-2">
+      <Link to="/settings/grade-creation" className="text-sm p-1 rounded-md bg-green-400 text-gray-600 hover:text-blue-700">
+        Click here to create a grade
+      </Link>
+    </div>
+  )}
 </div>
 
 
@@ -208,6 +233,7 @@ const CreateExamModal = ({ assessment, setShowCreateAssessmentModal }) => {
                   <p className="text-sm text-red-600 dark:text-red-400">
                     {error}
                   </p>
+                  
                 </motion.div>
               )}
 
