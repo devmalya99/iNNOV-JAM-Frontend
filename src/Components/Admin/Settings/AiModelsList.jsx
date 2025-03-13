@@ -90,7 +90,7 @@ const AiModelsList = () => {
 
 
       <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-        AI Models List
+        Ai Models Management
       </h2>
 
       <div 

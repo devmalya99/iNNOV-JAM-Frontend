@@ -97,7 +97,7 @@ const AiModelSelector = () => {
   return (
     <div>
       <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-6">LLM Model Configuration</h2>
+        <h2 className="text-xl font-semibold mb-6">LLM Model Selector</h2>
 
         {[0, 1].map((index) => (
           <div key={index} className="mb-6">
