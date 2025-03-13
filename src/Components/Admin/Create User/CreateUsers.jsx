@@ -53,10 +53,22 @@ const CreateUsers = () => {
       handleError({errors:"Please fill in all required fields"})
       return;
     }
+
     if (password !== confirmPassword) {
       handleError({errors:"Passwords do not match"});
       return;
     }
+    
+
+    //if the selected role is learner then selecting the course code is required
+    if (role === "learner" && !selectedCourses.length) {
+      handleError({errors:"Learners need to be assigned to at least one course" })
+      return;
+    }
+
+
+
+    
 
     if(password.length<8 || confirmPassword.length<8){
       handleError({errors:"password length should be atleast 8 character long"})
