@@ -106,7 +106,7 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
       }
 
       if(response.ok){
-        handleSuccess({success:"Ai models updated successfully"})
+        handleSuccess({success:"Ai models updated successfully please refresh"})
       }
 
       setError("");
