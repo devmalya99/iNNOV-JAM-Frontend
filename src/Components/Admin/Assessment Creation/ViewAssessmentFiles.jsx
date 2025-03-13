@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios"; // Ensure axios is imported
 // import { Pencil, Trash2, Upload, FileText, Loader2 } from 'lucide-react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useFetchAllAssessmentFiles } from '../../../services/FetchAllAssessmentFilesByCourse';
 
 
-import { Pencil, Trash2, Upload, FileText, Loader2, File } from 'lucide-react';
+import { Pencil, Trash2, Upload, FileText, Loader2, File, ArrowLeft } from 'lucide-react';
 
 import { motion } from 'framer-motion';
 import CreateExamModal from './CreateExamModal';
 
 const ViewAssessmentFiles = () => {
+
+  const [showCreateAssessmentModal, setShowCreateAssessmentModal] = useState(false);
+  const [selectedAssessment, setSelectedAssessment] = useState(null);
+  const [selectedFileId, setSelectedFileId] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);
   const { courseid } = useParams();
   const { data, isLoading, refetch } = useFetchAllAssessmentFiles(courseid);
+   const navigate=useNavigate()
+
+   const VITE_API_URL = import.meta.env.VITE_API_URL
+
+   console.log("assessment file data is",data)
+
    
   useEffect(() => {
       refetch();
       console.log(data)
     }, [refetch]);
   
-  const [showCreateAssessmentModal, setShowCreateAssessmentModal] = useState(false);
-const [selectedAssessment, setSelectedAssessment] = useState(null);
+
 
 
   const container = {
@@ -65,6 +75,9 @@ const [selectedAssessment, setSelectedAssessment] = useState(null);
             <FileText className="h-16 w-16 text-gray-400 dark:text-gray-500" />
             <p className="text-base text-gray-600 dark:text-gray-300">No assessment files available</p>
           </div>
+          <button 
+          onClick={()=>navigate(-1)}
+          className='button-style my-2'> <ArrowLeft/>  Go back</button>
         </div>
       </motion.div>
     );
@@ -88,20 +101,31 @@ const handleCreateAssessment = (assessment) => {
 };
 
 
-  const handleEdit = (assessment) => {
-    // console.log('Edit:', assessment);
-  };
+const handleDeleteClick = (id) => {
+  setSelectedFileId(id);
+  setShowConfirm(true);
+};
 
-  const handleDelete = (id) => {
-    // console.log('Delete:', id);
-  };
-
-  const handleReupload = (assessment) => {
-    // console.log('Reupload:', assessment);
-  };
+const confirmDelete = async () => {
+  if (!selectedFileId) return;
+  try {
+    await axios.delete(`${VITE_API_URL}/api/files/remove/${selectedFileId}`);
+    refetch(); // Refresh list after deletion
+  } catch (error) {
+    console.error("Error deleting file:", error);
+  } finally {
+    setShowConfirm(false);
+    setSelectedFileId(null);
+  }
+};
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-h-[calc(100vh-80px)] overflow-y-auto bg-gray-250 dark:bg-gray-900">
+
+        <button 
+        className='button-style my-2' 
+        onClick={()=>navigate(-1)}> <ArrowLeft/>  Go back</button>
+
 
       {/* Show create assessment modal */}
       {
@@ -164,53 +188,42 @@ const handleCreateAssessment = (assessment) => {
                 </motion.button>
 
 
-                {/* <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleEdit(assessment)}
-                  className="p-2 text-gray-600 hover:text-indigo-600 dark:text-gray-400 
-                           dark:hover:text-indigo-400 rounded-lg hover:bg-indigo-50 
-                           dark:hover:bg-indigo-900/30 transition-colors"
-                  title="Edit"
-                >
-                  <Pencil className="h-4 w-4" />
-                </motion.button>
-
-
-                
-                
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => handleDelete(assessment._id)}
+                  onClick={() => handleDeleteClick(assessment._id)}
                   className="p-2 text-gray-600 hover:text-red-600 dark:text-gray-400 
                            dark:hover:text-red-400 rounded-lg hover:bg-red-50 
                            dark:hover:bg-red-900/30 transition-colors"
                   title="Delete"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-4 w-4 text-red-400" />
                 </motion.button>
-                
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleReupload(assessment)}
-                  className="p-2 text-gray-600 hover:text-emerald-600 dark:text-gray-400 
-                           dark:hover:text-emerald-400 rounded-lg hover:bg-emerald-50 
-                           dark:hover:bg-emerald-900/30 transition-colors"
-                  title="Reupload"
-                >
-                  <Upload className="h-4 w-4" />
-                </motion.button> */}
-
-
 
               </div>
             </div>
             
           </motion.div>
         ))}
+
+
       </motion.div>
+
+
+
+      {showConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <p className="text-lg">Are you sure you want to delete this file?</p>
+            <div className="flex justify-end gap-4 mt-4">
+              <button className="px-4 py-2 bg-gray-300 rounded" onClick={() => setShowConfirm(false)}>Cancel</button>
+              <button className="px-4 py-2 bg-red-600 text-white rounded" onClick={confirmDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+     
     </div>
   );
 };
