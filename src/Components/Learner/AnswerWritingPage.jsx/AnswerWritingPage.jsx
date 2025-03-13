@@ -364,8 +364,6 @@ function AnswerWritingPage() {
                     [data?.assessmentdata?.questions?.[activeQuestion]?._id]:
                       textContent.length > 0,
                   }));
-
-
                 }}
               />
             </div>
