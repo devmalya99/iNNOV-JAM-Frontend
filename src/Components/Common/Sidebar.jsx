@@ -120,7 +120,7 @@ const Sidebar = () => {
       name: "Assigned Courses",
       icon: <BookAIcon className="text-2xl text-green-600" />,
       link: "/home/assessment/view-all-assigned-courses",
-      roles: ["assessor","super_admin","admin"],
+      roles: ["assessor","admin"],
     },
     {
       name: "Settings",

@@ -16,6 +16,19 @@ const ConfirmModal = () => {
   const [loading, setLoading] = useState(false);
   const [redirectCountdown, setRedirectCountdown] = useState(5);
 
+  const storedTime = JSON.parse(localStorage.getItem("timer"));
+  console.log("Stored time:", storedTime);
+
+    // Automatically confirm submission if storedTime is 1
+    useEffect(() => {
+      if (storedTime === 1) {
+        handleConfirmSubmission(id);
+        localStorage.removeItem("timer")
+      }
+    }, [storedTime, id]);
+
+
+
   useEffect(() => {
     if (submissionStatus) {
       const countdownInterval = setInterval(() => {

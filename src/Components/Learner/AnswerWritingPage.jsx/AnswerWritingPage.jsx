@@ -74,47 +74,52 @@ function AnswerWritingPage() {
 
   useEffect(() => {
     refetch();
-    // console.log("fetched assessment data", data);
+     console.log("fetched assessment data", data);
   }, [refetch]);
 
-  // timer sync 
+  // In AnswerWritingPage
   useEffect(() => {
     if (data?.assessmentdata?.duration) {
-      const storedTime = localStorage.getItem("timer");
+      const storedTime = JSON.parse(localStorage.getItem("timer"));
   
-      if (storedTime) {
+      // Ensure storedTime is valid
+      if (storedTime && !isNaN(storedTime)) {
         setTimeLeft(parseInt(storedTime, 10));
       } else {
-        const durationInSeconds = data.assessmentdata.duration * 60; // Convert minutes to seconds
-        setTimeLeft(durationInSeconds);
-        localStorage.setItem("timer", durationInSeconds);
+        const durationInSeconds = Number(data.assessmentdata.duration) * 60; // Ensure conversion
+        if (!isNaN(durationInSeconds) && durationInSeconds > 0) {
+          setTimeLeft(durationInSeconds);
+          localStorage.setItem("timer", JSON.stringify(durationInSeconds)); // Store as JSON string
+        } else {
+          console.error("Invalid duration value:", data.assessmentdata.duration);
+        }
       }
     }
   }, [data]);
   
+  
+
   useEffect(() => {
-    
+    if (timeLeft === undefined || isNaN(timeLeft) || timeLeft <= 0) return;
   
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+
+          clearInterval(timer);
+          handleSubmit(data?.assigned?._id)
+          return 0;
+        }
         const newTime = prevTime - 1;
-        localStorage.setItem("timer", newTime);
+        localStorage.setItem("timer", JSON.stringify(newTime)); // Store as JSON string
         return newTime;
       });
     }, 1000);
   
     return () => clearInterval(timer);
-  }, [timeLeft]);
-
-  // useEffect(() => {
-  //   if (timeLeft === 0) {
-  //     localStorage.removeItem("timer");
-  //     handleSubmit(data?.assigned?._id);
-  //   }
-  // }, [timeLeft, data]);
+  }, [timeLeft]); // Ensure timeLeft is a valid number
   
-
-
+  
 
 
   const saveAnswer = async (user_id, question_id, studentAnswer) => {
@@ -160,6 +165,8 @@ function AnswerWritingPage() {
       console.error("Error fetching latest answer:", error);
     }
   };
+
+
 
   const saveAndUpdateData = (question_id) => {
     setContent((prevContent) => {
@@ -320,10 +327,13 @@ function AnswerWritingPage() {
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full">
           {/* Header */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-            <Heading
-              subject={data?.assessmentdata?.assessment_type}
-              duration={timeLeft} // Passing only the minutes
-            />
+          <Heading
+  subject={data?.assessmentdata?.assessment_type}
+  duration={Number(timeLeft)}
+  timeLeft={timeLeft}
+  setTimeLeft={setTimeLeft}
+/>
+
           </div>
 
           <div className="p-4 flex-grow flex flex-col space-y-4">

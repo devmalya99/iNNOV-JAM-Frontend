@@ -3,6 +3,7 @@ import { useAuth } from '../../Context/AuthContext';
 import { Hash, Mail, Shield, User, Sparkles } from 'lucide-react';
 import SkeletonPage from './SkeletonPage';
 import { motion } from 'framer-motion';
+import HowItWorks from './HowItWorks';
 
 const Welcome = () => {
   const { user, logout } = useAuth();
@@ -35,12 +36,21 @@ const Welcome = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-80px)] w-full flex items-center justify-center p-4 sm:p-6 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <motion.div 
+    <div className="h-[calc(100vh-80px)] 
+    overflow-y-auto
+    w-full flex 
+    flex-col
+    items-center justify-center p-4 sm:p-6 md:p-8 
+    bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      {/* <motion.div 
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-2xl w-full mx-auto backdrop-blur-lg border border-gray-200 dark:border-gray-700"
+        className="bg-white dark:bg-gray-800 
+        rounded-2xl shadow-2xl p-6 sm:p-8 
+        max-w-2xl w-full mx-auto 
+        backdrop-blur-lg border 
+        border-gray-200 dark:border-gray-700"
       >
         <motion.div 
           className="text-center mb-8"
@@ -87,6 +97,9 @@ const Welcome = () => {
                   </p>
                 </div>
               </div>
+
+             
+
             </motion.div>
           ))}
         </div>
@@ -96,11 +109,15 @@ const Welcome = () => {
           className="text-center space-y-2 text-sm sm:text-base text-gray-600 dark:text-gray-400 
                      bg-gray-50 dark:bg-gray-700/50 p-4 sm:p-6 rounded-xl"
         >
-          <p className="font-medium">You have full access to the assessment portal.</p>
-          <p>Start managing learner assessments and providing feedback.</p>
+         
+       
         </motion.div>
 
-      </motion.div>
+       
+
+      </motion.div> */}
+
+      <HowItWorks/>
     </div>
   );
 };

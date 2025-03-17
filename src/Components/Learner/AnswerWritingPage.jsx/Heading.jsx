@@ -1,30 +1,16 @@
 import { useState, useEffect } from "react";
 import { LuClock3 } from "react-icons/lu";
 
-function Heading({ subject, duration }) {
+function Heading({ subject, duration,timeLeft, setTimeLeft}) {
 
 
-  console.log("Received duration:", duration); // Debugging log
+  console.log("Received duration, and time left is ", duration,timeLeft); // Debugging log
 
-  // Ensure duration is a valid number (fallback to 3600 if invalid)
-  const initialDuration = Number(duration) ;
+ 
 
-  const [timeLeft, setTimeLeft] = useState(initialDuration);
+ 
 
-  useEffect(() => {
-    setTimeLeft(initialDuration); // Update when duration changes
-  }, [duration]);
-
-  useEffect(() => {
-    if (timeLeft <= 0) return;
-
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeLeft]);
-
+ 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60)
       .toString()
