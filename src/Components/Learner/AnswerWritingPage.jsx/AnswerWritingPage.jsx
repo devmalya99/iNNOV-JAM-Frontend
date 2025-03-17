@@ -166,16 +166,7 @@ function AnswerWritingPage() {
     });
   };
 
-  // Check if the current question is the last question
-  const answerCountTracker = () => {
-    const answeredQuestions = data?.assessmentdata?.questions?.filter(
-      (q) => q.status !== 0 // Filter answered questions
-    );
-    return answeredQuestions?.length;
-  };
-
-  const latestAnswerCount = answerCountTracker();
-  // console.log("Answered count", latestAnswerCount);
+ 
 
   // Check if the current question is the last question
   const checkIfLastQuestion = () => {
@@ -199,6 +190,23 @@ function AnswerWritingPage() {
 
   const isLastQuestion = checkIfLastQuestion();
   console.log("Is this the last question?", isLastQuestion);
+
+
+   // Check if the current question is the last question
+   const answerCountTracker = () => {
+    const answeredQuestions = data?.assessmentdata?.questions?.filter(
+      (q) => q.status !== 0 // Filter answered questions
+    );
+
+    if (isLastQuestion && getPlainText(content)?.length > 0) {
+      return data?.assessmentdata?.questions?.length;
+    }
+
+    return answeredQuestions?.length;
+  };
+
+  const latestAnswerCount = answerCountTracker();
+  // console.log("Answered count", latestAnswerCount);
 
   const handlePrevious = () => {
     saveAndUpdateData(data?.assessmentdata?.questions?.[activeQuestion]?._id);
@@ -422,6 +430,7 @@ function AnswerWritingPage() {
           <span className="text-green-600 bg-green-200 rounded-lg py-1 px-1">Answered: {latestAnswerCount}</span>
           <span className="text-red-600  bg-red-200 rounded-lg py-1 px-1">
             Not Answered:{" "}
+           
             {data?.assessmentdata?.questions?.length - latestAnswerCount}
           </span>
         </div>
@@ -454,7 +463,9 @@ function AnswerWritingPage() {
         </div>
 
         {/* Only show Save & Submit when all questions are answered */}
-        {((isLastQuestion && getPlainText(content)?.length > 0) ||
+        {(
+          // (isLastQuestion && getPlainText(content)?.length > 0) ||
+
           latestAnswerCount === data?.assessmentdata?.questions?.length) && (
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <button
