@@ -25,7 +25,7 @@ function AnswerWritingPage() {
   const [content, setContent] = useState("");
 
   const [answeredQuestions, setAnsweredQuestions] = useState({});
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = useState();
 
 
   const navigate = useNavigate();
@@ -105,6 +105,14 @@ function AnswerWritingPage() {
   
     return () => clearInterval(timer);
   }, [timeLeft]);
+
+  // useEffect(() => {
+  //   if (timeLeft === 0) {
+  //     localStorage.removeItem("timer");
+  //     handleSubmit(data?.assigned?._id);
+  //   }
+  // }, [timeLeft, data]);
+  
 
 
 

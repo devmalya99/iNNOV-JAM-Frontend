@@ -78,7 +78,10 @@ const ViewCourseResultDetailed = () => {
               {assessmentResult?.assessment?.assessment_name} Results
             </h2>
 
-            <div className="flex space-x-4">
+
+            {/* Archieve section */}
+
+              {/* <div className="flex space-x-4">
               <button className="button-style">View Previous Submissions</button>
 
               <button
@@ -87,8 +90,11 @@ const ViewCourseResultDetailed = () => {
               >
                 <RefreshCcw />
                 <p>Refetch</p>
-              </button>
-            </div>
+              </button> 
+            </div>   */}
+            
+
+
           </div>
 
           {/* Table */}
@@ -135,14 +141,14 @@ const ViewCourseResultDetailed = () => {
             </table>
 
             {/* Back button */}
-            <div className="flex bg-blue-500 w-[100px] px-4 py-2 rounded-xl">
+            <div className="flex bg-blue-500 w-[100px] px-4 py-2 rounded-xl my-6">
               <ArrowBigLeftIcon className="text-xl" />
               <button onClick={() => navigate(-1)}>Back</button>
             </div>
 
             {/* Empty State */}
             {(!assessmentResult?.result || assessmentResult.result.length === 0) && (
-              <div className="text-center py-12">
+              <div className="text-center py-6">
                 <p className="text-gray-500  dark:text-gray-400">No results found</p>
               </div>
             )}

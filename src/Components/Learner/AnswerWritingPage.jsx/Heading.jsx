@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { LuClock3 } from "react-icons/lu";
 
 function Heading({ subject, duration }) {
+
+
   console.log("Received duration:", duration); // Debugging log
 
   // Ensure duration is a valid number (fallback to 3600 if invalid)
-  const initialDuration = Number(duration) || 3600;
+  const initialDuration = Number(duration) ;
 
   const [timeLeft, setTimeLeft] = useState(initialDuration);
 
