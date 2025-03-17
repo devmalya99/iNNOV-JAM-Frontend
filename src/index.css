@@ -162,3 +162,77 @@ body {
     margin: 0;
   }
 }
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_font.jodit-ui-group_before-spacer_true.jodit-ui-group_size_middle {
+  display: none;
+}
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_insert.jodit-ui-group_size_middle {
+  display: none;
+}
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_color.jodit-ui-group_before-spacer_true.jodit-ui-group_size_middle {
+  display: none;
+}
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_indent.jodit-ui-group_size_middle {
+  display: none;
+}
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_media.jodit-ui-group_size_middle {
+  display: none;
+}
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_search.jodit-ui-group_size_middle {
+  display: none;
+}
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_other.jodit-ui-group_size_middle {
+  display: none;
+}
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_script.jodit-ui-group_size_middle {
+  display: none;
+}
+
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_clipboard.jodit-ui-group_size_middle {
+  display: none;
+}
+
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_info.jodit-ui-group_size_middle {
+  display: none;
+}
+
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_source.jodit-ui-group_size_middle {
+  display: none;
+}
+
+.jodit-ui-group.jodit-ui-group_separated_true.jodit-ui-group_group_state.jodit-ui-group_size_middle {
+  display: none;
+}
+
+.jodit-toolbar-button.jodit-toolbar-button_size_middle.jodit-toolbar-button_variant_initial.jodit-toolbar-button_strikethrough.jodit-ui-group__strikethrough {
+  display: none;
+}
+
+.jodit-ui-spacer{
+  display: none;
+}
+
+.jodit-status-bar {
+  display: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
