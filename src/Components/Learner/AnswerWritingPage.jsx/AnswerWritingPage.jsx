@@ -25,6 +25,7 @@ function AnswerWritingPage() {
   const [content, setContent] = useState("");
 
   const [answeredQuestions, setAnsweredQuestions] = useState({});
+  const [isFetchingAnswers, setIsFetchingAnswers] = useState(false);
   const [timeLeft, setTimeLeft] = useState();
 
 
@@ -148,6 +149,7 @@ function AnswerWritingPage() {
 
   const fetchLatestAnswer = async (user_id, question_id) => {
     try {
+      setIsFetchingAnswers(true);
       const response = await axios.get(
         `${VITE_API_URL}/api/student-answers/getanswerbyquestion`,
         {
@@ -158,8 +160,10 @@ function AnswerWritingPage() {
       if (response.data && response.data.student_answer) {
         setContent(response.data.student_answer);
         // console.log("fetched latest answer", response.data.student_answer);
+        setIsFetchingAnswers(false);
       } else {
         setContent(""); // Reset if no answer is found
+        setIsFetchingAnswers(false);
       }
     } catch (error) {
       console.error("Error fetching latest answer:", error);
@@ -391,6 +395,7 @@ function AnswerWritingPage() {
                       textContent.length > 0,
                   }));
                 }}
+                
               />
             </div>
 
@@ -412,6 +417,12 @@ function AnswerWritingPage() {
                 <FaArrowLeft /> <span>Previous !</span>
               </button>
 
+              {
+                isFetchingAnswers ? (
+                  <FaSpinner className="animate-spin text-red-500" />
+                ):(null)
+              }
+              
               <button
                 onClick={() =>
                   handleNext(
@@ -427,7 +438,7 @@ function AnswerWritingPage() {
                   activeQuestion + 1 === data?.assessmentdata?.questions?.length
                 }
               >
-                <span>Save & Next !</span> <FaArrowRight />
+                <span> Next </span> <FaArrowRight />
               </button>
             </div>
 
