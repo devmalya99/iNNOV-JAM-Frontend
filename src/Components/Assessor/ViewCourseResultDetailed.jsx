@@ -1,15 +1,47 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { ArrowBigLeftIcon, Loader2, RefreshCcw } from "lucide-react";
-import { BsBack } from "react-icons/bs";
 import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/toast";
 import { useQueryClient } from "react-query";
 import { FetchAssessmentResultInDetails } from "../../services/Assessor/FetchAssessmentResultInDetails";
 
+// Confirmation Modal Component
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, studentName }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Confirm Resubmit</h3>
+        <p className="text-gray-600 dark:text-gray-300 mb-6">
+          Are you sure you want to ask <span className="font-semibold">{studentName}</span> to resubmit this assessment?
+        </p>
+        <div className="flex justify-end space-x-4">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ViewCourseResultDetailed = () => {
   const VITE_API_URL = import.meta.env.VITE_API_URL;
   const { courseId, assessmentId } = useParams();
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
   
   const {
     data: assessmentResult,
@@ -17,19 +49,14 @@ const ViewCourseResultDetailed = () => {
     refetch,
   } = FetchAssessmentResultInDetails(assessmentId);
 
-  const queryClient = useQueryClient();  // Access query client
-
-  // console.log("assessment result fetched", assessmentResult);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    // Invalidate the query to refetch data after resubmit
     queryClient.invalidateQueries("all_assessments_result_details");
-
-    // Manually remove the cache for the query to ensure it doesn't persist.
     queryClient.removeQueries("all_assessments_result_details");
-
-    refetch()
-  }, [queryClient, assessmentId,refetch]);
+    refetch();
+  }, [queryClient, assessmentId, refetch]);
+  
   const navigate = useNavigate();
 
   if (isLoading) {
@@ -43,28 +70,35 @@ const ViewCourseResultDetailed = () => {
     );
   }
 
-  const handleResubmit = async (userId) => {
+  // Open modal with selected student
+  const openResubmitModal = (userId, studentName) => {
+    setSelectedStudent({ userId, name: studentName });
+    setModalOpen(true);
+  };
+
+  // Handle the actual resubmit after confirmation
+  const handleResubmit = async () => {
+    if (!selectedStudent) return;
+    
     try {
       const resubmitResponse = await axios.put(
         `${VITE_API_URL}/api/assigned-assessments/reassignassessment`,
         {
-          userId: userId,
+          userId: selectedStudent.userId,
           assessmentId: assessmentResult?.assessment?._id,
         }
       );
-      // Invalidate the query to refetch data after resubmit
+      
       queryClient.invalidateQueries("all_assessments_result_details");
-
-      // Manually remove the cache for the query to ensure it doesn't persist.
-    queryClient.removeQueries("all_assessments_result_details");
-    
-      refetch();  // Force a refetch after invalidating
-      alert("Resubmitted successfully! Please refresh.");
+      queryClient.removeQueries("all_assessments_result_details");
+      
+      refetch();
       handleSuccess({ success: "Resubmitted successfully!" });
-
-      // console.log(resubmitResponse);
+      setModalOpen(false);
     } catch (error) {
       console.log(error);
+      handleError({ error: "Failed to resubmit assessment" });
+      setModalOpen(false);
     }
   };
 
@@ -77,24 +111,6 @@ const ViewCourseResultDetailed = () => {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               {assessmentResult?.assessment?.assessment_name} Results
             </h2>
-
-
-            {/* Archieve section */}
-
-              {/* <div className="flex space-x-4">
-              <button className="button-style">View Previous Submissions</button>
-
-              <button
-                className="bg-gray-300 hover:bg-gray-400 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-md flex items-center space-x-2"
-                onClick={() => refetch()}
-              >
-                <RefreshCcw />
-                <p>Refetch</p>
-              </button> 
-            </div>   */}
-            
-
-
           </div>
 
           {/* Table */}
@@ -123,7 +139,10 @@ const ViewCourseResultDetailed = () => {
                       </span>
                     </td>
                     <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">
-                      <button className="button-style" onClick={() => handleResubmit(student?.user_id)}>
+                      <button 
+                        className="button-style" 
+                        onClick={() => openResubmitModal(student?.user_id, student.student_name)}
+                      >
                         Resubmit
                       </button>
                     </td>
@@ -149,12 +168,20 @@ const ViewCourseResultDetailed = () => {
             {/* Empty State */}
             {(!assessmentResult?.result || assessmentResult.result.length === 0) && (
               <div className="text-center py-6">
-                <p className="text-gray-500  dark:text-gray-400">No results found</p>
+                <p className="text-gray-500 dark:text-gray-400">No results found</p>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal 
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={handleResubmit}
+        studentName={selectedStudent?.name}
+      />
     </div>
   );
 };

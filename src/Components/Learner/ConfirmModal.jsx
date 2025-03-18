@@ -60,6 +60,10 @@ const ConfirmModal = () => {
 
       // console.log("Response received:", response);
       setSubmissionStatus("Assessment submitted successfully! Redirecting in 5 seconds...");
+      
+      //remove local storage timer
+      localStorage.removeItem("timer")
+   
     } catch (error) {
       console.error("Error updating assessment status:", error);
       setSubmissionStatus("Error submitting assessment. Please try again.");
