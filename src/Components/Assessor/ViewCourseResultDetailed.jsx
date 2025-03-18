@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { ArrowBigLeftIcon, Loader2, RefreshCcw } from "lucide-react";
+import { Archive, ArrowBigLeftIcon, Loader2, RefreshCcw } from "lucide-react";
 import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/toast";
 import { useQueryClient } from "react-query";
 import { FetchAssessmentResultInDetails } from "../../services/Assessor/FetchAssessmentResultInDetails";
+import { useAuth } from "../../../Context/AuthContext";
 
 // Confirmation Modal Component
 const ConfirmationModal = ({ isOpen, onClose, onConfirm, studentName }) => {
@@ -56,19 +57,16 @@ const ViewCourseResultDetailed = () => {
     queryClient.removeQueries("all_assessments_result_details");
     refetch();
   }, [queryClient, assessmentId, refetch]);
+
+  
   
   const navigate = useNavigate();
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="flex flex-col items-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
-          <p className="text-gray-600 dark:text-gray-400">Loading results...</p>
-        </div>
-      </div>
-    );
-  }
+  const goToArchieve = () => {
+    navigate(`/home/assessment/view-detailed-course-result/archive/${assessmentId}`);
+  };
+
+  
 
   // Open modal with selected student
   const openResubmitModal = (userId, studentName) => {
@@ -111,6 +109,14 @@ const ViewCourseResultDetailed = () => {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               {assessmentResult?.assessment?.assessment_name} Results
             </h2>
+
+            <button
+              onClick={() => goToArchieve()}
+              className="px-4 flex  gap-2 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+            >
+              Archieve
+              <Archive/>
+            </button>
           </div>
 
           {/* Table */}
@@ -158,6 +164,18 @@ const ViewCourseResultDetailed = () => {
                 ))}
               </tbody>
             </table>
+
+            { 
+              isLoading && (
+
+                <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="flex flex-col items-center space-y-4">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
+          <p className="text-gray-600 dark:text-gray-400">Loading results...</p>
+        </div>
+                 </div>
+              )
+            }
 
             {/* Back button */}
             <div className="flex bg-blue-500 w-[100px] px-4 py-2 rounded-xl my-6">

@@ -46,6 +46,9 @@ import ViewScore from './Components/Assessor/ViewScore'
 import AiModelsList from './Components/Admin/Settings/AiModelsList'
 import { Toaster } from 'react-hot-toast'
 
+import ArchivedLearnersListComponent from './Components/Assessor/archive/ArchivedLearnersListComponent'
+import ArchiveResultDetailsPage from './Components/Assessor/archive/ArchiveResultDetailsPage'
+
 
 function App() {
 
@@ -112,6 +115,12 @@ function App() {
         <Route path='view-learner-result/:assessmentId/:userId' element={<LearnerWise/>}/>
 
         <Route path='view-learner-aiScore/:questionId/:userId' element={<ViewScore/>}/>
+        <Route path='view-detailed-course-result/archive/:assessmentId' element={<ArchivedLearnersListComponent/>}/>
+        <Route
+  path="view-detailed-learner-result/archive/:assessmentId/:userId"
+  element={<ArchiveResultDetailsPage />}
+/>
+
         </Route>
 
 
