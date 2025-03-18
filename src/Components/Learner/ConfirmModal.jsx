@@ -16,16 +16,8 @@ const ConfirmModal = () => {
   const [loading, setLoading] = useState(false);
   const [redirectCountdown, setRedirectCountdown] = useState(5);
 
-  const storedTime = JSON.parse(localStorage.getItem("timer"));
-  console.log("Stored time:", storedTime);
-
-    // Automatically confirm submission if storedTime is 1
-    useEffect(() => {
-      if (storedTime === 1) {
-        handleConfirmSubmission(id);
-        localStorage.removeItem("timer")
-      }
-    }, [storedTime, id]);
+  
+  
 
 
 
@@ -45,8 +37,24 @@ const ConfirmModal = () => {
     }
   }, [submissionStatus, navigate]);
 
+
+ 
+
+  useEffect(() => {
+    const storedTime = JSON.parse(localStorage.getItem("timer"));
+    console.log("Stored time:", storedTime);
+    
+    if (storedTime === 1) {
+      handleConfirmSubmission(id);
+      localStorage.removeItem("timer");
+    }
+  }, [id]); 
+  
+
   const handleConfirmSubmission = async (id) => {
     setLoading(true);
+    //remove local storage timer
+    localStorage.removeItem("timer")
     try {
       const response = await axios.put(
         `${VITE_API_URL}/api/assigned-assessments/update-assessment/${id}`,
@@ -61,12 +69,12 @@ const ConfirmModal = () => {
       // console.log("Response received:", response);
       setSubmissionStatus("Assessment submitted successfully! Redirecting in 5 seconds...");
       
-      //remove local storage timer
-      localStorage.removeItem("timer")
+      
    
     } catch (error) {
       console.error("Error updating assessment status:", error);
       setSubmissionStatus("Error submitting assessment. Please try again.");
+
     } finally {
       setLoading(false);
     }

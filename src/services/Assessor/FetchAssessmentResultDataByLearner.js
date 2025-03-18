@@ -19,10 +19,11 @@ const fetchAssessmentResultData = async (assessmentId,userId) => {
 // Custom hook to use React Query for fetching files
 export const FetchAssessmentResultDataByLearner = (assessmentId,userId) => {
     return useQuery({
-        queryKey: ["fetch_assessmentResultData"],  // Query key
+        queryKey: ["fetch_assessmentResultData",assessmentId,userId],  // Query key
         queryFn:() => fetchAssessmentResultData(assessmentId,userId),  // Fetch function
         //refetchInterval: 5000,         // Automatically fetch every 5 seconds
-        refetchOnWindowFocus: true,    // Refetch when the window gains focus
+        refetchOnWindowFocus: false,    // Refetch when the window gains focus
+        staleTime: 1000 * 60 * 5, // Cache for 5 minutes
         retry: 1,                      // Retry failed requests once
         onError: (error) => {
           console.error("Error fetching assessment data:", error.message);

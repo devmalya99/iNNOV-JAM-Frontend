@@ -13,8 +13,9 @@ import { FaPenNib } from "react-icons/fa";
 import { ArrowLeft, ArrowRight, ChevronDown, MessageCircle, RefreshCcw } from "lucide-react";
 import FeedbackBox from "./FeedbackBox";
 import { FetchAssessmentResultDataByLearner } from "../../../services/Assessor/FetchAssessmentResultDataByLearner";
+import useAssessmentReviewStore from "../../../store/useAssessmentReviewStore";
 const LearnerWise = () => {
-  const [activeNumber, setActiveNumber] = useState(0);
+  const {activeNumber,setActiveNumber}=useAssessmentReviewStore();
   const [openScoreModal, setOpenScoreModal] = useState(false);
   const [openCaseStudy, setOpenCaseStudy] = useState(false);
 
@@ -37,10 +38,10 @@ const LearnerWise = () => {
 
   // console.log("fetched assessment result data by learner is", data)
 
-  // use refetch on screen load
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+  // // use refetch on screen load
+  // useEffect(() => {
+  //   refetch();
+  // }, [refetch]);
 
   const findFirstNotCompetent = (studentResponses) => {
     return studentResponses?.findIndex(
@@ -48,11 +49,14 @@ const LearnerWise = () => {
     );
   };
 
-  useEffect(() => {
-    const firstNotCompetent = findFirstNotCompetent(data?.studentResponses);
-    setActiveNumber(firstNotCompetent);
-    // console.log("firstNotCompetent", firstNotCompetent);
-  }, [data]);
+  // useEffect(() => {
+  //   if(data){
+  //     const firstNotCompetent = findFirstNotCompetent(data?.studentResponses);
+  //   setActiveNumber(firstNotCompetent);
+  //   // console.log("firstNotCompetent", firstNotCompetent);
+  //   }
+    
+  // }, []);
 
   function handleOpenDetails() {
     setOpenScoreModal(true);
@@ -81,10 +85,10 @@ const LearnerWise = () => {
               } `}
             </h2>
 
-            <button className="button-style" onClick={() => refetch()}>
+            {/* <button className="button-style" onClick={() => refetch()}>
               <RefreshCcw />
               
-            </button>
+            </button> */}
           </div>
 
           <div>
