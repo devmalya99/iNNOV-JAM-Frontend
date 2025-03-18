@@ -116,10 +116,11 @@ function App() {
 
         <Route path='view-learner-aiScore/:questionId/:userId' element={<ViewScore/>}/>
         <Route path='view-detailed-course-result/archive/:assessmentId' element={<ArchivedLearnersListComponent/>}/>
+        
         <Route
-  path="view-detailed-learner-result/archive/:assessmentId/:userId"
-  element={<ArchiveResultDetailsPage />}
-/>
+         path="view-detailed-learner-result/archive/:assessmentId/:userId"
+         element={<ArchiveResultDetailsPage />}
+         />
 
         </Route>
 

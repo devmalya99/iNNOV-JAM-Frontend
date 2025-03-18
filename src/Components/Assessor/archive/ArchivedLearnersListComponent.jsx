@@ -51,6 +51,12 @@ import { useNavigate, useParams } from "react-router";
                 {assessment?.assessment_name || "Assessment"} ({assessment?.assessment_type?.replace('_', ' ')?.toUpperCase() || "Assessment"})
               </p>
             </div>
+
+            <button 
+        onClick={() => window.history.back()}
+        className='button-style'>
+            Back
+        </button>
             
             <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
               <div className="relative w-full sm:w-64">
@@ -137,6 +143,7 @@ import { useNavigate, useParams } from "react-router";
                 ))}
               </tbody>
             </table>
+            
           ) : (
             <p className="text-center text-gray-500 dark:text-gray-400">No archived learners found.</p>
           )}

@@ -26,8 +26,7 @@ const ArchiveResultDetailsPage = () => {
   // Get status badge based on status code
   const getStatusBadge = (status) => {
     switch (status) {
-      case 0:
-        return <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Pending</span>;
+      
       case 1:
         return <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Completed</span>;
       case 2:
@@ -59,6 +58,17 @@ const ArchiveResultDetailsPage = () => {
           Archived Responses
         </h1>
         <span className="text-sm text-gray-500">{data.data.length} result{data.data.length !== 1 ? 's' : ''} found</span>
+      
+        <div className="flex items-center space-x-2 mb-2">
+                  {data.status}
+                 
+        </div>
+
+        <button 
+        onClick={() => window.history.back()}
+        className='button-style'>
+            Back
+        </button>
       </div>
 
       <div className="grid grid-cols-1 gap-6">
@@ -69,10 +79,7 @@ const ArchiveResultDetailsPage = () => {
               onClick={() => toggleExpand(item._id)}
             >
               <div className="flex-1">
-                <div className="flex items-center space-x-2 mb-2">
-                  {getStatusBadge(item.status)}
-                  <span className="text-sm text-gray-500">ID: {item._id.substring(0, 8)}...</span>
-                </div>
+                
                 <div className="text-sm font-medium text-gray-900 line-clamp-1 mb-1">
                   {item.student_answer || "No answer provided"}
                 </div>
@@ -153,14 +160,15 @@ const ArchiveResultDetailsPage = () => {
                   </div>
                 </div>
                 
-                <div className="mt-4 pt-4 border-t border-gray-200 flex justify-end space-x-2">
+                {/* action buttons */}
+                {/* <div className="mt-4 pt-4 border-t border-gray-200 flex justify-end space-x-2">
                   <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Export
                   </button>
                   <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Print
                   </button>
-                </div>
+                </div> */}
               </div>
             )}
           </div>

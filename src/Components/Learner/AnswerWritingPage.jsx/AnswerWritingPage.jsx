@@ -28,14 +28,12 @@ function AnswerWritingPage() {
   const [isFetchingAnswers, setIsFetchingAnswers] = useState(false);
   const [timeLeft, setTimeLeft] = useState();
 
-
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
   const user_id = user?.id;
 
   const { assessmentId } = useParams();
-  
 
   // On screen Load make it full screen
   useEffect(() => {
@@ -61,7 +59,7 @@ function AnswerWritingPage() {
   const getPlainText = (html) => {
     console.log("html content", html);
     const doc = new DOMParser().parseFromString(html, "text/html");
-    console.log("parsed content",doc.body.textContent )
+    console.log("parsed content", doc.body.textContent);
     return doc.body.textContent || "";
   };
 
@@ -75,14 +73,14 @@ function AnswerWritingPage() {
 
   useEffect(() => {
     refetch();
-     console.log("fetched assessment data", data);
+    console.log("fetched assessment data", data);
   }, [refetch]);
 
   // In AnswerWritingPage
   useEffect(() => {
     if (data?.assessmentdata?.duration) {
       const storedTime = JSON.parse(localStorage.getItem("timer"));
-  
+
       // Ensure storedTime is valid
       if (storedTime && !isNaN(storedTime)) {
         setTimeLeft(parseInt(storedTime, 10));
@@ -92,23 +90,23 @@ function AnswerWritingPage() {
           setTimeLeft(durationInSeconds);
           localStorage.setItem("timer", JSON.stringify(durationInSeconds)); // Store as JSON string
         } else {
-          console.error("Invalid duration value:", data.assessmentdata.duration);
+          console.error(
+            "Invalid duration value:",
+            data.assessmentdata.duration
+          );
         }
       }
     }
   }, [data]);
-  
-  
 
   useEffect(() => {
     if (timeLeft === undefined || isNaN(timeLeft) || timeLeft <= 0) return;
-  
+
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
-
           clearInterval(timer);
-          handleSubmit(data?.assigned?._id)
+          handleSubmit(data?.assigned?._id);
           return 0;
         }
         const newTime = prevTime - 1;
@@ -116,12 +114,9 @@ function AnswerWritingPage() {
         return newTime;
       });
     }, 1000);
-  
+
     return () => clearInterval(timer);
   }, [timeLeft]); // Ensure timeLeft is a valid number
-  
-  
-
 
   const saveAnswer = async (user_id, question_id, studentAnswer) => {
     try {
@@ -167,10 +162,10 @@ function AnswerWritingPage() {
       }
     } catch (error) {
       console.error("Error fetching latest answer:", error);
+      setIsFetchingAnswers(false);
+
     }
   };
-
-
 
   const saveAndUpdateData = (question_id) => {
     setContent((prevContent) => {
@@ -184,8 +179,6 @@ function AnswerWritingPage() {
       return ""; // Reset after saving
     });
   };
-
- 
 
   // Check if the current question is the last question
   const checkIfLastQuestion = () => {
@@ -210,9 +203,8 @@ function AnswerWritingPage() {
   const isLastQuestion = checkIfLastQuestion();
   console.log("Is this the last question?", isLastQuestion);
 
-
-   // Check if the current question is the last question
-   const answerCountTracker = () => {
+  // Check if the current question is the last question
+  const answerCountTracker = () => {
     const answeredQuestions = data?.assessmentdata?.questions?.filter(
       (q) => q.status !== 0 // Filter answered questions
     );
@@ -277,7 +269,6 @@ function AnswerWritingPage() {
   };
 
   const handleSubmit = (id) => {
-
     const question_id = data?.assessmentdata?.questions?.[activeQuestion]?._id;
     saveAndUpdateData(question_id);
 
@@ -288,9 +279,10 @@ function AnswerWritingPage() {
   console.log("text content is", getPlainText(content).length);
 
   return (
-
-
-    <div className="parent-container fixed inset-0 z-50 grid grid-cols-12 dark:bg-gray-900 gap-4 p-4">
+    <div className="parent-container fixed inset-0 z-50 
+    grid grid-cols-12 
+    bg-gray-300
+    dark:bg-gray-900 gap-4 p-4">
       {isError && (
         <div className="col-span-12 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center text-red-700 dark:text-red-400">
           <FaExclamationCircle className="mr-2" />
@@ -331,13 +323,12 @@ function AnswerWritingPage() {
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full">
           {/* Header */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-          <Heading
-  subject={data?.assessmentdata?.assessment_type}
-  duration={Number(timeLeft)}
-  timeLeft={timeLeft}
-  setTimeLeft={setTimeLeft}
-/>
-
+            <Heading
+              subject={data?.assessmentdata?.assessment_type}
+              duration={Number(timeLeft)}
+              timeLeft={timeLeft}
+              setTimeLeft={setTimeLeft}
+            />
           </div>
 
           <div className="p-4 flex-grow flex flex-col space-y-4">
@@ -373,11 +364,13 @@ function AnswerWritingPage() {
             </div>
 
             {/* Editor */}
-            <div className="flex-grow
+            <div
+              className="flex-grow
              
             h-[calc(100vh-500px)]  overflow-y-auto
             mb-4
-            ">
+            "
+            >
               <JoditEditor
                 ref={editor}
                 value={content}
@@ -395,7 +388,6 @@ function AnswerWritingPage() {
                       textContent.length > 0,
                   }));
                 }}
-                
               />
             </div>
 
@@ -417,12 +409,10 @@ function AnswerWritingPage() {
                 <FaArrowLeft /> <span>Previous !</span>
               </button>
 
-              {
-                isFetchingAnswers ? (
-                  <FaSpinner className="animate-spin text-red-500" />
-                ):(null)
-              }
-              
+              {isFetchingAnswers ? (
+                <FaSpinner className="animate-spin text-red-500" />
+              ) : null}
+
               <button
                 onClick={() =>
                   handleNext(
@@ -441,8 +431,6 @@ function AnswerWritingPage() {
                 <span> Next </span> <FaArrowRight />
               </button>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -456,10 +444,11 @@ function AnswerWritingPage() {
         </div>
 
         <div className="p-4 grid grid-cols-1 gap-2 lg:grid-cols-2  font-medium text-xs sm:text-xs md:text-sm lg:text-sm xl:text-lg ">
-          <span className="text-green-600 bg-green-200 rounded-lg py-1 px-1">Answered: {latestAnswerCount}</span>
+          <span className="text-green-600 bg-green-200 rounded-lg py-1 px-1">
+            Answered: {latestAnswerCount}
+          </span>
           <span className="text-red-600  bg-red-200 rounded-lg py-1 px-1">
             Not Answered:{" "}
-           
             {data?.assessmentdata?.questions?.length - latestAnswerCount}
           </span>
         </div>
@@ -492,25 +481,22 @@ function AnswerWritingPage() {
         </div>
 
         {/* Only show Save & Submit when all questions are answered */}
-        {(
-          // (isLastQuestion && getPlainText(content)?.length > 0) ||
+        {// (isLastQuestion && getPlainText(content)?.length > 0) ||
 
-          latestAnswerCount === data?.assessmentdata?.questions?.length) && (
+        latestAnswerCount === data?.assessmentdata?.questions?.length && (
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <button
               onClick={() => handleSubmit(data?.assigned?._id)}
               className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors flex items-center  text-xs sm:text-xs md:text-sm lg:text-sm xl:text-lg flex-col justify-center "
             >
-              <FaSave className="hidden md:block"/> 
-             
-              <span >Submit</span>
+              <FaSave className="hidden md:block" />
+
+              <span>Submit</span>
             </button>
           </div>
         )}
       </div>
     </div>
-
-    
   );
 }
 
