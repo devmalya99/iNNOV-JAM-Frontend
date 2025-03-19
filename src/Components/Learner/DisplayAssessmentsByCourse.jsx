@@ -146,9 +146,9 @@ const DisplayAssessmentsByCourse = () => {
                         `/home/learner/instructions/${assessment?.assessmentId?._id}`
                       )
                     }
-                    disabled={assessment?.status?.toLowerCase() === "completed"}
+                    disabled={ ["completed", "rejected"].includes(assessment?.status?.toLowerCase() )}
                     className={`w-full py-2 px-4 rounded-lg transition-colors duration-200 ${
-                      assessment?.status?.toLowerCase() === "completed"
+                      ["completed", "rejected"].includes(assessment?.status?.toLowerCase() )
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white"
                     }`}
