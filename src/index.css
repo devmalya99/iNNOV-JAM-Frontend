@@ -13,35 +13,46 @@ body {
 
 
 
-.custom-scrollbar::-webkit-scrollbar {
+/* Global scrollbar styles */
+*::-webkit-scrollbar {
   width: 8px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
-.dark .custom-scrollbar::-webkit-scrollbar-track {
+/* Dark mode scrollbar styles */
+.dark *::-webkit-scrollbar-track {
   background: #374151;
 }
 
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+.dark *::-webkit-scrollbar-thumb {
   background: #6b7280;
 }
 
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+.dark *::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
+
+/* Optionally, ensure scrollbars appear on body and html for content overflow */
+html, body {
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Apply overflow styles to any other elements you wish globally */
+
 
 
 @layer components {

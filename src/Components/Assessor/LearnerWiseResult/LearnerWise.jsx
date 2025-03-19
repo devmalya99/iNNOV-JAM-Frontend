@@ -14,6 +14,7 @@ import { ArrowLeft, ArrowRight, ChevronDown, MessageCircle, RefreshCcw } from "l
 import FeedbackBox from "./FeedbackBox";
 import { FetchAssessmentResultDataByLearner } from "../../../services/Assessor/FetchAssessmentResultDataByLearner";
 import useAssessmentReviewStore from "../../../store/useAssessmentReviewStore";
+import OverviewModal from "./OverviewModal";
 const LearnerWise = () => {
   const {activeNumber,setActiveNumber}=useAssessmentReviewStore();
   const [openScoreModal, setOpenScoreModal] = useState(false);
@@ -22,6 +23,7 @@ const LearnerWise = () => {
   const [competency, setCompetency] = useState("");
   const [feedback, setFeedback] = useState("");
   const [openFeedbackBox, setOpenFeedbackBox] = useState(false);
+  const [openOverviewModal,setOpenOverviewModal]=useState(false);
 
   const navigate = useNavigate();
 
@@ -29,34 +31,12 @@ const LearnerWise = () => {
 
   const { assessmentId, userId } = useParams();
 
-  //  console.log("assessmentId" ,assessmentId);
-  //  console.log("userId", userId);
   const { data, isLoading, refetch } = FetchAssessmentResultDataByLearner(
     assessmentId,
     userId
   );
 
-  // console.log("fetched assessment result data by learner is", data)
-
-  // // use refetch on screen load
-  // useEffect(() => {
-  //   refetch();
-  // }, [refetch]);
-
-  const findFirstNotCompetent = (studentResponses) => {
-    return studentResponses?.findIndex(
-      (response) => response.status === "not-competent"
-    );
-  };
-
-  // useEffect(() => {
-  //   if(data){
-  //     const firstNotCompetent = findFirstNotCompetent(data?.studentResponses);
-  //   setActiveNumber(firstNotCompetent);
-  //   // console.log("firstNotCompetent", firstNotCompetent);
-  //   }
-    
-  // }, []);
+ 
 
   function handleOpenDetails() {
     setOpenScoreModal(true);
@@ -123,6 +103,16 @@ const LearnerWise = () => {
                 setOpenFeedbackBox={setOpenFeedbackBox}
               />
             )}
+
+            {/* Overview Modal */}
+            {openOverviewModal && (
+              <OverviewModal
+                onClose={() => setOpenOverviewModal(false)}
+                data={data}
+                setActiveNumber={setActiveNumber}
+              />
+            )}
+
 
             {/* Suggested Answer  and Student Answer Block */}
 
@@ -234,6 +224,11 @@ const LearnerWise = () => {
                   </button>
                   </div>
                 )}
+
+                {/* Overview modal controller */}
+                <button className="button-style"
+                  onClick={()=>setOpenOverviewModal(true)}
+                >Overview</button>
 
                 {/* Pagination controller */}
 

@@ -132,7 +132,7 @@ import { useNavigate, useParams } from "react-router";
                     <td className="px-4 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${student.status === 'competent' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'}`}>{student.status === 'competent' ? 'Competent' : 'Not Competent'}</span>
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap">{student.final_score} / 10</td>
+                    <td className="px-4 py-4 whitespace-nowrap">{student.final_score} / {student.total_questions*10}</td>
                     <td className="px-4 py-4 whitespace-nowrap">{student.total_questions} questions</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                       <button className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded-md text-sm transition-colors"
