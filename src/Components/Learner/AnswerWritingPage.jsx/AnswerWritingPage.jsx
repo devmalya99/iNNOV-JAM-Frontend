@@ -167,7 +167,6 @@ function AnswerWritingPage() {
     } catch (error) {
       console.error("Error fetching latest answer:", error);
       setIsFetchingAnswers(false);
-
     }
   };
 

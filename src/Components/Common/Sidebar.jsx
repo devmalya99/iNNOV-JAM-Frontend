@@ -163,7 +163,7 @@ const Sidebar = () => {
     <aside
       className={`fixed md:static top-0 left-0 h-[calc(100vh-9rem)] 
         md:h-[calc(100vh-5rem)] z-50
-      transition-transform transform bg-white dark:bg-[#09122C] 
+      transition-transform transform bg-white dark:bg-[#1d1f24] 
       ${isSmallScreen ? "w-64" : "w-72"} 
       ${viewSidebar ? "translate-x-0" : "-translate-x-full"} 
       md:translate-x-0`}
