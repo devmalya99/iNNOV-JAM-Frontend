@@ -22,7 +22,7 @@ const OverviewModal = ({ onClose, data, setActiveNumber }) => {
         
         {/* Student Info */}
         <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
-          <p className="text-gray-700">Student: <span className="font-medium">{student_name}</span></p>
+          <p className="text-gray-700">Learner: <span className="font-medium">{student_name}</span></p>
         </div>
         
         {/* Questions Grid */}
@@ -38,8 +38,8 @@ const OverviewModal = ({ onClose, data, setActiveNumber }) => {
               }}
               >
                 <div 
-                  className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-bold ${
-                    response.status === "competent" ? "bg-green-500" : "bg-red-500"
+                  className={`w-10 h-10 cursor-pointer  rounded-full flex items-center justify-center text-white text-xl font-bold ${
+                    response.status === "competent" ? "bg-green-500 hover:bg-green-700 " : "bg-red-500 hover:bg-red-700"
                   }`}
                 >
                   {response.question_number}

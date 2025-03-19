@@ -28,21 +28,26 @@ function Heading({ subject, duration,timeLeft, setTimeLeft}) {
   return (
     <div className="flex justify-between text-white">
       <div className="flex justify-between items-center">
-        <span className="py-2 mx-2 text-sm md:text-lg lg:text-xl bg-white/15 backdrop-blur-lg font-semibold border-2 px-6 rounded-xl text-gray-800">
+        <span className="py-2 mx-2 text-sm md:text-lg lg:text-xl 
+        bg-white/15 backdrop-blur-lg font-semibold 
+        border-2 px-6 rounded-xl text-gray-500">
           {subject ? capitalizeWords(subject) : "Subject"}
         </span>
       </div>
 
-      {/* Clock */}
-      <div className="flex gap-2 rounded-xl p-2 sm:p-4 justify-center border-2">
-        {/* Clock Icon */}
-        <LuClock3 className="text-xl mt-2 text-black dark:text-white md:text-2xl lg:text-3xl" />
+      {/* Modern Clock Design */}
+<div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-200 via-indigo-200 to-blue-300 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+  {/* Clock Icon */}
+  <LuClock3 className="text-white text-3xl md:text-4xl lg:text-5xl transform transition-transform hover:scale-110" />
 
-        {/* Timer */}
-        <div className="timer p-2 sm:p-3 rounded-xl bg-gray-700 text-gray-200 text-sm md:text-lg lg:text-xl">
-          {formatTime(timeLeft)}
-        </div>
-      </div>
+  {/* Timer */}
+  <div className="timer px-4 py-2 text-center rounded-lg bg-white bg-opacity-25 
+  text-white font-mono text-xl md:text-xl 
+  lg:text-2xl shadow-xl backdrop-blur-md">
+    {formatTime(timeLeft)}
+  </div>
+</div>
+
     </div>
   );
 }

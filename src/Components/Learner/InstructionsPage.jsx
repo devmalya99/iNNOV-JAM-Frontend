@@ -99,7 +99,8 @@ const InstructionsPage = () => {
               <div className="flex-shrink-0">
                 <FaCheckCircle className="mt-1 text-green-500" />
               </div>
-              <p className="">In any case do not press back or hit refresh</p>
+              <p className="">Your latest response to each questions are auto saved</p>
+              <p className="">Do not press back</p>
             </div>
 
             
