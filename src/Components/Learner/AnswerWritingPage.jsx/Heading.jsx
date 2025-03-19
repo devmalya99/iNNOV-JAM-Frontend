@@ -4,7 +4,7 @@ import { LuClock3 } from "react-icons/lu";
 function Heading({ subject, duration,timeLeft, setTimeLeft}) {
 
 
-  console.log("Received duration, and time left is ", duration,timeLeft); // Debugging log
+ // console.log("Received duration, and time left is ", duration,timeLeft); // Debugging log
 
  
 

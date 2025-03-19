@@ -23,10 +23,11 @@ function AnswerWritingPage() {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const editor = useRef(null);
   const [content, setContent] = useState("");
-
+ 
   const [answeredQuestions, setAnsweredQuestions] = useState({});
   const [isFetchingAnswers, setIsFetchingAnswers] = useState(false);
   const [timeLeft, setTimeLeft] = useState();
+  const [htmlContent, setHtmlContent] = useState("");
 
   const navigate = useNavigate();
 
@@ -73,7 +74,7 @@ function AnswerWritingPage() {
 
   useEffect(() => {
     refetch();
-    console.log("fetched assessment data", data);
+   // console.log("fetched assessment data", data);
   }, [refetch]);
 
   // In AnswerWritingPage
@@ -118,7 +119,7 @@ function AnswerWritingPage() {
     return () => clearInterval(timer);
   }, [timeLeft]); // Ensure timeLeft is a valid number
 
-  const saveAnswer = async (user_id, question_id, studentAnswer) => {
+  const saveAnswer = async (user_id, question_id, studentAnswer,htmlContent) => {
     try {
       await axios.post(
         `${VITE_API_URL}/api/student-answers/create`,
@@ -127,6 +128,7 @@ function AnswerWritingPage() {
           question_id,
 
           student_answer: studentAnswer,
+          student_response_formated:htmlContent
         },
         {
           headers: {
@@ -152,12 +154,14 @@ function AnswerWritingPage() {
         }
       );
 
-      if (response.data && response.data.student_answer) {
-        setContent(response.data.student_answer);
+      if (response.data && response.data.student_response_formated) {
+        setHtmlContent(response.data.student_response_formated); // Ensure HTML is restored correctly
+        setContent(response.data.student_response_formated); // Update editor content
         // console.log("fetched latest answer", response.data.student_answer);
         setIsFetchingAnswers(false);
       } else {
         setContent(""); // Reset if no answer is found
+        setHtmlContent("");
         setIsFetchingAnswers(false);
       }
     } catch (error) {
@@ -168,12 +172,14 @@ function AnswerWritingPage() {
   };
 
   const saveAndUpdateData = (question_id) => {
+
+    console.log("htmlContent for saving",htmlContent)
     setContent((prevContent) => {
       const studentAnswer = getPlainText(prevContent);
       // console.log("Saving data:", { user_id, question_id, studentAnswer });
 
       if (user_id && question_id && studentAnswer) {
-        saveAnswer(user_id, question_id, studentAnswer);
+        saveAnswer(user_id, question_id, studentAnswer,htmlContent);
       }
 
       return ""; // Reset after saving
@@ -201,7 +207,7 @@ function AnswerWritingPage() {
   };
 
   const isLastQuestion = checkIfLastQuestion();
-  console.log("Is this the last question?", isLastQuestion);
+ // console.log("Is this the last question?", isLastQuestion);
 
   // Check if the current question is the last question
   const answerCountTracker = () => {
@@ -276,7 +282,7 @@ function AnswerWritingPage() {
     navigate(`/home/learner/assessment-submission/confirm/${id}`);
   };
 
-  console.log("text content is", getPlainText(content).length);
+  //console.log("text content is", getPlainText(content).length);
 
   return (
     <div className="parent-container fixed inset-0 z-50 
@@ -376,12 +382,15 @@ function AnswerWritingPage() {
                 value={content}
                 tabIndex={1}
                 onChange={(newContent) => {
-                  setContent(newContent); // Update content state immediately
+                  setContent(newContent); // Keep UI responsive
+                  setHtmlContent(newContent); // Ensure HTML content is updated
                 }}
-                onBlur={(newContent) => {
-                  setContent(newContent);
 
+                onBlur={(newContent) => {
                   const textContent = getPlainText(newContent);
+    setContent(newContent);
+    setHtmlContent(newContent);
+
                   setAnsweredQuestions((prev) => ({
                     ...prev,
                     [data?.assessmentdata?.questions?.[activeQuestion]?._id]:
