@@ -114,9 +114,18 @@ const ViewCourseResultDetailed = () => {
               onClick={() => goToArchieve()}
               className="px-4 flex  gap-2 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
             >
-              Archieve
+              Archive
               <Archive/>
             </button>
+            
+
+             {/* Back button */}
+             <div className="flex bg-blue-500 w-[100px] px-4 py-2 rounded-xl my-1">
+              <ArrowBigLeftIcon className="text-xl" />
+              <button onClick={() => navigate(-1)}>Back</button>
+            </div>
+
+            
           </div>
 
           {/* Table */}
@@ -177,11 +186,7 @@ const ViewCourseResultDetailed = () => {
               )
             }
 
-            {/* Back button */}
-            <div className="flex bg-blue-500 w-[100px] px-4 py-2 rounded-xl my-6">
-              <ArrowBigLeftIcon className="text-xl" />
-              <button onClick={() => navigate(-1)}>Back</button>
-            </div>
+           
 
             {/* Empty State */}
             {(!assessmentResult?.result || assessmentResult.result.length === 0) && (
