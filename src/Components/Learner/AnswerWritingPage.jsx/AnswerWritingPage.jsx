@@ -47,7 +47,7 @@ function AnswerWritingPage() {
  //load first question on screen load
  useEffect(() => {
 
-  if(data){
+  if(data && activeQuestion=== 0){
     fetchLatestAnswer(user_id, data?.assessmentdata?.questions?.[0]?._id);
   }
 
