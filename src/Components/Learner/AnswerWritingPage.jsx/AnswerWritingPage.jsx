@@ -197,6 +197,15 @@ function AnswerWritingPage() {
     const unansweredQuestions = data?.assessmentdata?.questions?.filter(
       (q) => q.status !== 1 // Filter unanswered questions
     );
+    console.log("unansweredQuestions",unansweredQuestions)
+
+    if(unansweredQuestions.length >1 ) return false
+
+    if(unansweredQuestions.length === 0) return true
+    
+
+
+    
 
     // Check if the active question is the last one in the list of unanswered questions
     return (
@@ -206,7 +215,7 @@ function AnswerWritingPage() {
   };
 
   const isLastQuestion = checkIfLastQuestion();
- // console.log("Is this the last question?", isLastQuestion);
+  console.log("Is this the last question?", isLastQuestion);
 
   // Check if the current question is the last question
   const answerCountTracker = () => {
@@ -489,9 +498,7 @@ function AnswerWritingPage() {
         </div>
 
         {/* Only show Save & Submit when all questions are answered */}
-        {// (isLastQuestion && getPlainText(content)?.length > 0) ||
-
-        latestAnswerCount === data?.assessmentdata?.questions?.length && (
+        { (isLastQuestion && getPlainText(content)?.length > 0) && (
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <button
               onClick={() => handleSubmit(data?.assigned?._id)}
