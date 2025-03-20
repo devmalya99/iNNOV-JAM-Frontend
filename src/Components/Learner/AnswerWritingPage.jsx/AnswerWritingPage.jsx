@@ -36,6 +36,26 @@ function AnswerWritingPage() {
 
   const { assessmentId } = useParams();
 
+  //call the useFetchAssessmentData hook to fetch data
+  const { data, refetch, error, isLoading, isError } = useFetchAssessmentData(
+    assessmentId,
+    user_id
+  );
+
+  
+
+ //load first question on screen load
+ useEffect(() => {
+
+  if(data){
+    fetchLatestAnswer(user_id, data?.assessmentdata?.questions?.[0]?._id);
+  }
+
+  refetch();
+ // console.log("fetched assessment data", data);
+}, [data]);
+
+
   // On screen Load make it full screen
   useEffect(() => {
     // Request full screen when component loads
@@ -66,16 +86,9 @@ function AnswerWritingPage() {
 
   //console.log("active assessmentId is",assessmentId)
 
-  //call the useFetchAssessmentData hook to fetch data
-  const { data, refetch, error, isLoading, isError } = useFetchAssessmentData(
-    assessmentId,
-    user_id
-  );
+  
 
-  useEffect(() => {
-    refetch();
-   // console.log("fetched assessment data", data);
-  }, [refetch]);
+  
 
   // In AnswerWritingPage
   useEffect(() => {
