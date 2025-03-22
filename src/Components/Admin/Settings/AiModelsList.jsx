@@ -83,7 +83,11 @@ const AiModelsList = () => {
         {openEdit && (
   <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
     <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 z-50">
-      <AiModelsUpdateModal existingModelData={selectedModelData} setOpenEdit={setOpenEdit} />
+      <AiModelsUpdateModal 
+      existingModelData={selectedModelData} 
+      setOpenEdit={setOpenEdit} 
+      onCancel={() => setOpenEdit(false)}
+      />
     </div>
   </div>
 )}

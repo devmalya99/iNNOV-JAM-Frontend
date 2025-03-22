@@ -3,7 +3,7 @@ import { AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router";
 import { handleSuccess } from "../../../../utils/toast";
 
-const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
+const AiModelSelector = ({ existingModelData, setOpenEdit,onCancel }) => {
   // Available LLMs and their models
   // const llmData = {
   //   GPT: ['gpt-4', 'gpt-3.5-turbo', 'gpt-4-turbo'],
@@ -12,10 +12,23 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
   //   llama: ['llama-2-70b', 'llama-2-13b', 'llama-2-7b'],
   // };
 
+  // Available LLMs and their models
   const llmData = {
-    gpt: ["gpt-4", "gpt-3.5-turbo", "gpt-4-turbo"],
-    gemini: ["gemini-2.O-flash", "gemini-1.5-pro"],
-    groq: ["mixtral-8x7b-32768"],
+    gpt: [
+      "gpt-4",
+      "gpt-3.5-turbo",
+      "gpt-4-turbo",
+      "gpt-4-0613",
+      "gpt-3.5-turbo-1106",
+    ],
+    gemini: [
+      "gemini-1.5-pro",
+      "gemini-1.0-pro",
+      "gemini-ultra",
+      "gemini-nano",
+      "gemini-1.5-flash",
+    ],
+    groq: ["llama3-8b-8192", "mixtral-8x7b-32768", "llama3-70b-8192"],
   };
 
   // console.log('existing model data', existingModelData);
@@ -206,6 +219,7 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
           </div>
         )}
 
+        <div className="flex gap-2">
         <button
           onClick={handleSubmit}
           className="w-full bg-blue-500 text-white py-2 rounded-md disabled:bg-gray-400"
@@ -218,6 +232,15 @@ const AiModelSelector = ({ existingModelData, setOpenEdit }) => {
         >
           Update Configuration
         </button>
+
+        <button className="button-style"
+        onClick={()=>onCancel()}
+        >Cancel</button>
+
+
+        </div>
+
+        
       </div>
     </div>
   );
