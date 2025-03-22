@@ -140,18 +140,18 @@ const AiModelSelector = ({ existingModelData, setOpenEdit,onCancel }) => {
 
         {[0, 1].map((index) => (
           <div key={index} className="mb-6">
-            <h3 className="text-lg font-medium mb-2">LLM {index + 1}</h3>
+            <h3 className="text-lg font-medium mb-2">Ai Model {index + 1}</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Select LLM
+                  Select Ai Models
                 </label>
                 <select
                   value={selectedLLMs[index]}
                   onChange={(e) => handleLLMSelect(e.target.value, index)}
                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
                 >
-                  <option value="">Select LLM</option>
+                  <option value="">Select AI Models</option>
                   {Object.keys(llmData)?.map((llm) => (
                     <option
                       key={llm}
@@ -202,8 +202,8 @@ const AiModelSelector = ({ existingModelData, setOpenEdit,onCancel }) => {
               className="w-full"
             />
             <div className="flex justify-between text-sm text-gray-600">
-              <span>{`${selectedLLMs[0] || "LLM 1"}: ${weightage}%`}</span>
-              <span>{`${selectedLLMs[1] || "LLM 2"}: ${
+              <span>{`${selectedLLMs[0] || "Ai Model 1"}: ${weightage}%`}</span>
+              <span>{`${selectedLLMs[1] || "Ai Model 2"}: ${
                 100 - weightage
               }%`}</span>
             </div>
