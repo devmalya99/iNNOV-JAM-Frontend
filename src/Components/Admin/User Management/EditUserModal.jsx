@@ -4,6 +4,7 @@ import axios from "axios";
 import { X, User, Mail, Lock, CheckCircle, UserCircle } from "lucide-react";
 import { handleError, handleSuccess } from "../../../utils/toast";
 import { UseUpdateUser } from "../../../services/Admin/UserUpdation/UseUpdateUser";
+import { useAuth } from "../../../../Context/AuthContext";
 
 const EditUserModal = ({ isOpen, onClose, user }) => {
   const [formData, setFormData] = useState({
@@ -18,6 +19,12 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
   const roles = ["super_admin","admin", "learner", "assessor"];
 
   const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+  const { user: currentUser } = useAuth();
+  
+    const currentUserRole=currentUser.role
+    // console.log(currentUserRole)
+  
 
   // Initialize our mutation hook
   const updateUserMutation = UseUpdateUser();
@@ -224,7 +231,9 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
                     onChange={handleInputChange}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    {roles.map((roleOption) => (
+                    {roles
+                    .filter(role=>currentUserRole!=="admin" || (role!=="admin" && role!=="super_admin"))
+                    .map((roleOption) => (
                       <option key={roleOption} value={roleOption}>
                         {roleOption}
                       </option>
