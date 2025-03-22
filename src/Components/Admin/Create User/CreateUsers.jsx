@@ -3,12 +3,20 @@ import { handleError, handleSuccess } from "../../../utils/toast";
 import { UseCreateUser } from "../../../services/Admin/User Creation/UseCreateUser";
 import { useFetchAllCourses } from "../../../services/FetchAllCourses";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../../../Context/AuthContext";
 
 const CreateUsers = () => {
   const [userRole, setUserRole] = useState("");
   const roles = ["super_admin","admin", "learner", "assessor"];
   const { data: courses, refetch } = useFetchAllCourses();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+
+  const currentUserRole=user.role
+  // console.log(currentUserRole)
+
+  
 
   // Update courses on component mount
   useEffect(() => {
@@ -65,6 +73,14 @@ const CreateUsers = () => {
       handleError({errors:"Learners need to be assigned to at least one course" })
       return;
     }
+
+    if(currentUserRole==="admin" && userRole==="admin"){
+      handleError({errors:"Admins cannot create new admins" })
+    }
+
+
+
+    
 
 
 
@@ -188,6 +204,7 @@ const CreateUsers = () => {
                 </ul>
               )}
             </div>
+
             <div className="w-64">
               <label className="block text-gray-700 font-medium mb-2">Select Role</label>
               <select
@@ -198,8 +215,17 @@ const CreateUsers = () => {
                 <option value="" disabled>
                   Select a role
                 </option>
-                {roles.map((roleOption) => (
-                  <option key={roleOption} value={roleOption}>
+
+
+
+
+                {roles
+                .filter(role=>currentUserRole!=="admin" || (role!=="admin" && role!=="super_admin"))
+                .map((roleOption) => (
+                  <option 
+                  key={roleOption} 
+                  value={roleOption}
+                  >
                     {roleOption}
                   </option>
                 ))}
