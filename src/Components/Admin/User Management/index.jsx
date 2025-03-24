@@ -22,8 +22,15 @@ import { FaUserAstronaut } from "react-icons/fa";
 import {  useMutation, useQueryClient } from "react-query";
 import UpdateAssignedCourses from "./UpdateAssignedCourses";
 import { handleError } from "../../../utils/toast";
+import { useAuth } from "../../../../Context/AuthContext";
 
 const UserManagement = () => {
+
+ const { user: currentUser } = useAuth();
+   
+     const currentUserRole=currentUser.role
+      console.log(currentUserRole)
+
 
   // Declare queryClient first so it's available for useEffect
   const queryClient = useQueryClient();
@@ -80,18 +87,16 @@ const UserManagement = () => {
   };
 
   const handleConfirmDelete = async (user) => {
+
     if (user.role === "super_admin") {
       alert("Super Admin cannot be deleted");
       setDeleteModal({ isOpen: false, user: null });
       return;
     }
 
-
-
     // Call mutate and let onSuccess handle refetch/invalidation
   DeleteUserMutation.mutate(user._id);
   setDeleteModal({ isOpen: false, user: null });
-
 
   };
 
@@ -214,11 +219,18 @@ const UserManagement = () => {
         </div>
       </div>
 
-      <UserTable
+      {
+       ( currentUserRole && currentUserRole === "super_admin") && (
+          <UserTable
+        
         users={All_Users_Data?.superadmin}
         title="Super Admins"
         icon={FaUserAstronaut}
       />
+        )
+      }
+
+      
 
       <UserTable
         users={All_Users_Data?.admins}
