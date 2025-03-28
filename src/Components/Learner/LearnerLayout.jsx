@@ -18,21 +18,17 @@ const LearnerLayout = () => {
 
   return (
 
-    <div>
-      <div className='first-hoome-row flex-flex-col'>
-        <MainHeadbar/>
-      </div>
+    <div className='flex w-full h-full bg-white dark:bg-[#1d1d1d]'>
+    <div className=''>
+    <Sidebar/> </div>
 
-      <div className='second-home-row flex w-full h-full'>
-        <Sidebar/>
+    <div className=' flex flex-col w-full'>
 
-        <div className='w-full'>
-          <Outlet/>
-        </div>
+      <div><MainHeadbar/></div>
+      <div><Outlet/></div>
 
-      </div>
     </div>
-
+  </div>
 
     
   );

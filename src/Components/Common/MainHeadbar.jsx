@@ -9,6 +9,7 @@ import {
   FaDashcube,
 } from "react-icons/fa";
 
+import {useAuth} from "../../../Context/AuthContext"
 
 
 import SearchBar from "./SearchBar";
@@ -23,12 +24,20 @@ const MainHeadbar = () => {
 
   const {viewSidebar, setViewSidebar} = UseSidebarStore();
 
+  const {user} = useAuth()
+
   return (
     <div
-      className="flex flex-row items-center justify-end 
+      className="flex flex-row items-center justify-between 
           bg-white dark:bg-[#1d1f24] 
            h-16 "
     >
+
+      <p className="font-playfair text-2xl text-gray-800 dark:text-white ml-6">
+        Hello {user.name}..
+      </p>
+
+      
       
        
        {/* Display only on larger screens */}
