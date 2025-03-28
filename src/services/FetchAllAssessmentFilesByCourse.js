@@ -3,13 +3,19 @@ import axios from 'axios';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const fetchAllAssessmentFilesByCourse = async (courseid) => {
-    
-    const { data } = await axios.get(
+
+  try {
+    const  data = await axios.get(
       `${VITE_API_URL}/api/files/getfiles/${courseid}`
     );
     // console.log("All assessment files",data);
     
-    return data;
+    return data?.data;
+
+  } catch (error) {
+    console.error(error.message);
+    return error.message
+  }
   };
 
 // Custom hook to use React Query for fetching files

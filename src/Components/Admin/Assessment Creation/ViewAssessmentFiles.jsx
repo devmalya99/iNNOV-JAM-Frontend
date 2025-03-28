@@ -18,11 +18,12 @@ const ViewAssessmentFiles = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const { courseid } = useParams();
   const { data, isLoading, refetch } = useFetchAllAssessmentFiles(courseid);
+
    const navigate=useNavigate()
 
    const VITE_API_URL = import.meta.env.VITE_API_URL
 
-   console.log("assessment file data is",data)
+  //  console.log("assessment file data is",data)
 
    
   useEffect(() => {
@@ -63,7 +64,7 @@ const ViewAssessmentFiles = () => {
     );
   }
 
-  if (!data?.length) {
+  if ( data.length === 0) {
     return (
       <motion.div 
         initial={{ opacity: 0 }}
@@ -109,13 +110,20 @@ const handleDeleteClick = (id) => {
 const confirmDelete = async () => {
   if (!selectedFileId) return;
   try {
+
     await axios.delete(`${VITE_API_URL}/api/files/remove/${selectedFileId}`);
+    
     refetch(); // Refresh list after deletion
+
   } catch (error) {
+
     console.error("Error deleting file:", error);
+
   } finally {
+
     setShowConfirm(false);
     setSelectedFileId(null);
+
   }
 };
 
