@@ -40,8 +40,9 @@ const Welcome = () => {
     overflow-y-auto
     w-full flex 
     flex-col
-    items-center justify-center p-4 sm:p-6 md:p-8 
-    bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    items-center justify-center  sm:p-6 md:p-8 
+    bg-gradient-to-br from-gray-50 to-gray-100 
+    dark:from-gray-900 dark:to-gray-800">
      
      {
        user.role==="super_admin" ?

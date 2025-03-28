@@ -56,16 +56,24 @@ export default function GradeComponent() {
   };
 
   return (
-    <div className="flex justify-center h-[calc(100vh-70px)] py-8 bg-gray-100 dark:bg-gray-900">
+    <div className="flex justify-center h-[calc(100vh-70px)] w-full py-2 bg-white dark:bg-gray-900">
+      
+      <div className="">
+        <div className="py-4 px-4 rounded-xl">
+
+      
+      
       {!openForm ? (
-        <div className="max-w-3xl w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center space-x-4 mb-4">
+        <div className="max-w-3xl py-4   w-full px-4 sm:px-6 lg:px-8 rounded-xl my-2 bg-gray-200 dark:bg-gray-700">
+          <div className="flex items-center space-x-4 mb-4 px-4 py-2 m-2">
             <input
               type="text"
               value={gradeName}
               onChange={(e) => setGradeName(e.target.value)}
               placeholder="Enter grade"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-6 py-2 border rounded-lg focus:outline-none 
+              focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 
+              dark:text-white dark:border-gray-600"
             />
             <button
               onClick={onCreateGradeHandler}
@@ -74,7 +82,7 @@ export default function GradeComponent() {
               Create
             </button>
           </div>
-          <ul className="bg-gray-100 dark:bg-gray-700 p-1 rounded-lg shadow-md">
+          <ul className=" dark:bg-gray-700  rounded-lg ">
             {grades?.map((grade) => (
               <li
                 key={grade.id}
@@ -132,6 +140,8 @@ export default function GradeComponent() {
       ) : (
         <RangeCreationForm/>
       )}
+      </div>
+      </div>
     </div>
   );
 }

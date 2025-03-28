@@ -95,105 +95,112 @@ const AiModelSelector = () => {
   };
 
   return (
-    <div>
-      <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-6">AI Model Selector</h2>
+    <div className="w-full dark:bg-gray-900 min-h-screen">
+    <div className="w-full max-w-2xl mx-auto my-4 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 dark:text-gray-100">
+      <h2 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
+        AI Model Selector
+      </h2>
 
-        {[0, 1].map((index) => (
-          <div key={index} className="mb-6">
-            <h3 className="text-lg font-medium mb-2">Ai model {index + 1}</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Select Ai Model
-                </label>
-                <select
-                  value={selectedLLMs[index]}
-                  onChange={(e) => handleLLMSelect(e.target.value, index)}
-                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
-                >
-                  <option value="">Select Ai Model</option>
-                  {Object.keys(llmData).map((llm) => (
-                    <option
-                      key={llm}
-                      value={llm}
-                      disabled={
-                        selectedLLMs.includes(llm) &&
-                        selectedLLMs[index] !== llm
-                      }
-                    >
-                      {llm}
+      {[0, 1].map((index) => (
+        <div key={index} className="mb-6">
+          <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">
+            Ai model {index + 1}
+          </h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Select Ai Model
+              </label>
+              <select
+                value={selectedLLMs[index]}
+                onChange={(e) => handleLLMSelect(e.target.value, index)}
+                className="block w-full mt-1 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white p-2"
+              >
+                <option value="">Select Ai Model</option>
+                {Object.keys(llmData).map((llm) => (
+                  <option
+                    key={llm}
+                    value={llm}
+                    disabled={
+                      selectedLLMs.includes(llm) &&
+                      selectedLLMs[index] !== llm
+                    }
+                    className="dark:bg-gray-700"
+                  >
+                    {llm}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Select Model
+              </label>
+              <select
+                value={selectedModels[index]}
+                onChange={(e) => handleModelSelect(e.target.value, index)}
+                disabled={!selectedLLMs[index]}
+                className="block w-full mt-1 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white p-2"
+              >
+                <option value="">Select Model</option>
+                {selectedLLMs[index] &&
+                  llmData[selectedLLMs[index]].map((model) => (
+                    <option key={model} value={model} className="dark:bg-gray-700">
+                      {model}
                     </option>
                   ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Select Model
-                </label>
-                <select
-                  value={selectedModels[index]}
-                  onChange={(e) => handleModelSelect(e.target.value, index)}
-                  disabled={!selectedLLMs[index]}
-                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
-                >
-                  <option value="">Select Model</option>
-                  {selectedLLMs[index] &&
-                    llmData[selectedLLMs[index]].map((model) => (
-                      <option key={model} value={model}>
-                        {model}
-                      </option>
-                    ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        <div className="mb-6">
-          <h3 className="text-lg font-medium mb-2">Weightage Distribution</h3>
-          <div className="space-y-2">
-            <input
-              type="range"
-              value={weightage}
-              onChange={(e) => setWeightage(Number(e.target.value))}
-              max={100}
-              step={1}
-              className="w-full"
-            />
-            <div className="flex justify-between text-sm text-gray-600">
-              <span>{`${selectedLLMs[0] || "Ai model 1"}: ${weightage}%`}</span>
-              <span>{`${selectedLLMs[1] || "Ai model 2"}: ${
-                100 - weightage
-              }%`}</span>
+              </select>
             </div>
           </div>
         </div>
+      ))}
 
-        {error && (
-          <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 text-red-800">
-            <div className="flex items-center">
-              <AlertCircle className="h-5 w-5 mr-2" />
-              <span>{error}</span>
-            </div>
+      <div className="mb-6">
+        <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">
+          Weightage Distribution
+        </h3>
+        <div className="space-y-2">
+          <input
+            type="range"
+            value={weightage}
+            onChange={(e) => setWeightage(Number(e.target.value))}
+            max={100}
+            step={1}
+            className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
+          />
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
+            <span>{`${selectedLLMs[0] || "Ai model 1"}: ${weightage}%`}</span>
+            <span>{`${selectedLLMs[1] || "Ai model 2"}: ${
+              100 - weightage
+            }%`}</span>
           </div>
-        )}
-
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-blue-500 text-white py-2 rounded-md disabled:bg-gray-400"
-          disabled={
-            !selectedLLMs[0] ||
-            !selectedLLMs[1] ||
-            !selectedModels[0] ||
-            !selectedModels[1]
-          }
-        >
-          Save Configuration
-        </button>
+        </div>
       </div>
+
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-400 dark:border-red-600 p-4 mb-6 text-red-800 dark:text-red-200">
+          <div className="flex items-center">
+            <AlertCircle className="h-5 w-5 mr-2" />
+            <span>{error}</span>
+          </div>
+        </div>
+      )}
+
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md disabled:bg-gray-400 dark:disabled:bg-gray-600 transition-colors"
+        disabled={
+          !selectedLLMs[0] ||
+          !selectedLLMs[1] ||
+          !selectedModels[0] ||
+          !selectedModels[1]
+        }
+      >
+        Save Configuration
+      </button>
     </div>
+  </div>
   );
 };
 

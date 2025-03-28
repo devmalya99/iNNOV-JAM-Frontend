@@ -32,7 +32,8 @@ const SettingsSidebar = () => {
 
 
   return ( 
-    <div className="flex flex-col w-64 h-[calc(100vh-80px)] ml-1 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex flex-col w-64 h-[calc(100vh-80px)] ml-1 
+    bg-gray-100 border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     {/* Sidebar Items Container */}
     <div className="flex flex-col space-y-1 p-4">
     <SidebarItem
@@ -80,14 +81,14 @@ const SidebarItem = ({ icon, text, to, active ,onClick}) => {
           ${
             active
               ? 'bg-green-50 text-green-600 dark:bg-blue-gray-100'
-              : 'text-gray-600 hover:bg-gray-50 hover:text-green-600'
+              : 'text-gray-700 hover:bg-gray-50 hover:text-green-600'
           }
         `}
       >
-        <span className={`${active ? 'text-green-600' : 'text-gray-400'}`}>
+        <span className={`${active ? 'text-green-600' : 'text-gray-500'}`}>
           {icon}
         </span>
-        <span className="font-medium">{text}</span>
+        <span className="font-medium text-gray-800 dark:text-gray-100 ">{text}</span>
       </Link>
     );
   };

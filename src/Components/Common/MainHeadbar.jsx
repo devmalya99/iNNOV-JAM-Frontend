@@ -25,14 +25,11 @@ const MainHeadbar = () => {
 
   return (
     <div
-      className="flex flex-row items-center justify-between 
-          bg-white dark:bg-gray-900 
-           h-16 mb-1 rounded-md 
-           shadow-gray-500
-          
-          shadow-sm"
+      className="flex flex-row items-center justify-end 
+          bg-white dark:bg-[#1d1f24] 
+           h-16 "
     >
-      <CompanyName/>
+      
        
        {/* Display only on larger screens */}
       <div className="hidden md:flex items-center 

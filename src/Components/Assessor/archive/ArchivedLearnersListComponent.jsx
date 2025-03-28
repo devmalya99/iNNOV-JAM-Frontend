@@ -39,7 +39,7 @@ import { useNavigate, useParams } from "react-router";
       const competentCount = result?.filter(student => student.status === "competent").length || 0;
     
       return (
-        <div className="bg-white m-4 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-white m-4 dark:bg-gray-800 dark:text-white rounded-lg shadow-lg overflow-hidden">
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0">
             <div>

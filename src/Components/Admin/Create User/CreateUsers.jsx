@@ -110,11 +110,16 @@ const CreateUsers = () => {
  
 
   return (
-    <div className="p-6 h-[calc(100vh-80px)] bg-gradient-to-r from-gray-100 to-blue-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
-      <h1 className="text-3xl font-bold text-blue-700 dark:text-white mb-6 text-center">Create Users</h1>
+    <div className="p-6 h-[calc(100vh-80px)]  dark:from-gray-800 dark:to-gray-900 transition-colors duration-300 rounded-xl mx-20">
+
+      <div className="bg-[#e5e9e4] dark:bg-[#292929] mx-10 
+      my-6 p-4  rounded-lg">
+
+     
+      <h1 className="text-3xl font-bold text-blue-700 dark:text-white my-6 text-center">Create Users</h1>
       <div className="flex justify-center items-center">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
-          <form onSubmit={handleSaveAll} className="space-y-4">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96 mb-12">
+          <form onSubmit={handleSaveAll} className="space-y-4  ">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Name
@@ -238,6 +243,8 @@ const CreateUsers = () => {
               </button>
             </div>
           </form>
+
+        </div>
         </div>
       </div>
     </div>

@@ -72,7 +72,10 @@ const HowItWorks = () => {
   );
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 min-h-full dark:bg-gradient-to-br dark:from-gray-900 overflow-y-auto py-16 px-4">
+    <div className="bg-gradient-to-br from-gray-50 
+    min-h-full 
+    dark:bg-gradient-to-br dark:from-gray-900
+     overflow-y-auto py-12 px-6">
       <style jsx>{`
         @keyframes float {
           0% { transform: translateY(0px); }
