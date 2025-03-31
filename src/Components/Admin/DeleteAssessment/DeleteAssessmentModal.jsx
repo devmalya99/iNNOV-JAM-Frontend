@@ -19,7 +19,8 @@ const DeleteAssessmentModal = ({ assessment, setShowDeleteModal, onDeleteSuccess
     setError(null);
 
     try {
-      await axios.delete(`${VITE_API_URL}/api/assessments/removeassessment/${assessment?._id}`);
+      const response = await axios.delete(`${VITE_API_URL}/api/assessments/removeassessment/${assessment?._id}`);
+      console.log("delete response", response);
       setSuccess(true);
       handleSuccess({ success: "Assessment deleted successfully!" });
       onDeleteSuccess?.();
@@ -29,8 +30,10 @@ const DeleteAssessmentModal = ({ assessment, setShowDeleteModal, onDeleteSuccess
         setShowDeleteModal(false);
       }, 2000);
     } catch (error) {
-      setError("Cannot delete an assessment with assigned learners");
-      handleError({ errors: "Cannot delete an assessment with assigned learners" });
+
+      console.log("error is ",error)
+      setError(error?.response?.data?.message);
+      handleError({ errors:error?.response?.data?.message });
     } finally {
       setIsDeleting(false);
     }

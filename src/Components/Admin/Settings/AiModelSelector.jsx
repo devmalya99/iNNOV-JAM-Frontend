@@ -170,10 +170,14 @@ const AiModelSelector = () => {
             className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
           />
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
-            <span>{`${selectedLLMs[0] || "Ai model 1"}: ${weightage}%`}</span>
-            <span>{`${selectedLLMs[1] || "Ai model 2"}: ${
+            <p
+            className="text-sm border border-gray-700 dark:border-gray-600 rounded-md p-2 text-gray-800 dark:text-gray-300 "
+            >{`${selectedLLMs[0] || "Ai model 1"}: ${weightage}%`}</p>
+            <p
+             className="text-sm border border-gray-700 dark:border-gray-600 rounded-md p-2 text-gray-800 dark:text-gray-300 " >
+              {`${selectedLLMs[1] || "Ai model 2"}: ${
               100 - weightage
-            }%`}</span>
+            }%`}</p>
           </div>
         </div>
       </div>
