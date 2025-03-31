@@ -42,7 +42,8 @@ const CoursewareList = () => {
 
   if (isError) {
     return (
-      <div className="mx-auto max-w-2xl mt-8 bg-white dark:bg-gray-800 rounded-lg shadow">
+      <div className="mx-auto max-w-2xl mt-8 bg-white 
+      dark:bg-gray-800 rounded-lg shadow">
         <div className="p-6">
           <div className="flex flex-col items-center text-center space-y-4">
             <AlertCircle className="h-12 w-12 text-red-500" />
@@ -65,7 +66,8 @@ const CoursewareList = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+        <h2 className="text-2xl font-bold text-gray-800 
+        dark:text-gray-100">
           All Coursewares
         </h2>
         <button 

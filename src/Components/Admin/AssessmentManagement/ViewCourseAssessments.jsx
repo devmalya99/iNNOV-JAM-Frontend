@@ -21,6 +21,9 @@ import ViewAssessmentDetails from "../ViewAssessmentDetails/ViewAssessmentDetail
 import ViewAssignedLearnerModal from "./ViewAssignedLearnerModal";
 
 import AssignLearnersModal from "../../Admin/AssessmentManagement/AssignLearnersModal";
+import { handleError, handleSuccess } from "../../../utils/toast";
+import { updateAssessmentStatus } from "../../../services/Admin/manageassessments/updateAssessmentStatus";
+import GoLiveConfirmationModal from "./GoLiveConfirmationModal";
 
 export default function ViewCourseAssessments() {
   const { courseid } = useParams();
@@ -49,6 +52,10 @@ export default function ViewCourseAssessments() {
 
   const [openViewLearnersModal, setOpenViewLearnersModal] = useState(false);
 
+  const [isGoLiveModalOpen, setGoLiveModalOpen] = useState(false);
+
+
+
   {
     /* Handle assign Learner */
   }
@@ -67,6 +74,8 @@ export default function ViewCourseAssessments() {
     setSelectedAssessment(assessment);
     setOpenAssessmentModal(true);
   };
+
+ 
 
   const navigate = useNavigate();
 
@@ -90,6 +99,45 @@ export default function ViewCourseAssessments() {
     setOpenViewLearnersModal(true);
   };
 
+
+  //Handle go live
+  const handleGoLiveModalOpen = (assessment) => {
+    if(assessment?.isLive === true){
+      handleError({errors:"Assessment is already live"})
+      return 
+    }
+    setSelectedAssessment(assessment);
+    setGoLiveModalOpen(true);
+  };
+
+  const handleGoLiveModalClose = () => {
+    setGoLiveModalOpen(false);
+    setSelectedAssessment(null);
+  };
+
+  const handleGoLiveConfirm =async (assessment) => {
+    // Call your function to mark the assessment as live
+    console.log("Go live confirmed for: ", assessment);
+    // Call your API or update logic here
+    // e.g., updateAssessmentStatus(assessment._id, true);
+    console.log(assessment);
+
+    try {
+      const updateAssessment = await updateAssessmentStatus(assessment._id);
+      handleSuccess({ success: "Assessment is live" });
+      console.log("assessment is live", updateAssessment);
+      refetch();
+    } catch (error) {
+      console.error(error);
+      handleError({ errors: "Failed to go Live" });
+    }
+
+
+
+    setGoLiveModalOpen(false);
+    setSelectedAssessment(null);
+  };
+
   return (
     <div className="h-[calc(100vh-80px)]  bg-gray-100 dark:bg-gray-900 p-6 overflow-y-auto">
       {/* Handle delete */}
@@ -104,7 +152,7 @@ export default function ViewCourseAssessments() {
       {/* Open Assessment question and answers Modal */}
       {openAssessmentModal && (
         <ViewAssessmentDetails
-        AssessmentMainData={selectedAssessment}
+          AssessmentMainData={selectedAssessment}
           assessmentId={selectedAssessment?._id}
           setOpenAssessmentModal={setOpenAssessmentModal}
         />
@@ -123,6 +171,17 @@ export default function ViewCourseAssessments() {
         <ViewAssignedLearnerModal
           selectedAssessmentId={selectedAssessmentId}
           setOpenViewLearnersModal={setOpenViewLearnersModal} // Ensure the correct function is passed
+        />
+      )}
+
+
+      {/* Go Live Modal */}
+      {isGoLiveModalOpen && (
+        <GoLiveConfirmationModal
+          assessment={selectedAssessment}
+          isOpen={isGoLiveModalOpen}
+          onClose={handleGoLiveModalClose}
+          onConfirm={handleGoLiveConfirm}
         />
       )}
 
@@ -173,7 +232,7 @@ export default function ViewCourseAssessments() {
                 </p>
               </div>
             ) : (
-              assessments?.map((assessment,index) => (
+              assessments?.map((assessment, index) => (
                 <motion.div
                   key={assessment?._id}
                   variants={item}
@@ -205,11 +264,11 @@ export default function ViewCourseAssessments() {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => handleOpenAssessment(assessment,index)}
+                        onClick={() => handleOpenAssessment(assessment, index)}
                         className="button-style-rainbow"
                       >
                         <SunIcon className="h-5 w-5" />
-                        <span className="hidden sm:inline">1.Set Temperature</span>
+                        <span className="hidden sm:inline">Temperature</span>
                       </motion.button>
 
                       <motion.button
@@ -221,8 +280,7 @@ export default function ViewCourseAssessments() {
                              hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors animate-pulse"
                       >
                         <Users className="h-4 w-4" />
-                        <span className="hidden sm:inline">Step 2. Assign</span>
-                       
+                        <span className="hidden sm:inline">Assign</span>
                       </motion.button>
 
                       {/* View Assigned Learners */}
@@ -234,11 +292,23 @@ export default function ViewCourseAssessments() {
                              dark:text-green-400 bg-blue-900/50 dark:bg-green-900/30 rounded-lg
                              hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors "
                       >
-                        <Eye className="h-4 w-4" />
-                        
+                        View
                       </motion.button>
 
-                      
+                      {/* View Assigned Learners */}
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleGoLiveModalOpen(assessment)}
+                        className="flex justify-center items-center gap-2 px-3 py-2 text-sm font-medium text-white 
+                             dark:text-green-400 bg-red-900/50 dark:bg-red-900/30 rounded-lg
+                             hover:bg-green-100 dark:hover:bg-red-900/50 transition-colors "
+                      >
+                        <Eye className="h-4 w-4" />
+                        {assessment?.isLive ? "Live" : "Go Live"}
+
+                  
+                      </motion.button>
 
                       {/* <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -260,7 +330,6 @@ export default function ViewCourseAssessments() {
                              hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
                       >
                         <Trash2 className="h-4 w-4" />
-                        
                       </motion.button>
                     </div>
                   </div>

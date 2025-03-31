@@ -98,7 +98,10 @@ const AiModelsList = () => {
       </h2>
 
       <div 
-      onClick={()=>refetch()}
+      onClick={()=>{
+        refetch()
+        handleSuccess({success:"Page data is refreshed!"})
+      }}
       className="flex justify-center button-style my-2 cursor-pointer">
         
         <p>Refresh</p>

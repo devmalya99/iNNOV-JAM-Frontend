@@ -10,20 +10,26 @@ import OverviewResultSkeleton from "../OverviewResult/OverviewResultSkeleton";
 import LearnerWiseSkeleton from "../LearnerWiseResult/LearnerWiseSkeleton";
 
 import { FaPenNib } from "react-icons/fa";
-import { ArrowLeft, ArrowRight, ChevronDown, MessageCircle, RefreshCcw } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronDown,
+  MessageCircle,
+  RefreshCcw,
+} from "lucide-react";
 import FeedbackBox from "./FeedbackBox";
 import { FetchAssessmentResultDataByLearner } from "../../../services/Assessor/FetchAssessmentResultDataByLearner";
 import useAssessmentReviewStore from "../../../store/useAssessmentReviewStore";
 import OverviewModal from "./OverviewModal";
 const LearnerWise = () => {
-  const {activeNumber,setActiveNumber}=useAssessmentReviewStore();
+  const { activeNumber, setActiveNumber } = useAssessmentReviewStore();
   const [openScoreModal, setOpenScoreModal] = useState(false);
   const [openCaseStudy, setOpenCaseStudy] = useState(false);
 
   const [competency, setCompetency] = useState("");
   const [feedback, setFeedback] = useState("");
   const [openFeedbackBox, setOpenFeedbackBox] = useState(false);
-  const [openOverviewModal,setOpenOverviewModal]=useState(false);
+  const [openOverviewModal, setOpenOverviewModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,8 +41,6 @@ const LearnerWise = () => {
     assessmentId,
     userId
   );
-
- 
 
   function handleOpenDetails() {
     setOpenScoreModal(true);
@@ -53,7 +57,7 @@ const LearnerWise = () => {
       {isLoading ? (
         <LearnerWiseSkeleton />
       ) : (
-        <div className=" max-w-xl lg:max-w-4xl xl:max-w-full mx-auto  p-4 h-[calc(100vh-70px)] text-xs sm:text-xs md:text-sm lg:text-sm xl:text-lg bg-gray-100 dark:bg-gray-900 overflow-y-auto">
+        <div className=" max-w-xl lg:max-w-4xl xl:max-w-full mx-auto  p-4 h-[calc(100vh-80px)] text-xs sm:text-xs md:text-sm lg:text-sm xl:text-lg bg-gray-100 dark:bg-gray-900">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold mb-4 dark:text-gray-400">
               {`${data?.student_name} – ${
@@ -65,10 +69,30 @@ const LearnerWise = () => {
               } `}
             </h2>
 
-            {/* <button className="button-style" onClick={() => refetch()}>
-              <RefreshCcw />
-              
-            </button> */}
+            <div>
+              <div
+                className={`flex p-2 m-1 cursor-pointer rounded-2xl hover:font-bold transition duration-300  ${
+                  data?.studentResponses[activeNumber]?.status === "competent"
+                    ? "text-green-600 bg-green-400 "
+                    : "text-red-500 bg-red-100 "
+                }`}
+              >
+                <strong className="mr-2">AI Grade: </strong>
+                <p className="font-semibold hover:scale-105 transition-transform duration-300">
+                  {data?.studentResponses[activeNumber]?.status}
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-xl shadow-lg flex md:flex-col">
+              <button
+                onClick={() => navigate(-1)}
+                className=" button-style rainbow text-white cursor-pointer hover:text-blue-500 font-semibold"
+              >
+                <ArrowLeft />
+                Go back
+              </button>
+            </div>
           </div>
 
           <div>
@@ -112,7 +136,6 @@ const LearnerWise = () => {
                 setActiveNumber={setActiveNumber}
               />
             )}
-
 
             {/* Suggested Answer  and Student Answer Block */}
 
@@ -173,62 +196,46 @@ const LearnerWise = () => {
             </div>
 
             <div
-              className="bg-white dark:bg-gray-700 mt-2
-             dark:text-gray-900 rounded-md p-2 mb-2 "
+              className="footer-controller  mt-2
+             dark:text-gray-900 rounded-md p-2 mb-2  "
             >
-              <div className="flex gap-2 justify-between mb-2 flex-col lg:flex-row">
+              {/* Top footer */}
+              <div className="flex justify-between my-2 border rounded-2xl py-2 px-2
+               bg-gray-200 dark:bg-gray-800 border-gray-600 ">
+                {/* Is it case study */}
+                {data?.assessment?.assessment_type === "case_study" && (
+                  <div>
+                    <button
+                      onClick={handleOpenCaseStudy}
+                      className="button-style"
+                    >
+                      Read Case Study
+                    </button>
+                  </div>
+                )}
 
+                {/* overview button */}
+                {/* Overview modal controller */}
+                <button
+                  className="button-style"
+                  onClick={() => setOpenOverviewModal(true)}
+                >
+                  Overview
+                </button>
+              </div>
+
+              <div className="flex gap-2 justify-between mb-2 flex-col lg:flex-row">
                 {/* gen ai remark and view score button*/}
-                <div
-                  className="flex gap-2 "
+                <button
+                  className=" button-style"
                   onClick={() =>
                     navigate(
                       `/home/assessment/view-learner-aiScore/${data?.studentResponses[activeNumber]?.question_id}/${userId}`
                     )
                   }
                 >
-                  <div className="rounded-xl shadow-lg flex md:flex-col" >
-                    <div
-                      className={`flex p-2 m-1 cursor-pointer rounded-lg hover:font-bold transition duration-300  ${
-                        data?.studentResponses[activeNumber]?.status ===
-                        "competent"
-                          ? "text-green-600 bg-green-400 "
-                          : "text-red-500 bg-red-100 "
-                      }`}
-                    >
-                      <strong className="mr-2">AI Grade: </strong>
-                      <p className="font-semibold hover:scale-105 transition-transform duration-300">
-                        {data?.studentResponses[activeNumber]?.status}
-                      </p>
-                    </div>
-
-                    <button
-                    onClick={()=>navigate(-1)}
-                    className=" button-style rainbow text-white cursor-pointer hover:text-blue-500 font-semibold">
-                      <ArrowLeft/>
-                      Go back
-                    </button>
-                  </div>
-
-
-                </div>
-                
-                {/* Is it case study */}
-                {data?.assessment?.assessment_type === "case_study" && (
-                  <div>
-                    <button
-                    onClick={handleOpenCaseStudy}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-200 cursor-pointer mt-4"
-                  >
-                    Read Case Study
-                  </button>
-                  </div>
-                )}
-
-                {/* Overview modal controller */}
-                <button className="button-style"
-                  onClick={()=>setOpenOverviewModal(true)}
-                >Overview</button>
+                  Score Analysis
+                </button>
 
                 {/* Pagination controller */}
 
@@ -242,10 +249,9 @@ const LearnerWise = () => {
                   </button>
 
                   <button className="px-6 py-2 text-black font-serif text-lg font-medium bg-blue-300 rounded-xl backdrop-blur-sm ">
-                  <span className="hidden lg:block">Question</span>
-                     
+                    <span className="hidden lg:block">Question</span>
+
                     <span className="">{activeNumber + 1}</span>
-                    
                   </button>
 
                   <button
@@ -260,11 +266,12 @@ const LearnerWise = () => {
                 </div>
 
                 {/* Human Assessor Remark */}
-                <div className="space-y-4 bg-blue-gray-300 justify-center">
+
+                <div className=" justify-center items-center">
                   {/* Human Assessor Remark */}
-                  <div className="flex items-center gap-2  p-4 rounded-xl ">
+                  <div className="flex items-center gap-2  rounded-xl ">
                     {/* Button to Open Feedback Box */}
-                    <div className="flex items-center gap-4 bg-gradient-to-r from-blue-600 to-blue-400 p-2 rounded-xl ">
+                    <div className="flex items-center justify-center gap-4 bg-gradient-to-r from-blue-600 to-blue-400 p-2 rounded-xl ">
                       <strong className="text-gray-200 dark:text-gray-200 hidden lg:block">
                         Human Assessor Remark:
                       </strong>
@@ -276,10 +283,7 @@ const LearnerWise = () => {
                       </div>
                     </div>
                   </div>
-
-                  
                 </div>
-
               </div>
             </div>
           </div>

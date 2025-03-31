@@ -138,7 +138,7 @@ const CoursesDashboard = () => {
               dark:border-gray-700 rounded-xl 
               pl-1  shadow-lg hover:shadow-xl hover:scale-102 transform transition-all duration-300"
             >
-              <div className=" bg-white h-full dark:bg-gray-700 rounded-lg px-4 py-2 hover:bg-gray-00">
+              <div className=" bg-white h-full dark:bg-gray-800 rounded-lg px-4 py-2 hover:bg-gray-00">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
@@ -189,7 +189,10 @@ const CoursesDashboard = () => {
                   className="flex items-center justify-between gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <FaFileContract className="text-lg text-gray-500 dark:text-gray-400" />
+                    <FaFileContract className="text-lg text-gray-500
+                     dark:bg-gray-700 dark:text-gray-400"
+                    
+                      />
                     <p className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:underline transition duration-200">
                       Manage Assessments
                     </p>
