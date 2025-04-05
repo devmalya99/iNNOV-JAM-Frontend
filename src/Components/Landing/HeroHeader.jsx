@@ -4,14 +4,15 @@ import Logo from '../../assets/FirstComLogo.png'
 import { ArrowRight } from 'lucide-react';
 const HeroHeader = () => {
   return (
-    <header className="bg-white  px-4 py-3 flex justify-center items-center w-full">
+    <header className="  px-4 py-3 flex justify-center border-b 
+    border-gray-700 items-center w-full">
       <div className="flex items-center justify-center ">
 
 
         <div className='flex '>
         <Link to="/">
           {/* <img src={Logo} alt="Logo" className="h-12  object-contain" /> */}
-          <p className='text-3xl font-bold tracking-wide text-gray-800 '>COL Innov jam</p>
+          <p className='text-3xl font-bold tracking-wide text-gray-300/80 '>COL Innov jam</p>
         </Link>
         </div>
 
