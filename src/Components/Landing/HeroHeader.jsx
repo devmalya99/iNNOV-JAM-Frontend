@@ -1,7 +1,14 @@
-import React from 'react';
 import { Link } from 'react-router';
-import Logo from '../../assets/FirstComLogo.png'
-import { ArrowRight } from 'lucide-react';
+
+/**
+ * The HeroHeader component is a reusable header component 
+ * used for the landing page and other pages that require a 
+ * simple header with a logo and navigation menu options.
+ * 
+ * @returns {JSX.Element} The JSX element representing the hero header.
+ */
+
+
 const HeroHeader = () => {
   return (
     <header className="  px-4 py-3 flex justify-center border-b 

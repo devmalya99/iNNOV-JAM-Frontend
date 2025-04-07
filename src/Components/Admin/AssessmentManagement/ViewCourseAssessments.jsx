@@ -61,6 +61,7 @@ export default function ViewCourseAssessments() {
   }
   const handleAssignLearner = (assessment) => {
     setSelectedAssessmentId(assessment?._id);
+    setSelectedAssessment(assessment);
     setOpenModalToAssignLearners(true);
   };
 
@@ -78,6 +79,7 @@ export default function ViewCourseAssessments() {
  
 
   const navigate = useNavigate();
+
 
   const container = {
     hidden: { opacity: 0 },
@@ -161,6 +163,7 @@ export default function ViewCourseAssessments() {
       {/* Open modal to Assign Learners */}
       {openModalToAssignLearners && (
         <AssignLearnersModal
+          selectedAssessment={selectedAssessment}
           selectedAssessmentId={selectedAssessmentId}
           setOpenModalToAssignLearners={setOpenModalToAssignLearners}
         />

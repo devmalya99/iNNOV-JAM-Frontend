@@ -20,7 +20,7 @@ const DisplayAssessmentsByCourse = () => {
     refetch,
   } = FetchAssessmentsWithinCourseOfLearner(userId, courseId);
 
-  // console.log("fetched assessments", assessments);
+ console.log("fetched assessments", assessments);
 
   useEffect(() => {
     refetch?.();
@@ -39,12 +39,12 @@ const DisplayAssessmentsByCourse = () => {
     );
   }
 
-  if (isError) {
+  if (!assessments) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
         {/* <FaExclamationCircle className="text-4xl text-red-500 dark:text-red-400 mb-4" /> */}
         <p className="text-gray-600 dark:text-gray-300">
-          No Assessment Created yet for this course{" "}
+          No live assessment available for this course{" "}
         </p>
         <button
           onClick={() => refetch?.()}

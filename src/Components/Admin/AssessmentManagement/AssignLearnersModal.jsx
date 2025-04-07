@@ -38,31 +38,31 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
 
 
   
-  const AssignLearnersModal = ({selectedAssessmentId,setOpenModalToAssignLearners}) => {
+  const AssignLearnersModal = ({selectedAssessment,selectedAssessmentId,setOpenModalToAssignLearners}) => {
     // State to track whether all learners are selected
     const [isAllSelected, setIsAllSelected] = useState(false);
-
-    const { courseid } = useParams();
-   
-     
-
-  
-  
+    
     const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+    console.log("selectedAssessment",selectedAssessment)
+
+     // Fetch learners' data using a custom hook
+     const { data: LearnersData = [], isLoading, refetch } = FetchUsersByRole("learner");
+     // console.log("users", LearnersData);
+   
+     // Zustand store for managing modal and selected learners
+     const {
+       selectedLearners,
+       setSelectedLearners,
+     } = useCourseStore();
+ 
+ 
+     const { data: assignedLearners} = FetchAssignedLearnersByAssessments(selectedAssessmentId);
+   
+
+    
+
   
-    // Fetch learners' data using a custom hook
-    const { data: LearnersData = [], isLoading, refetch } = FetchUsersByRole("learner");
-    // console.log("users", LearnersData);
-  
-    // Zustand store for managing modal and selected learners
-    const {
-      selectedLearners,
-      setSelectedLearners,
-    } = useCourseStore();
-
-
-    const { data: assignedLearners} = FetchAssignedLearnersByAssessments(selectedAssessmentId);
-
   
      // Sync assigned learners when modal opens
   useEffect(() => {
@@ -80,6 +80,12 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
   
     // Function to handle "Select All" functionality
     const handleSelectAll = () => {
+
+      if(selectedAssessment?.isLive===true){
+        handleError({errors:"assessment is live you cannnot assign learners"})
+        return
+      }
+
       if (isAllSelected) {
         setSelectedLearners([]); // Unselect all learners 
       } else {
@@ -90,6 +96,18 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
   
     // Function to handle individual learner selection
     const handleSelect = (id) => {
+
+      console.log("assigned learneres",assignedLearners)
+      const isAlreadyAssigned = assignedLearners.some(learner => learner.userId._id === id);
+
+      if(isAlreadyAssigned && (selectedAssessment?.isLive===true)){
+        
+        handleError({errors:"learner already assigned to this live assessment"})
+        console.log('This learner already assigned to this live assessment',assignedLearners)
+        return
+
+      }
+
       const updatedSelection=selectedLearners.includes(id) ? selectedLearners.filter((learnerId)=>learnerId!==id) : [...selectedLearners,id]
 
       setSelectedLearners(updatedSelection)
