@@ -24,6 +24,7 @@ import AssignLearnersModal from "../../Admin/AssessmentManagement/AssignLearners
 import { handleError, handleSuccess } from "../../../utils/toast";
 import { updateAssessmentStatus } from "../../../services/Admin/manageassessments/updateAssessmentStatus";
 import GoLiveConfirmationModal from "./GoLiveConfirmationModal";
+import AssessmentCreationGuide from "../Assessment Creation/AssessmentCreationGuide";
 
 export default function ViewCourseAssessments() {
   const { courseid } = useParams();
@@ -189,11 +190,17 @@ export default function ViewCourseAssessments() {
       )}
 
       <div className="max-w-6xl mx-auto p-6 rounded-xl shadow-2xl bg-white dark:bg-gray-800 ">
-        <h1 className="text-3xl font-extrabold text-blue-800 dark:text-blue-400 text-center mb-6">
+        <h1 className=" text-3xl font-extrabold text-blue-800 dark:text-blue-400 text-center mb-10">
           Assessments
         </h1>
 
-        <div className="my-4">
+        <AssessmentCreationGuide />
+
+        
+
+        <div className="flex justify-between mx-2 my-6">
+
+        <div className="">
           <button
             onClick={() => navigate(`/home/create-course/courses/${courseid}`)}
             className="button-style"
@@ -211,6 +218,10 @@ export default function ViewCourseAssessments() {
           </button>
         </div>
 
+        </div>
+
+       
+
         {isLoading ? (
           <div className="flex justify-center items-center min-h-[200px]">
             <AiOutlineLoading3Quarters className="text-blue-500 dark:text-blue-300 text-4xl animate-spin" />
@@ -226,7 +237,7 @@ export default function ViewCourseAssessments() {
             variants={container}
             initial="hidden"
             animate="show"
-            className="space-y-4 max-w-4xl mx-2 px-4 py-6"
+            className="space-y-4 max-w-6xl mx-2 px-4 py-6"
           >
             {assessments?.length === 0 ? (
               <div className="my-8 bg-gray-300 py-6 rounded-xl">

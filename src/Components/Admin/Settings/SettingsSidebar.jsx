@@ -4,32 +4,24 @@ import { FaHome } from 'react-icons/fa'
 
 import Logo from '../../../assets/Logo.png';
 
-import { Link, useLocation, useParams } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { Cog, LucideSheet, PenBox, PenLineIcon, PowerOffIcon } from 'lucide-react';
 import { MdSystemUpdate } from 'react-icons/md';
 
 
 const SettingsSidebar = () => {
 
-  
- 
-
     const [activeItem,setActiveItem] = useState(null)
 
     const location = useLocation(); // Get the latest URL
 
-    const [param, setParam] = useState('');
 
     
       // Get the last part of the URL (assuming "/settings/something")
       const pathParts = location.pathname.split('/');
       const lastParam = pathParts[pathParts.length - 1]; // Get last segment
       
-    
-
     console.log("location",lastParam)
-  
-
 
   return ( 
     <div className="flex flex-col w-64 h-[calc(100vh-80px)] ml-1 
@@ -81,14 +73,17 @@ const SidebarItem = ({ icon, text, to, active ,onClick}) => {
           ${
             active
               ? 'bg-green-50 text-green-600 dark:bg-blue-gray-100'
-              : 'text-gray-700 hover:bg-gray-50 hover:text-green-600'
+              : 'text-gray-700 hover:bg-gray-200 hover:text-green-600'
           }
-        `}
+        `} 
       >
         <span className={`${active ? 'text-green-600' : 'text-gray-500'}`}>
           {icon}
         </span>
-        <span className="font-medium text-gray-800 dark:text-gray-100 ">{text}</span>
+        <span 
+        className="hover:text-green-600  font-medium text-gray-800 dark:text-gray-100"
+
+        >{text}</span>
       </Link>
     );
   };

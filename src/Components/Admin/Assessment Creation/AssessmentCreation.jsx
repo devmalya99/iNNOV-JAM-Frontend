@@ -35,6 +35,9 @@ const AssessmentCreation = () => {
   };
 
   const handleFileUpload = (event, id,name) => {
+
+    
+
     const uploadedFile = event.target.files[0];
     setFiles((prev) => ({ ...prev, [id]: uploadedFile }));
     setCreationState((prev) => ({ ...prev, [id]: "file-selected" }));
@@ -46,7 +49,7 @@ const AssessmentCreation = () => {
     
     if(!name)
     {
-      alert("Please provide a name")
+      handleError({errors:"Please provide a name"})
       return
     }
     
@@ -115,7 +118,7 @@ const AssessmentCreation = () => {
               {/* File Upload */}
               <input
                 type="file"
-                onChange={(e) => handleFileUpload(e, assessment.id)}
+                onChange={(e) => handleFileUpload(e, assessment.id,assessment.name)}
                 accept=".pdf,.doc,.docx,.txt"
                 className="cursor-pointer text-sm"
               />

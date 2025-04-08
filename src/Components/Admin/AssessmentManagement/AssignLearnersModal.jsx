@@ -116,9 +116,7 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
       
     };
 
-
     console.log("selected learners",selectedLearners)
-
 
 
     const handleAssignLearners =async ()=>{
@@ -140,9 +138,8 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
             handleError({errors:"Failed to assign learners"})
             alert("An error occurred while assigning learners.");
           }
-
-       
     }
+    
   
     return (
       <>

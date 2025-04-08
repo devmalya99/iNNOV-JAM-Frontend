@@ -1,8 +1,13 @@
-import React from 'react';
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaExclamationTriangle, FaTimes, FaEye } from "react-icons/fa";
 
-const GoLiveConfirmationModal = ({ isOpen, onClose, onConfirm, assessment }) => {
+const GoLiveConfirmationModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  assessment,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -26,7 +31,7 @@ const GoLiveConfirmationModal = ({ isOpen, onClose, onConfirm, assessment }) => 
             transition={{
               type: "spring",
               stiffness: 300,
-              damping: 30
+              damping: 30,
             }}
             className="relative w-full max-w-md overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 shadow-2xl"
           >
@@ -61,9 +66,8 @@ const GoLiveConfirmationModal = ({ isOpen, onClose, onConfirm, assessment }) => 
                   Go Live with Assessment
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Are you sure you want to make this assessment live? 
-                  Before you go live please review this assessment details.
-                  
+                  Are you sure you want to make this assessment live? Before you
+                  go live please review this assessment details.
                 </p>
               </motion.div>
 
@@ -72,14 +76,48 @@ const GoLiveConfirmationModal = ({ isOpen, onClose, onConfirm, assessment }) => 
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg"
+                className=" p-4 rounded-lg"
               >
-                <div className="flex items-start">
-                  <p className="ml-3 text-sm text-blue-600 dark:text-blue-400 text-left">
-                    You're about to make the assessment titled <strong>{assessment?.assessment_name}</strong> live.
-                    After this you will not be able to make any changes to this assessment.
+                <div className="flex items-start bg-blue-50 dark:bg-blue-900/20 p-2">
+                  <p className="ml-3 mb-2 text-sm text-blue-600 dark:text-blue-400 text-left">
+                    You are about to publish the assessment titled{" "}
+                    <strong>{assessment?.assessment_name}</strong>. Once live,
+                    this assessment will be visible and accessible to all
+                    learners. 
                   </p>
+
+                  
                 </div>
+
+                <div className="flex mt-2 items-start bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+  <div className="ml-3 text-sm text-blue-600 dark:text-blue-400 text-left space-y-3">
+    <p className="font-medium">
+      Please note these restrictions will apply after publishing:
+    </p>
+    
+    <div className="bg-red-100 dark:bg-red-900/20 rounded-lg p-3 text-red-800 dark:text-red-200">
+      <p className="font-semibold flex items-center gap-2">
+        <span>❌</span> Restricted actions:
+      </p>
+      <ul className="list-disc pl-5 mt-1 space-y-1">
+        <li>Delete this assessment</li>
+        <li>Remove learners from this assessment</li>
+        <li>Modify temperature settings for questions</li>
+      </ul>
+    </div>
+
+    <div className="bg-green-100 dark:bg-green-900/20 rounded-lg p-3 text-green-800 dark:text-green-200">
+      <p className="font-semibold flex items-center gap-2">
+        <span>✅</span> Allowed actions:
+      </p>
+      <ul className="list-disc pl-5 mt-1 space-y-1">
+        <li>Add new users to this assessment</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
               </motion.div>
 
               {/* Buttons */}
