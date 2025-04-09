@@ -70,7 +70,7 @@ export default function GradeComponent() {
               type="text"
               value={gradeName}
               onChange={(e) => setGradeName(e.target.value)}
-              placeholder="Enter grade"
+              placeholder="Enter grade name"
               className="w-full px-6 py-2 border rounded-lg focus:outline-none 
               focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 
               dark:text-white dark:border-gray-600"
