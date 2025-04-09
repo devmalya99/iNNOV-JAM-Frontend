@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import axios from "axios";
+
 import { X, User, Mail, Lock, CheckCircle, UserCircle } from "lucide-react";
 import { handleError, handleSuccess } from "../../../utils/toast";
 import { UseUpdateUser } from "../../../services/Admin/UserUpdation/UseUpdateUser";
@@ -16,9 +16,10 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
     role: "",
   });
 
+ console.log("user in editing mode is ",user);
+
   const roles = ["super_admin","admin", "learner", "assessor"];
 
-  const VITE_API_URL = import.meta.env.VITE_API_URL;
 
   const { user: currentUser } = useAuth();
   
@@ -47,6 +48,7 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
   const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
+
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -55,8 +57,12 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
   };
 
   const handleSubmit = (e) => {
+    
     e.preventDefault();
+
+    
     // console.log('Form submitted:', formData);
+    console.log("editing user",user);
 
     //validations
    if(formData.password || formData.confirmPassword)
@@ -77,7 +83,6 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
 
    }
 
-    
 
     // Prepare the update data
     const updatedData = {

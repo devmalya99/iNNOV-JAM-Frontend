@@ -10,7 +10,7 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
       const updateUserCoursesMutation = UseUpdateUserCourses();
 
       //check for user
-      console.log("user",user);
+      // console.log("user",user);
   
       const { data: all_Courses_List = [], isLoading, refetch } = useFetchAllCourses();
       // console.log("all_Courses_List", all_Courses_List);
@@ -83,12 +83,6 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
                 Select Courses
               </h2>
 
-              <button
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-                onClick={() => refetch()}
-              >
-                <RefreshCcwIcon size={24} />
-              </button>
 
               <button
                 onClick={onClose}

@@ -71,25 +71,40 @@ const UserManagement = () => {
   // const [searchTerm, setSearchTerm] = useState('');
 
   const handleCourseUpdate=(user)=>{
+    if(user?.email==='superadmin@gmail.com'){
+      handleError({ errors: "Super Admin (superadmin@gmail.com) this represent the project owner and cannot be edited" });
+      return;
+     }
     setEditUserCoursesModalStatus({ isOpen: true, user: user });
-    // console.log("edit courses  for user",user);
+    
   }
 
   const handleDelete = (user) => {
     console.log("Deleting user:", user);
+    if(user?.email==='superadmin@gmail.com'){
+      handleError({ errors: "Super Admin (superadmin@gmail.com) this represent the project owner and cannot be deleted" });
+      return;
+     }
     setDeleteModal({ isOpen: true, user: user });
   };
 
   const handleEdit = (user) => {
     // Implement edit functionality
-    // console.log("Edit user:", user);
+     console.log("Edit user courses :", user);
+     if(user?.email==='superadmin@gmail.com'){
+      handleError({ errors: "Super Admin (superadmin@gmail.com) this represent the project owner and cannot be edited" });
+      return;
+     }
     setEditUserModalStatus({ isOpen: true, user: user });
   };
 
   const handleConfirmDelete = async (user) => {
 
+    console.log("Deleting user:", user);
+
     if (user.role === "super_admin") {
       alert("Super Admin cannot be deleted");
+      handleError({ errors: "Try downgrading Super Admin to Admin to delete" });
       setDeleteModal({ isOpen: false, user: null });
       return;
     }
@@ -167,7 +182,10 @@ const UserManagement = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <div className="flex gap-2">
                     <button
-                      onClick={() => handleEdit(user)}
+                      onClick={() => {
+                        console.log("Edit user:", user);
+                        handleEdit(user)
+                      }}
                       className="p-1 text-blue-600 hover:bg-blue-100 rounded transition-colors"
                     >
                       <Edit2 className="w-4 h-4" />
@@ -254,9 +272,14 @@ const UserManagement = () => {
       {/* Edit Profile Modal */}
       <UpdateAssignedCourses
         isOpen={EditUserCoursesModalStatus.isOpen}
-        onClose={() => setEditUserCoursesModalStatus({ isOpen: false, user: null })}
+        onClose={() => setEditUserCoursesModalStatus({ 
+          isOpen: false, 
+          user: null 
+        })}
+
         // onConfirm={() => handleConfirmDelete(deleteModal.user)}
         user={EditUserCoursesModalStatus.user}
+
       />
 
 
@@ -264,7 +287,9 @@ const UserManagement = () => {
       {/* Edit Profile Modal */}
       <EditUserModal
         isOpen={EditUserModalStatus.isOpen}
-        onClose={() => setEditUserModalStatus({ isOpen: false, user: null })}
+        onClose={() => setEditUserModalStatus({ 
+          isOpen: false, 
+          user: null })}
         // onConfirm={() => handleConfirmDelete(deleteModal.user)}
         user={EditUserModalStatus.user}
       />
