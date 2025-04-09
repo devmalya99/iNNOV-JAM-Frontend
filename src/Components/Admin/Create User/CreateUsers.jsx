@@ -168,15 +168,24 @@ const CreateUsers = () => {
                 required
               />
             </div>
-            <div className="relative w-64">
+            <div className="relative ">
+            <label htmlFor="selectCourses" 
+            className="block text-sm font-medium text-gray-700
+             dark:text-gray-300">
+                Select Courses
+              </label>
               <div
-                className="border p-2 rounded cursor-pointer bg-white dark:bg-gray-700"
+                className="border p-2 rounded cursor-pointer 
+                 bg-white dark:bg-gray-700"
                 onClick={toggleDropdown}
               >
                 {selectedCourses.length > 0 ? (
                   <div className="flex flex-wrap gap-2">
                     {selectedCourses.map((code) => (
-                      <span key={code} className="bg-green-300 px-2 py-1 rounded flex items-center gap-1">
+                      <span 
+                      key={code} 
+                      className="bg-green-300 px-2 py-1 rounded 
+                      flex items-center gap-1">
                         {code}
                         <button
                           onClick={(e) => {

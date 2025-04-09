@@ -67,7 +67,7 @@ const HeroLandingPage = () => {
               },
               {
                 icon: <Clock className="w-8 h-8 text-indigo-600" />,
-                title: "80% Time Saved",
+                title: "More Time Saved",
                 desc: "Focus on teaching, not paperwork"
               }
             ].map((feature, index) => (

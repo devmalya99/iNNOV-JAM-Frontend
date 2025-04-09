@@ -5,15 +5,15 @@ import  background from ".././assets/background.jpg"
 const AuthLayout = () => {
   return (
     
-        <div className="w-screen text-gray-100 h-screen backdrop-blur-lg"
+        <div className="w-screen  text-gray-100 min-h-screen backdrop-blur-lg"
             style={{
               backgroundImage: `url(${background})`,
               backgroundRepeat: "repeat",
               backgroundSize: "auto",
-              backgroundPosition: "center",
+              backgroundPosition: "fixed",
             }}
             >
-              <div className='backdrop-blur-xl h-screen'>
+              <div className='backdrop-blur-xl min-h-screen'>
           <HeroHeader />
           <div className="container mx-auto py-8">
             <Outlet />
