@@ -126,16 +126,10 @@ const DisplayAssessmentsByCourse = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex items-center text-gray-600 dark:text-gray-300">
-                    <FaClock className="mr-2" />
-                    <span>
-                      Created:{" "}
-                      {new Date(assessment?.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
+                  
 
                   <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Type: {assessment?.assessmentId?.assessment_type}
+                    Type: {assessment?.assessment_type}
                   </div>
                 </div>
 
@@ -143,7 +137,8 @@ const DisplayAssessmentsByCourse = () => {
                   <button
                     onClick={() =>
                       navigate(
-                        `/home/learner/instructions/${assessment?.assessmentId?._id}`
+                        `/home/learner/instructions/${assessment?.assessmentId
+}`
                       )
                     }
                     disabled={ ["completed", "rejected"].includes(assessment?.status?.toLowerCase() )}
