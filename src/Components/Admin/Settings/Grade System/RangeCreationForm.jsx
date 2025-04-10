@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import userGradeStore from "../../../../store/gradeStore";
 import { toast } from "react-toastify";
-import { createRange, removeGradeRanges } from "../../../../services/gradingApis/gradingApi";
+import {
+  createRange,
+  removeGradeRanges,
+} from "../../../../services/gradingApis/gradingApi";
 import { handleError } from "../../../../utils/toast";
+
 
 const RangeCreationForm = () => {
   const {
@@ -20,6 +24,8 @@ const RangeCreationForm = () => {
     setLabel,
   } = userGradeStore();
 
+  
+
   const createRangeHandler = async () => {
     if (!label) {
       toast.warning("Please enter a label");
@@ -31,23 +37,23 @@ const RangeCreationForm = () => {
       return;
     }
 
-    if(rangeEnd > 10){
-      handleError({errors:"Ending range cannot be greater than 10"})
-      return
+    if (rangeEnd > 10) {
+      handleError({ errors: "Ending range cannot be greater than 10" });
+      return;
     }
-    if(rangeEnd < 1){
-      handleError({errors:"Ending range cannot be less than 1"})
-      return
-    }
-
-    if(rangeStart > 9){
-      handleError({errors:"Starting range cannot be greater than 10"})
-      return
+    if (rangeEnd < 1) {
+      handleError({ errors: "Ending range cannot be less than 1" });
+      return;
     }
 
-    if(rangeStart < 0){
-      handleError({errors:"Starting range cannot be negative"})
-      return
+    if (rangeStart > 9) {
+      handleError({ errors: "Starting range cannot be greater than 10" });
+      return;
+    }
+
+    if (rangeStart < 0) {
+      handleError({ errors: "Starting range cannot be negative" });
+      return;
     }
 
     //main logic to create grade
@@ -74,9 +80,6 @@ const RangeCreationForm = () => {
       setRangeEnd("");
       setLabel("");
     }
-
-    
-
   };
 
   return (
@@ -99,7 +102,6 @@ const RangeCreationForm = () => {
           <div className="flex items-center space-x-4">
             {/* Grade Label Input */}
             <div className="flex-1">
-
               <label className="block text-gray-700 dark:text-gray-200 text-sm font-medium">
                 Label
               </label>
@@ -114,7 +116,6 @@ const RangeCreationForm = () => {
                 <option>Choose option</option>
                 <option value="competent">competent</option>
                 <option value="not-competent">not-competent</option>
-
               </select>
             </div>
 
@@ -128,15 +129,19 @@ const RangeCreationForm = () => {
                 value={rangeStart}
                 min={0} // // Ensures the minimum value is 0
                 onChange={(e) => {
-                  if(e.target.value > 9){
-                    handleError({errors:"Starting range cannot be greater than 9"})
-                    return
+                  if (e.target.value > 9) {
+                    handleError({
+                      errors: "Starting range cannot be greater than 9",
+                    });
+                    return;
                   }
-                  if(e.target.value < 0){
-                    handleError({errors:"Starting range cannot be less than 0"})
-                    return
+                  if (e.target.value < 0) {
+                    handleError({
+                      errors: "Starting range cannot be less than 0",
+                    });
+                    return;
                   }
-                  setRangeStart(e.target.value)
+                  setRangeStart(e.target.value);
                 }}
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-300 dark:focus:border-blue-400"
                 placeholder="Enter start range"
@@ -153,7 +158,6 @@ const RangeCreationForm = () => {
                 value={rangeEnd}
                 max={10} //ensure max value is 10
                 onChange={(e) => setRangeEnd(e.target.value)}
-
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-300 dark:focus:border-blue-400"
                 placeholder="Enter end range"
               />
@@ -185,26 +189,31 @@ const RangeCreationForm = () => {
                   <div className="flex-1 text-center text-gray-600 dark:text-gray-400">
                     ({grade.startRange} - {grade.endRange})
                   </div>
+
                   <div className="flex space-x-3">
-                    {/* <button className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 text-sm rounded-lg transition duration-300">
-                      Edit
-                    </button> */}
+                    
+
                     <button
                       onClick={async () => {
                         try {
-                          
                           const response = await removeGradeRanges(grade._id); // await the result of removeGrading
-                          
+
                           if (response) {
                             // Only remove the grade from the UI if the API call was successful
                             setRanges(
                               ranges.filter((g) => g._id !== grade._id)
                             );
-                          }else{
-                            handleError({errors:"Cannot remove grade ranges from a assessment with associated assignments"})
+                          } else {
+                            handleError({
+                              errors:
+                                "Cannot remove grade ranges from a assessment with associated assignments",
+                            });
                           }
                         } catch (error) {
-                          handleError({errors:"Cannot remove grade ranges from a assessment with associated assignments"});
+                          handleError({
+                            errors:
+                              "Cannot remove grade ranges from a assessment with associated assignments",
+                          });
                           console.error("Error during grade removal:", error);
                         }
                       }}
@@ -223,6 +232,10 @@ const RangeCreationForm = () => {
           )}
         </div>
       </div>
+
+      
+
+
     </div>
   );
 };
