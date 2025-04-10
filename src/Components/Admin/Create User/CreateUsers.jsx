@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { handleError, handleSuccess } from "../../../utils/toast";
 import { UseCreateUser } from "../../../services/Admin/User Creation/UseCreateUser";
 import { useFetchAllCourses } from "../../../services/FetchAllCourses";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../../../Context/AuthContext";
 
 const CreateUsers = () => {
@@ -200,9 +200,23 @@ const CreateUsers = () => {
                     ))}
                   </div>
                 ) : (
-                  "Select course codes"
+                  "select course"
                 )}
               </div>
+              {
+                !courseCodes.length && (
+                  <div className="absolute w-full border mt-1 bg-white shadow-md rounded">
+                    <p className="p-2 border cursor-pointer hover:bg-gray-200 flex justify-between">
+                    <Link to="/home/create-course" 
+                  className="text-blue-400"
+
+                  > 
+                    Click here to create first course..
+                  </Link>
+                    </p>
+                  </div>
+                )
+              }
               {isCodesOpen && (
                 <ul className="absolute w-full border mt-1 bg-white shadow-md rounded">
                   {courseCodes.map((code) => (

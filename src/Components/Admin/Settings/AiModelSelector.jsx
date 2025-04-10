@@ -157,9 +157,11 @@ const AiModelSelector = () => {
       ))}
 
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">
+        <h3 className="text-lg font-medium mb-2 text-gray-800
+         dark:text-gray-200">
           Weightage Distribution
         </h3>
+
         <div className="space-y-2">
           <input
             type="range"
@@ -167,7 +169,11 @@ const AiModelSelector = () => {
             onChange={(e) => setWeightage(Number(e.target.value))}
             max={100}
             step={1}
-            className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+      style={{
+        background: `linear-gradient(to right, #1d4ed8 0%, #1d4ed8 ${weightage}%, 
+        #6b7280 ${weightage}%, #6b7280 100%)`
+      }}
           />
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
             <p

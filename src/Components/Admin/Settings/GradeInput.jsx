@@ -31,7 +31,7 @@ export default function GradeComponent() {
 
   const onCreateGradeHandler = async () => {
     if (!gradeName) {
-      toast.warning("Please enter a grade name");
+      handleError({ errors: "Please enter a grade name" });
       return;
     }
     const gradeData = await createGrading({ name: gradeName, status: false });

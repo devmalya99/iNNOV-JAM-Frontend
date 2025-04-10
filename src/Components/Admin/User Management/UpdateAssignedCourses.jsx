@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Check, RefreshCcwIcon, X } from "lucide-react";
 import { UseUpdateUserCourses } from "../../../services/Admin/UpdateUserCourses/UseUpdateUserCourses";
 import {useFetchAllCourses} from "../../../services/FetchAllCourses";
+import {handleError, handleSuccess} from "../../../utils/toast";
+
 const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
@@ -46,6 +48,8 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
 
   // Function to handle individual course selection
   const handleSelect = (courseCode) => {
+
+
     setSelectedCourses(prev => {
       if (prev.includes(courseCode)) {
         const newSelection = prev.filter(code => code !== courseCode);
@@ -60,11 +64,19 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
   };
 
   const handleUpdateAssignedCourses = () => {
-    // console.log("Selected courses:", selectedCourses);
+     console.log("Selected courses:", selectedCourses);
+
+     if(selectedCourses.length===0){
+        handleError({errors:"Please select at least one course"});
+        return
+     }
+
+
     // Add your update logic here
     updateUserCoursesMutation.mutate({userId: user?._id ,selectedCourses});
     setSelectedCourses([]);
     setIsAllSelected(false);
+    handleSuccess({ success: "Courses Updated successfully" });
     onClose();
   };
 
@@ -83,7 +95,7 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
                 Select Courses
               </h2>
 
-
+              
               <button
                 onClick={onClose}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
@@ -91,6 +103,16 @@ const UpdateAssignedCourses = ({ isOpen, onClose,user }) => {
                 <X className="w-5 h-5 dark:text-gray-400" />
               </button>
             </div>
+
+            <div className="flex justify-center bg-gray-200 dark:bg-gray-700 
+            p-2 rounded-lg text-gray-500 mb-4 ">
+                
+                <p className="text-sm mx-4">
+                    !! Courses containing Live Assessment 
+                    will be automatically reassigned to the learner in which the learner is assigned !!
+                </p>
+
+              </div>
 
             <div className="mb-4">
               <label className="flex items-center gap-2 py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg cursor-pointer">
