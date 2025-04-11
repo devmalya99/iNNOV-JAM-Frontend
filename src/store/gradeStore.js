@@ -19,6 +19,8 @@ const userGradeStore = create((set) => ({
   grades: [],
   ranges: [],
   openForm: false,
+  openGradeNameEditModal: false,
+  setOpenGradeNameEditModal: (newState) => set({ openGradeNameEditModal: newState }),
 
   setGrades: (fetchedGrades) => set({ grades: fetchedGrades }),
   setRanges: (fetchedRanges) => set({ ranges: fetchedRanges }),

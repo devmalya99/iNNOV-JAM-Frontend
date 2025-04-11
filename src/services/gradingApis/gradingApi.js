@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { handleError } from "../../utils/toast";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const createGrading = async (data) => {
@@ -46,8 +47,14 @@ export const createRange = async (data) => {
             `${VITE_API_URL}/api/grade-ranges/create`,
             data
         );
-        toast.success("Range created successfully");
+
+        if(response){
+            toast.success("Range created successfully");
         return response.data;
+        }else{
+            handleError({errors:"Error creating range"});
+        }
+        
     } catch (error) {
         console.error("Error creating grading:", error);
         toast.error("Error creating grading");

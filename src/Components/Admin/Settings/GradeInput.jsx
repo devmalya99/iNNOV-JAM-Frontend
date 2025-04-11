@@ -1,6 +1,6 @@
 
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   createGrading,
   getAllGradings,
@@ -8,16 +8,25 @@ import {
   removeGrading,
 } from "../../../services/gradingApis/gradingApi";
 import { toast } from "react-toastify";
-import usreGradeStore from "../../../store/gradeStore";
+import useGradeStore from "../../../store/gradeStore";
 import RangeCreationForm from "./Grade System/RangeCreationForm";
 import { handleError, handleSuccess } from "../../../utils/toast";
 import { FaPen, FaTrash } from "react-icons/fa";
+import EditGradeNameModal from "./Grade System/EditGradeNameModal";
+import { EyeIcon } from "lucide-react";
 
 export default function GradeComponent() {
-  
-  
 
-  const { grades, setGrades, setRanges , openForm,setOpenForm,gradeName, setGradeName, setGradeId} = usreGradeStore();
+  const [editGrade, setEditGrade] = useState(null);
+
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+  const { 
+    grades, 
+    setGrades, setRanges , openForm,setOpenForm,gradeName, setGradeName, setGradeId, 
+    openGradeNameEditModal ,
+    setOpenGradeNameEditModal
+  } = useGradeStore();
   
 
   useEffect(() => {
@@ -45,6 +54,55 @@ export default function GradeComponent() {
     setGradeName("");
   };
 
+  const handleUpdateGradename = async () => {
+    try {
+      if (!editGrade?._id || !gradeName) {
+        handleError({ errors: "Please enter a grade name" });
+        return;
+      }
+  
+      const response = await fetch(`${VITE_API_URL}/api/grades/update/${editGrade._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          name: gradeName ,
+          status:false,
+
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update grade name');
+      }
+  
+      const updatedGrade = await response.json();
+      
+      // Update the grades list in the state
+      setGrades(grades.map(grade => 
+        grade._id === editGrade._id ? { ...grade, name: gradeName } : grade
+      ));
+  
+      handleSuccess({ success: "Grade name updated successfully" });
+      setOpenGradeNameEditModal(false);
+      setGradeName("");
+      setEditGrade(null);
+    } catch (error) {
+      console.error("Error updating grade name:", error);
+      handleError({ errors: error.message });
+    }
+  }
+  
+ 
+  //handle edit
+  const handleEdit=(grade)=>{
+    setOpenGradeNameEditModal(true);
+    setEditGrade(grade)
+    setGradeName(grade.name)
+    console.log("grade to be edited",editGrade)
+  }
+
  
 
   const openRangeFormHander = async (id) => {
@@ -55,11 +113,21 @@ export default function GradeComponent() {
     setRanges(rangeResponse || []);
   };
 
+
   return (
     <div className="flex justify-center h-[calc(100vh-70px)] w-full py-2 bg-white dark:bg-gray-900">
       
       <div className="">
         <div className="py-4 px-4 rounded-xl">
+
+          <EditGradeNameModal
+          isOpen={openGradeNameEditModal}
+          onClose={() => setOpenGradeNameEditModal(false)}
+          editGrade={editGrade}
+          gradeName={gradeName}
+          setGradeName={setGradeName}
+          onUpdate={handleUpdateGradename}
+          />
 
       
       
@@ -100,6 +168,15 @@ export default function GradeComponent() {
 
                 {/* Buttons */}
                 <div className="flex space-x-3">
+
+                  <button
+                    onClick={() => handleEdit(grade)}
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"
+                  >
+                    <FaPen />
+                  </button>
+
+                  {/* Delete grade button */}
                   <button
                     onClick={async () => {
                       try {
@@ -128,7 +205,7 @@ export default function GradeComponent() {
                     onClick={() => openRangeFormHander(grade._id)}
                     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"
                   >
-                    <FaPen/>
+                    <EyeIcon/>
                   </button>
                 </div>
                 

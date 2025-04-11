@@ -27,35 +27,19 @@ const RangeCreationForm = () => {
   
 
   const createRangeHandler = async () => {
+
     if (!label) {
-      toast.warning("Please enter a label");
+      handleError({errors:"Please enter a label"});
       return;
     }
+
 
     if (+rangeStart > +rangeEnd) {
-      toast.warning("Please enter a valid range");
+      handleError({errors:"Please enter a valid range"});
       return;
     }
 
-    if (rangeEnd > 10) {
-      handleError({ errors: "Ending range cannot be greater than 10" });
-      return;
-    }
-    if (rangeEnd < 1) {
-      handleError({ errors: "Ending range cannot be less than 1" });
-      return;
-    }
-
-    if (rangeStart > 9) {
-      handleError({ errors: "Starting range cannot be greater than 10" });
-      return;
-    }
-
-    if (rangeStart < 0) {
-      handleError({ errors: "Starting range cannot be negative" });
-      return;
-    }
-
+    
     //main logic to create grade
     if (+rangeStart <= +rangeEnd) {
       const rangeData = await createRange({
@@ -64,6 +48,7 @@ const RangeCreationForm = () => {
         startRange: rangeStart,
         endRange: rangeEnd,
       });
+
       console.log(rangeData);
       if (rangeData) {
         setRanges([
@@ -76,13 +61,17 @@ const RangeCreationForm = () => {
           },
         ]);
       }
+
       setRangeStart("");
       setRangeEnd("");
       setLabel("");
     }
+
+
   };
 
   return (
+
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 w-full max-w-4xl">
       <button
         onClick={() => {
@@ -129,12 +118,7 @@ const RangeCreationForm = () => {
                 value={rangeStart}
                 min={0} // // Ensures the minimum value is 0
                 onChange={(e) => {
-                  if (e.target.value > 9) {
-                    handleError({
-                      errors: "Starting range cannot be greater than 9",
-                    });
-                    return;
-                  }
+                  
                   if (e.target.value < 0) {
                     handleError({
                       errors: "Starting range cannot be less than 0",
@@ -237,6 +221,7 @@ const RangeCreationForm = () => {
 
 
     </div>
+    
   );
 };
 
