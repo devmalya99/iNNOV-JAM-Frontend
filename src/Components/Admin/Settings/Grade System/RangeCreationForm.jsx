@@ -6,7 +6,8 @@ import {
   removeGradeRanges,
 } from "../../../../services/gradingApis/gradingApi";
 import { handleError } from "../../../../utils/toast";
-
+import { FaPen, FaTrashAlt } from "react-icons/fa";
+import UpdateGradeModal from "../UpdateGradeModal";
 
 const RangeCreationForm = () => {
   const {
@@ -24,54 +25,61 @@ const RangeCreationForm = () => {
     setLabel,
   } = userGradeStore();
 
-  
+  const [isOpen, setIsOpen] = useState(false);
+  const [gradeToUpdate, setGradeToUpdate] = useState();
 
   const createRangeHandler = async () => {
-
     if (!label) {
-      handleError({errors:"Please enter a label"});
+      handleError({errors: "Please enter a label"});
       return;
     }
 
-
-    if (+rangeStart > +rangeEnd) {
-      handleError({errors:"Please enter a valid range"});
+    if (+rangeStart >= +rangeEnd) {
+      handleError({errors: "Please enter a valid range"});
       return;
     }
-
     
     //main logic to create grade
-    if (+rangeStart <= +rangeEnd) {
-      const rangeData = await createRange({
-        grade_id: gradeId,
-        label,
-        startRange: rangeStart,
-        endRange: rangeEnd,
-      });
+    const rangeData = await createRange({
+      grade_id: gradeId,
+      label,
+      startRange: rangeStart,
+      endRange: rangeEnd,
+    });
 
-      console.log(rangeData);
-      if (rangeData) {
-        setRanges([
-          ...ranges,
-          {
-            _id: rangeData.range._id,
-            label,
-            startRange: rangeStart,
-            endRange: rangeEnd,
-          },
-        ]);
-      }
-
-      setRangeStart("");
-      setRangeEnd("");
-      setLabel("");
+    if (rangeData) {
+      setRanges([
+        ...ranges,
+        {
+          _id: rangeData.range._id,
+          label,
+          startRange: rangeStart,
+          endRange: rangeEnd,
+        },
+      ]);
     }
 
+    setRangeStart("");
+    setRangeEnd("");
+    setLabel("");
+  };
 
+  const handleUpdateRange = (grade) => {
+    setIsOpen(true);
+    setGradeToUpdate(grade);
+  };
+
+  const handleRangeUpdate = (updatedRange) => {
+    // Update the ranges array with the updated range
+    const updatedRanges = ranges.map(range => 
+      range._id === updatedRange._id ? updatedRange : range
+    );
+    
+    setRanges(updatedRanges);
+    toast.success("Grade range updated successfully");
   };
 
   return (
-
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 w-full max-w-4xl">
       <button
         onClick={() => {
@@ -85,6 +93,14 @@ const RangeCreationForm = () => {
       >
         ❌
       </button>
+
+      <UpdateGradeModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        grade={gradeToUpdate}
+        onUpdate={handleRangeUpdate}
+      />
+
       <div className="">
         {/* Left Section: Form to create grades */}
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-2">
@@ -116,9 +132,8 @@ const RangeCreationForm = () => {
               <input
                 type="number"
                 value={rangeStart}
-                min={0} // // Ensures the minimum value is 0
+                min={0}
                 onChange={(e) => {
-                  
                   if (e.target.value < 0) {
                     handleError({
                       errors: "Starting range cannot be less than 0",
@@ -140,7 +155,7 @@ const RangeCreationForm = () => {
               <input
                 type="number"
                 value={rangeEnd}
-                max={10} //ensure max value is 10
+                max={10}
                 onChange={(e) => setRangeEnd(e.target.value)}
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-300 dark:focus:border-blue-400"
                 placeholder="Enter end range"
@@ -175,15 +190,19 @@ const RangeCreationForm = () => {
                   </div>
 
                   <div className="flex space-x-3">
-                    
+                    <button
+                      onClick={() => handleUpdateRange(grade)}
+                      className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"
+                    >
+                      <FaPen />
+                    </button>
 
                     <button
                       onClick={async () => {
                         try {
-                          const response = await removeGradeRanges(grade._id); // await the result of removeGrading
+                          const response = await removeGradeRanges(grade._id);
 
                           if (response) {
-                            // Only remove the grade from the UI if the API call was successful
                             setRanges(
                               ranges.filter((g) => g._id !== grade._id)
                             );
@@ -203,7 +222,7 @@ const RangeCreationForm = () => {
                       }}
                       className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"
                     >
-                      Remove
+                      <FaTrashAlt />
                     </button>
                   </div>
                 </li>
@@ -216,12 +235,7 @@ const RangeCreationForm = () => {
           )}
         </div>
       </div>
-
-      
-
-
     </div>
-    
   );
 };
 

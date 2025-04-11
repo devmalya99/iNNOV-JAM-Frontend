@@ -106,11 +106,13 @@ export default function GradeComponent() {
  
 
   const openRangeFormHander = async (id) => {
+    
     setOpenForm(true);
     setGradeId(id);
     const rangeResponse = await getAllRanges(id);
     console.log(rangeResponse);
     setRanges(rangeResponse || []);
+
   };
 
 
