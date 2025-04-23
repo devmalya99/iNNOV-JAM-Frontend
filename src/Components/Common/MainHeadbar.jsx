@@ -34,7 +34,7 @@ const MainHeadbar = () => {
     >
 
       <p className="font-playfair text-2xl text-gray-800 dark:text-white ml-6">
-        Hello {user.name}..
+        Hello {user?.name}..
       </p>
 
       

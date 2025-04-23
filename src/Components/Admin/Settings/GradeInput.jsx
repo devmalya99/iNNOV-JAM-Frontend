@@ -153,9 +153,9 @@ export default function GradeComponent() {
             </button>
           </div>
           <ul className=" dark:bg-gray-700  rounded-lg ">
-            {grades?.map((grade) => (
+            {grades?.map((grade)=> (
               <li
-                key={grade.id}
+                key={grade._id}
                 className="flex justify-between items-center bg-white dark:bg-gray-800 p-4 mt-3 rounded-lg shadow-md hover:shadow-lg transition duration-300"
               >
                 {/* Grade Name & Status */}

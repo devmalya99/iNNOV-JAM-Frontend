@@ -40,8 +40,8 @@ export const Login = () => {
 
   return (
     <div className="flex justify-center mt-24">
-    <div className="w-full max-w-md p-8 m-1 space-y-6 bg-white/65
-     dark:bg-white/35 rounded-xl shadow-lg">
+    <div className="w-full max-w-md p-8 m-1 space-y-6 bg-white/55
+     dark:bg-black/25 rounded-xl shadow-lg">
       <h2 className="text-center text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-white to-pink-500 ">Welcome Back</h2>
       <form onSubmit={handleSubmit} className="space-y-4 text-black">
         <div className="relative">

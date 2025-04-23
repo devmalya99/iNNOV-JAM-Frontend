@@ -133,7 +133,8 @@ const HeroLandingPage = () => {
             <span className="font-medium text-gray-700">AI Marking Assistant</span>
           </div>
           <div className="text-sm text-gray-500">
-            © {new Date().getFullYear()} All rights reserved • Version 4.0
+            © {new Date().getFullYear()} All rights reserved • Version 4.1
+            
           </div>
         </div>
       </footer>

@@ -29,7 +29,7 @@ const CourseResult = () => {
     }
 
     return (
-        <div className="p-6 min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="p-6 h-[calc(100vh-80px] bg-gray-50 dark:bg-gray-900">
             <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Course Results</h1>
             
             {resultData?.mappedData?.length > 0 ? (

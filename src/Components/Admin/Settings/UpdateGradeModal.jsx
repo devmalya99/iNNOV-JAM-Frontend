@@ -86,7 +86,7 @@ const UpdateGradeModal = ({ isOpen, onClose, grade, onUpdate }) => {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+          {/* <div>
             <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
               Label
             </label>
@@ -101,7 +101,7 @@ const UpdateGradeModal = ({ isOpen, onClose, grade, onUpdate }) => {
               <option value="competent">competent</option>
               <option value="not-competent">not-competent</option>
             </select>
-          </div>
+          </div> */}
 
           <div className="flex space-x-4">
             <div className="flex-1">
@@ -142,6 +142,7 @@ const UpdateGradeModal = ({ isOpen, onClose, grade, onUpdate }) => {
             Update Grade
           </button>
         </form>
+        
       </div>
     </div>
   );

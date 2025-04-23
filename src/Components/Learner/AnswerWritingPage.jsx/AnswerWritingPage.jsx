@@ -370,11 +370,11 @@ function AnswerWritingPage() {
                       Question{" "}
                       {
                         data?.assessmentdata?.questions?.[activeQuestion]
-                          .question_number
+                          ?.question_number
                       }
                       :
                     </span>{" "}
-                    {data?.assessmentdata?.questions?.[activeQuestion].question}
+                    {data?.assessmentdata?.questions?.[activeQuestion]?.question}
                   </>
                 )}
               </p>
@@ -386,7 +386,7 @@ function AnswerWritingPage() {
                 {isLoading
                   ? "Loading..."
                   : data?.assessmentdata?.questions?.[activeQuestion]
-                      .question_instruction}
+                      ?.question_instruction}
               </p>
             </div>
 

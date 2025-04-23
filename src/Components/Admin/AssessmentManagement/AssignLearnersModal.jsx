@@ -70,6 +70,8 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
       const assignedIds = assignedLearners.map((learner) => learner.userId._id);
       setSelectedLearners(assignedIds);
       setIsAllSelected(assignedIds.length === LearnersData.length);
+    }else{
+      setSelectedLearners([]);
     }
   }, [assignedLearners, LearnersData.length, setSelectedLearners]);
 

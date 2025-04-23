@@ -101,7 +101,7 @@ const ViewCourseResultDetailed = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div className="h-calc(100vh-80px] bg-gray-50 dark:bg-gray-900 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           {/* Header */}
@@ -177,7 +177,7 @@ const ViewCourseResultDetailed = () => {
             { 
               isLoading && (
 
-                <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+                <div className="flex items-center justify-center h-30 bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center space-y-4">
           <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
           <p className="text-gray-600 dark:text-gray-400">Loading results...</p>
@@ -191,7 +191,7 @@ const ViewCourseResultDetailed = () => {
             {/* Empty State */}
             {(!assessmentResult?.result || assessmentResult.result.length === 0) && (
               <div className="text-center py-6">
-                <p className="text-gray-500 dark:text-gray-400">No results found</p>
+                <p className="text-gray-500 dark:text-gray-400">{isLoading?"searching....":"No results found"}</p>
               </div>
             )}
           </div>

@@ -57,7 +57,7 @@ export const createRange = async (data) => {
         
     } catch (error) {
         console.error("Error creating grading:", error);
-        toast.error("Error creating grading");
+        handleError({errors:error.response.data.error});
     }
 };
 

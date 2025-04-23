@@ -5,7 +5,7 @@ import {
   createRange,
   removeGradeRanges,
 } from "../../../../services/gradingApis/gradingApi";
-import { handleError } from "../../../../utils/toast";
+import { handleError, handleSuccess } from "../../../../utils/toast";
 import { FaPen, FaTrashAlt } from "react-icons/fa";
 import UpdateGradeModal from "../UpdateGradeModal";
 
@@ -76,7 +76,7 @@ const RangeCreationForm = () => {
     );
     
     setRanges(updatedRanges);
-    toast.success("Grade range updated successfully");
+    handleSuccess({success:"Grade range updated successfully"});
   };
 
   return (
@@ -104,10 +104,12 @@ const RangeCreationForm = () => {
       <div className="">
         {/* Left Section: Form to create grades */}
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-2">
-          <div className="flex items-center space-x-4">
+          <div className="  grid grid-cols-1 gap-2 lg:grid-cols-4 items-center space-x-4">
+
             {/* Grade Label Input */}
-            <div className="flex-1">
-              <label className="block text-gray-700 dark:text-gray-200 text-sm font-medium">
+            <div className="ml-4">
+              <label className="block text-gray-700 dark:text-gray-200 
+              text-sm font-medium">
                 Label
               </label>
 
@@ -125,8 +127,9 @@ const RangeCreationForm = () => {
             </div>
 
             {/* Start Range Input */}
-            <div className="flex-1">
-              <label className="block text-gray-700 dark:text-gray-200 text-sm font-medium">
+            <div className="">
+              <label className="block text-gray-700 dark:text-gray-200 
+              text-sm font-medium">
                 Start Range
               </label>
               <input
@@ -148,7 +151,7 @@ const RangeCreationForm = () => {
             </div>
 
             {/* End Range Input */}
-            <div className="flex-1">
+            <div className="">
               <label className="block text-gray-700 dark:text-gray-200 text-sm font-medium">
                 End Range
               </label>
@@ -169,6 +172,8 @@ const RangeCreationForm = () => {
             >
               Create Range
             </button>
+
+
           </div>
         </div>
 
@@ -178,18 +183,22 @@ const RangeCreationForm = () => {
             Ranges
           </h2>
           {grades.length > 0 ? (
-            <ul className="space-y-4">
+            <ul className="space-y-4 ">
               {ranges?.map((grade, index) => (
                 <li
                   key={index}
-                  className="flex justify-between items-center bg-white dark:bg-gray-800 text-lg text-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+                  className="flex justify-between items-center bg-white 
+                  dark:bg-gray-800 text-lg
+                   text-gray-800 dark:text-white border 
+                    border-gray-300 dark:border-gray-600
+                      rounded-lg shadow-md hover:shadow-lg transition duration-300"
                 >
-                  <div className="font-medium">{grade.label}</div>
-                  <div className="flex-1 text-center text-gray-600 dark:text-gray-400">
+                  <div className="font-medium  px-4 py-2">{grade.label}</div>
+                  <div className="flex-1 text-center text-gray-600 dark:text-gray-400 px-4 ">
                     ({grade.startRange} - {grade.endRange})
                   </div>
 
-                  <div className="flex space-x-3">
+                  <div className="flex space-x-2">
                     <button
                       onClick={() => handleUpdateRange(grade)}
                       className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition duration-300"
@@ -225,6 +234,7 @@ const RangeCreationForm = () => {
                       <FaTrashAlt />
                     </button>
                   </div>
+
                 </li>
               ))}
             </ul>

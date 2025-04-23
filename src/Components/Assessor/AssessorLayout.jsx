@@ -8,7 +8,8 @@ import MainHeadbar from '../Common/MainHeadbar';
 const AssessorLayout = () => {
   return (
 
-   <div className='flex w-full h-full bg-white dark:bg-[#1d1d1d]'>
+   <div className='flex w-full h-full
+    bg-white dark:bg-[#1d1d1d]'>
          <div className=''>
          <Sidebar/> </div>
    
