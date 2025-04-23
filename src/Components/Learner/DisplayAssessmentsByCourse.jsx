@@ -135,10 +135,13 @@ const DisplayAssessmentsByCourse = () => {
 
                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                   <button
-                    onClick={() =>
+                    onClick={() =>{
+                      console.log("assessment", assessment)
                       navigate(
-                        `/home/learner/instructions/${assessment?.assessmentId}`
+                        `/home/learner/instructions/${assessment?.assessmentId?._id}`
                       )
+                    }
+                      
                     }
                     
                     disabled={ ["completed", "rejected"].includes(assessment?.status?.toLowerCase() )}
