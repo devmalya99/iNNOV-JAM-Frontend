@@ -100,7 +100,7 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
     const handleSelect = (id) => {
 
       console.log("assigned learneres",assignedLearners)
-      const isAlreadyAssigned = assignedLearners.some(learner => learner.userId._id === id);
+      const isAlreadyAssigned = assignedLearners?.some(learner => learner.userId._id === id);
 
       if(isAlreadyAssigned && (selectedAssessment?.isLive===true)){
         
@@ -110,7 +110,11 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
 
       }
 
-      const updatedSelection=selectedLearners.includes(id) ? selectedLearners.filter((learnerId)=>learnerId!==id) : [...selectedLearners,id]
+      console.log("selected learner",selectedLearners)
+
+      const updatedSelection=selectedLearners.includes(id) ? 
+      selectedLearners.filter((learnerId)=>learnerId!==id) 
+      : [...selectedLearners,id]
 
       setSelectedLearners(updatedSelection)
       setIsAllSelected(updatedSelection.length===LearnersData.length)
