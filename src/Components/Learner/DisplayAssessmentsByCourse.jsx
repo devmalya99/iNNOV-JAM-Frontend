@@ -96,7 +96,7 @@ const DisplayAssessmentsByCourse = () => {
 
         {assessments?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {assessments.map((assessment) => (
+            {assessments?.map((assessment) => (
               <div
                 key={assessment?._id}
                 className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl p-6 transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700"
@@ -140,9 +140,7 @@ const DisplayAssessmentsByCourse = () => {
                       navigate(
                         `/home/learner/instructions/${assessment?.assessmentId?._id}`
                       )
-                    }
-                      
-                    }
+                    } }
                     
                     disabled={ ["completed", "rejected"].includes(assessment?.status?.toLowerCase() )}
 

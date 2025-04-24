@@ -91,7 +91,7 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
       if (isAllSelected) {
         setSelectedLearners([]); // Unselect all learners 
       } else {
-        setSelectedLearners(LearnersData?.map((learner) => learner._id) ); // Select all learners
+        setSelectedLearners(LearnersData?.map((learner) => learner?._id) ); // Select all learners
       }
       setIsAllSelected(!isAllSelected);
     };
@@ -100,7 +100,7 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
     const handleSelect = (id) => {
 
       console.log("assigned learneres",assignedLearners)
-      const isAlreadyAssigned = assignedLearners?.some(learner => learner.userId._id === id);
+      const isAlreadyAssigned = assignedLearners?.some(learner => learner?.userId?._id === id);
 
       if(isAlreadyAssigned && (selectedAssessment?.isLive===true)){
         
