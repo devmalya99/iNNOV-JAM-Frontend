@@ -60,10 +60,7 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
      const { data: assignedLearners} = FetchAssignedLearnersByAssessments(selectedAssessmentId);
    
 
-    
 
-  
-  
      // Sync assigned learners when modal opens
   useEffect(() => {
     if (assignedLearners?.length > 0) {
@@ -99,15 +96,18 @@ import { FetchAssignedLearnersByAssessments } from "../../../services/FetchAssig
     // Function to handle individual learner selection
     const handleSelect = (id) => {
 
+      console.log("select learner",id)
+
       console.log("assigned learneres",assignedLearners)
       const isAlreadyAssigned = assignedLearners?.some(learner => learner?.userId?._id === id);
+
+      console.log("isAlreadyAssigned",isAlreadyAssigned)
 
       if(isAlreadyAssigned && (selectedAssessment?.isLive===true)){
         
         handleError({errors:"learner already assigned to this live assessment"})
         console.log('This learner already assigned to this live assessment',assignedLearners)
         return
-
       }
 
       console.log("selected learner",selectedLearners)
