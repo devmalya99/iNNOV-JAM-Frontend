@@ -19,7 +19,7 @@ const HeroHeader = () => {
         <div className='flex '>
         <Link to="/">
           {/* <img src={Logo} alt="Logo" className="h-12  object-contain" /> */}
-          <p className='text-3xl font-bold tracking-wide text-gray-300/80 '>COL Innov jam</p>
+          <p className='text-3xl font-bold tracking-wide text-gray-300/80 '>Assessmentor</p>
         </Link>
         </div>
 

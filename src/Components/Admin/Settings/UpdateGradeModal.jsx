@@ -3,6 +3,10 @@ import { X } from 'lucide-react';
 import { handleError } from "../../../utils/toast";
 
 const UpdateGradeModal = ({ isOpen, onClose, grade, onUpdate }) => {
+
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+
   const [formData, setFormData] = useState({
     label: '',
     startRange: '',
@@ -13,61 +17,78 @@ const UpdateGradeModal = ({ isOpen, onClose, grade, onUpdate }) => {
     if (grade) {
       setFormData({
         label: grade.label || '',
-        startRange: grade.startRange || '',
-        endRange: grade.endRange || '',
+        startRange: typeof grade.startRange !== 'undefined' ? grade.startRange : '',
+
+        endRange: typeof grade.endRange !== 'undefined' ? grade.endRange : '',
+
         grade_id: grade?._id
       });
     }
   }, [grade]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  const { name, value } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value
+  }));
+};
+
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    try {
-      // Validate form data
-      if (!formData.label) {
-        handleError({errors: "Please enter a label"});
-        return;
-      }
+  e.preventDefault();
 
-      if (parseFloat(formData.startRange) >= parseFloat(formData.endRange)) {
-        handleError({errors: "Start range must be less than end range"});
-        return;
-      }
+  const start = parseFloat(formData.startRange);
+  const end = parseFloat(formData.endRange);
 
-      const response = await fetch(`http://192.168.1.54:7300/api/grade-ranges/update/${grade._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update grade range');
-      }
-
-      const updatedGradeRange = await response.json();
-      
-      // Call onUpdate callback with updated data
-      if (onUpdate) {
-        onUpdate(updatedGradeRange.range);
-      }
-      
-      onClose();
-    } catch (error) {
-      console.error("Error updating grade range:", error);
-      handleError({errors: error.message || "Failed to update grade range"});
+  try {
+    if (!formData.label) {
+      handleError({ errors: "Please enter a label" });
+      return;
     }
-  };
+
+    if (isNaN(start) || isNaN(end)) {
+      handleError({ errors: "Please enter valid numeric ranges" });
+      return;
+    }
+
+    if (start > end) {
+      handleError({ errors: "Start range must be less than end range" });
+      return;
+    }
+
+    const response = await fetch(
+      `${VITE_API_URL}/api/grade-ranges/update/${grade._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          startRange: start,
+          endRange: end,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to update grade range");
+    }
+
+    const updatedGradeRange = await response.json();
+
+    if (onUpdate) {
+      onUpdate(updatedGradeRange.range);
+    }
+
+    onClose();
+  } catch (error) {
+    console.error("Error updating grade range:", error);
+    handleError({ errors: error.message || "Failed to update grade range" });
+  }
+};
+
 
   if (!isOpen) return null;
 
