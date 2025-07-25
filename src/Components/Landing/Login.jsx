@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { Eye, EyeOff, LockIcon, MailIcon } from 'lucide-react';
 import axios from 'axios'; // Import axios for HTTP requests
 import { useMutation } from 'react-query'; // Import useMutation from React Query
-import {useAuth} from '../../../Context/AuthContext';
+import {useAuth} from '../../Context/AuthContext';
 import { FaSpinner } from 'react-icons/fa';
 
 

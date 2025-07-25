@@ -1,34 +1,21 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
-  BsCalendar2Check,
-  BsCalendar2CheckFill,
   BsPersonFillGear,
-  BsQuestion,
 } from "react-icons/bs";
 import {
-  FaAccusoft,
-  FaBook,
   FaChalkboardTeacher,
-  FaCheck,
-  FaGraduationCap,
   FaHome,
-  FaThemeco,
-  FaThemeisle,
-  FaUserGraduate,
 } from "react-icons/fa";
-import { FaRegPenToSquare } from "react-icons/fa6";
+
 import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { Link, useLocation } from "react-router"; // Ensure correct version of react-router
-import { BlocksIcon, BookAIcon, LucideGraduationCap, PowerOffIcon, StarsIcon, Users2Icon } from "lucide-react";
-import Logo from "/FirstComLogo.png";
-import { useAuth } from "../../../Context/AuthContext";
+import { BlocksIcon, BookAIcon, PowerOffIcon, Users2Icon } from "lucide-react";
+import { useAuth } from "../../Context/AuthContext";
 import SkeletonPage from "../SkeletonPage";
-import MainHeadbar from "./MainHeadbar";
 import ThemeSlider from "./ThemeSlider";
 import UseSidebarStore from "../../Zustand/SidebarStore";
 import { CgOrganisation } from "react-icons/cg";
 import UseScreensizeStore from "../../Zustand/ScreensizeStore";
-import { IoStarSharp } from "react-icons/io5";
 import { RiStarSFill } from "react-icons/ri";
 import CompanyName from "./CompanyName";
 // Sidebar component

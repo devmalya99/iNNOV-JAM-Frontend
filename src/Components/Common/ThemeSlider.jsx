@@ -1,5 +1,5 @@
 import { FaSun, FaMoon } from "react-icons/fa";
-import { useTheme } from "../../../Context/ThemeContext";
+import { useTheme } from "../../Context/ThemeContext";
 
 const ThemeSlider = () => {
   const { theme, toggleTheme } = useTheme();

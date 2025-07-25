@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../Context/AuthContext';
+import { useAuth } from '../Context/AuthContext';
 import { Hash, Mail, Shield, User, Sparkles } from 'lucide-react';
 import SkeletonPage from './SkeletonPage';
 import { motion } from 'framer-motion';

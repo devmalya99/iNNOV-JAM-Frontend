@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-import { handleSuccess } from '../src/utils/toast';
+import { handleSuccess } from '../utils/toast';
 import { useAuth0 } from '@auth0/auth0-react';
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 

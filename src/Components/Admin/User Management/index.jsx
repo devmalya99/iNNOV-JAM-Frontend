@@ -22,7 +22,7 @@ import { FaUserAstronaut } from "react-icons/fa";
 import {  useMutation, useQueryClient } from "react-query";
 import UpdateAssignedCourses from "./UpdateAssignedCourses";
 import { handleError } from "../../../utils/toast";
-import { useAuth } from "../../../../Context/AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 
 const UserManagement = () => {
 

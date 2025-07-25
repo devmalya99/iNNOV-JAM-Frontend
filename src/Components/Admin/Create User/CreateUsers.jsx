@@ -3,7 +3,7 @@ import { handleError, handleSuccess } from "../../../utils/toast";
 import { UseCreateUser } from "../../../services/Admin/User Creation/UseCreateUser";
 import { useFetchAllCourses } from "../../../services/FetchAllCourses";
 import { Link, useNavigate } from "react-router";
-import { useAuth } from "../../../../Context/AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 
 const CreateUsers = () => {
   const [userRole, setUserRole] = useState("");

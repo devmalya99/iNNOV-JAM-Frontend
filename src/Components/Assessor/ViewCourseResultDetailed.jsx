@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Archive, ArrowBigLeftIcon, Loader2, RefreshCcw } from "lucide-react";
+import { Archive, ArrowBigLeftIcon, Loader2 } from "lucide-react";
 import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/toast";
 import { useQueryClient } from "react-query";
 import { FetchAssessmentResultInDetails } from "../../services/Assessor/FetchAssessmentResultInDetails";
-import { useAuth } from "../../../Context/AuthContext";
 
 // Confirmation Modal Component
 const ConfirmationModal = ({ isOpen, onClose, onConfirm, studentName }) => {

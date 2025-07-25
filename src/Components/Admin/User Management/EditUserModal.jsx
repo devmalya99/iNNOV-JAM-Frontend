@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, User, Mail, Lock, CheckCircle, UserCircle } from "lucide-react";
 import { handleError, handleSuccess } from "../../../utils/toast";
 import { UseUpdateUser } from "../../../services/Admin/UserUpdation/UseUpdateUser";
-import { useAuth } from "../../../../Context/AuthContext";
+
+import { useAuth } from "../../../Context/AuthContext";
 
 const EditUserModal = ({ isOpen, onClose, user }) => {
   const [formData, setFormData] = useState({

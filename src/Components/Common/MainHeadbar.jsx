@@ -1,22 +1,9 @@
-import {
-  FaSearch,
-  FaHashtag,
-  FaRegBell,
-  FaUserCircle,
-  FaMoon,
-  FaSun,
-  FaHamburger,
-  FaDashcube,
-} from "react-icons/fa";
-
-import {useAuth} from "../../../Context/AuthContext"
 
 
-import SearchBar from "./SearchBar";
+import {useAuth} from "../../Context/AuthContext"
 
-import { BookDashed, Menu } from "lucide-react";
-import CompanyName from "./CompanyName";
-import { useTheme } from "../../../Context/ThemeContext";
+import {  Menu } from "lucide-react";
+
 import ThemeSlider from "./ThemeSlider";
 import UseSidebarStore from "../../Zustand/SidebarStore";
 

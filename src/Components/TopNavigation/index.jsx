@@ -1,13 +1,12 @@
 import {
   FaSearch,
-  FaHashtag,
   FaRegBell,
   FaUserCircle,
   FaMoon,
   FaSun,
 } from "react-icons/fa";
 
-import { useTheme } from "../../../Context/THemeContext";
+import { useTheme } from "../../Context/ThemeContext";
 import ThemeSlider from "../Common/ThemeSlider";
 
 const TopNavigation = () => {
@@ -17,7 +16,6 @@ const TopNavigation = () => {
         bg-white dark:bg-gray-900 
          h-16  rounded-md mx-1 my-1
          shadow-gray-500
-        
         shadow-sm"
     >
       <div className="flex font-serif ">
