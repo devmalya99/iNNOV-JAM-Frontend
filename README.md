@@ -1,5 +1,5 @@
 # React + Vite
 
-admin super admin login email: admin@assessmentor.com
+admin super admin login email: superadmin@assessmentor.com
 
-password: admin123
+password: 123456

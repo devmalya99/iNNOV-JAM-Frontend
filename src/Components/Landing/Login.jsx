@@ -48,7 +48,7 @@ export const Login = () => {
           <MailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="email"
-            placeholder="Email"
+            placeholder="try superadmin@assessmentor.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full px-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -65,7 +65,7 @@ export const Login = () => {
       {/* Password Input */}
       <input
         type={showPassword ? "text" : "password"}
-        placeholder="Password"
+        placeholder="Try 123456"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         className="w-full px-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
